@@ -19,9 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment=".">
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="....">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_service_worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_service_worker.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +92,21 @@
       <option name="project" value="LOCAL" />
       <updated>1594470346077</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="...">
+      <created>1594471064181</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1594471064181</updated>
+    </task>
+    <task id="LOCAL-00006" summary="....">
+      <created>1594471210707</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1594471210707</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -114,7 +127,9 @@
     <MESSAGE value="fix icons" />
     <MESSAGE value="add miss files" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="..." />
+    <MESSAGE value="...." />
+    <option name="LAST_COMMIT_MESSAGE" value="...." />
   </component>
   <component name="WindowStateProjectService">
     <state x="529" y="444" key="Github.ShareDialog" timestamp="1594231990493">
@@ -125,10 +140,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="442" y="246" key="Github.UntrackedFilesDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1594231996030" />
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594470355088">
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594471218833">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594470355088" />
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594471218833" />
     <state x="906" y="335" key="git4idea.merge.GitPullDialog" timestamp="1594470991925">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
