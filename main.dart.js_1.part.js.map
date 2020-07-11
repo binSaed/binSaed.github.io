@@ -1,0 +1,16 @@
+{
+  "version": 3,
+  "engine": "v2",
+  "file": "main.dart.js_1.part.js",
+  "sourceRoot": "",
+  "sources": ["../../../../../../.pub-cache/hosted/pub.dartlang.org/url_launcher-5.5.0/lib/url_launcher.dart","../../../../../../.pub-cache/hosted/pub.dartlang.org/url_launcher_platform_interface-1.0.7/lib/url_launcher_platform_interface.dart"],
+  "names": ["launch","canLaunch","instance"],
+  "mappings": "A;;IAwDaA,YAAMA;mBAANA,cAAMA;4BAWGA,OAAMA;AACAA,oBAAwBA;ACvCPA;;AD0DhCA;YAAmCA,aAORA,6BAP3BA;;AAcXA;;;OACFA;AA9CmBA,wBA8CnBA,C;IAIaC,YACXA;mBADWA,cACXA;4BAGAA;YCjF2CA,QDiFDA,iBAA1CA;;;;OACFA;AAJEA,wBAIFA,C",
+  "x_org_dartlang_dart2js": {
+    "minified_names": {
+      "global": "",
+      "instance": ""
+    },
+    "frames": "+XAuFgDEgB;oRAuBbAQ;"
+  }
+}
