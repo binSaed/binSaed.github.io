@@ -19,7 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="fix message" />
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add miss files">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,12 +31,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ePnAKHnvbOw64ZVE28qJkrAfaw" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
@@ -42,6 +47,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -61,7 +71,21 @@
       <option name="project" value="LOCAL" />
       <updated>1594469240442</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fix icons">
+      <created>1594469501246</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1594469501246</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add miss files">
+      <created>1594469759542</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1594469759542</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -76,8 +100,11 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="fix message" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix message" />
+    <MESSAGE value="fix icons" />
+    <MESSAGE value="add miss files" />
+    <option name="LAST_COMMIT_MESSAGE" value="add miss files" />
   </component>
   <component name="WindowStateProjectService">
     <state x="529" y="444" key="Github.ShareDialog" timestamp="1594231990493">
@@ -88,10 +115,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="442" y="246" key="Github.UntrackedFilesDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1594231996030" />
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594469245038">
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594469768566">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594469245038" />
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594469768566" />
     <state x="906" y="335" key="git4idea.merge.GitPullDialog" timestamp="1594469085341">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
