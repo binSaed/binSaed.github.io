@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="." />
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add LICENSE" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,11 +42,14 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -160,7 +163,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594483102566</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="add LICENSE">
+      <created>1594651524332</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1594651524332</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -183,9 +193,14 @@
     <MESSAGE value="..." />
     <MESSAGE value="...." />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="add LICENSE" />
+    <option name="LAST_COMMIT_MESSAGE" value="add LICENSE" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1243" y="349" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1594651503086">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1243" y="349" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1594651503086" />
     <state x="529" y="444" key="Github.ShareDialog" timestamp="1594231990493">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -194,10 +209,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="442" y="246" key="Github.UntrackedFilesDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1594231996030" />
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594483108943">
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594651534012">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594483108943" />
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594651534012" />
     <state x="906" y="335" key="git4idea.merge.GitPullDialog" timestamp="1594470991925">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
