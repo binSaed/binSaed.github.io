@@ -19,7 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add LICENSE" />
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="update favicon">
+      <change afterPath="$PROJECT_DIR$/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -170,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594651524332</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="update favicon">
+      <created>1594653197079</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1594653197079</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -194,7 +204,8 @@
     <MESSAGE value="...." />
     <MESSAGE value="." />
     <MESSAGE value="add LICENSE" />
-    <option name="LAST_COMMIT_MESSAGE" value="add LICENSE" />
+    <MESSAGE value="update favicon" />
+    <option name="LAST_COMMIT_MESSAGE" value="update favicon" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1243" y="349" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1594651503086">
@@ -209,10 +220,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="442" y="246" key="Github.UntrackedFilesDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1594231996030" />
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594651534012">
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594653205109">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594651534012" />
+    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594653205109" />
     <state x="906" y="335" key="git4idea.merge.GitPullDialog" timestamp="1594470991925">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
