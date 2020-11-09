@@ -19,9 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="push to firebase">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add about me" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,11 +47,11 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -186,7 +184,21 @@
       <option name="project" value="LOCAL" />
       <updated>1594817364588</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="add about me">
+      <created>1604937282351</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1604937282351</updated>
+    </task>
+    <task id="LOCAL-00019" summary="add about me">
+      <created>1604937291698</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1604937291698</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -212,28 +224,21 @@
     <MESSAGE value="add LICENSE" />
     <MESSAGE value="update favicon" />
     <MESSAGE value="push to firebase" />
-    <option name="LAST_COMMIT_MESSAGE" value="push to firebase" />
+    <MESSAGE value="add about me" />
+    <option name="LAST_COMMIT_MESSAGE" value="add about me" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1243" y="349" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1594651503086">
+    <state x="955" y="308" key="MultipleFileMergeDialog" timestamp="1604937370890">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="1243" y="349" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1594651503086" />
-    <state x="529" y="444" key="Github.ShareDialog" timestamp="1594231990493">
+    <state x="955" y="308" key="MultipleFileMergeDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1604937370890" />
+    <state x="914" y="280" key="Vcs.Push.Dialog.v2" timestamp="1604937377303">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="529" y="444" key="Github.ShareDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1594231990493" />
-    <state x="442" y="246" key="Github.UntrackedFilesDialog" timestamp="1594231996030">
+    <state x="914" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1604937377303" />
+    <state x="985" y="335" key="git4idea.merge.GitPullDialog" timestamp="1604937357659">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="442" y="246" key="Github.UntrackedFilesDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1594231996030" />
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2" timestamp="1594817370943">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="835" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1594817370943" />
-    <state x="906" y="335" key="git4idea.merge.GitPullDialog" timestamp="1594470991925">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="906" y="335" key="git4idea.merge.GitPullDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1594470991925" />
+    <state x="985" y="335" key="git4idea.merge.GitPullDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1604937357659" />
   </component>
 </project>
