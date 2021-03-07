@@ -1,11 +1,11 @@
 {
     "name": "Abdelrahman Saed",
-    "short_name": "AbdOo Saed",
+    "short_name": "abdosaed.ml",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "AbdOo Saed personal website.",
+    "description": "Abdelrahman Saed personal website.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
