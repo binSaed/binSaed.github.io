@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add about me">
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,6 +73,7 @@
       <workItem from="1614630360282" duration="1461000" />
       <workItem from="1615157844392" duration="1442000" />
       <workItem from="1615454915269" duration="2000" />
+      <workItem from="1616098532414" duration="375000" />
     </task>
     <task id="LOCAL-00001" summary="fix message">
       <created>1594469240442</created>
@@ -214,7 +215,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615158684061</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="add Animated Text and improve my image (mouse wheel)">
+      <created>1616098871949</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1616098871949</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -246,6 +254,7 @@
     <MESSAGE value="push to firebase" />
     <MESSAGE value="add about me" />
     <MESSAGE value="build app with last flutter version" />
-    <option name="LAST_COMMIT_MESSAGE" value="build app with last flutter version" />
+    <MESSAGE value="add Animated Text and improve my image (mouse wheel)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add Animated Text and improve my image (mouse wheel)" />
   </component>
 </project>
