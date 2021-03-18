@@ -19,7 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add about me" />
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add about me">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,11 +42,14 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
+    <property name="last_opened_file_path" value="$USER_HOME$/StudioProjects/my_website/build/web" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -54,6 +59,7 @@
       <recent name="$PROJECT_DIR$/assets" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -64,6 +70,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1594231950683</updated>
+      <workItem from="1614630360282" duration="1461000" />
+      <workItem from="1615157844392" duration="1442000" />
+      <workItem from="1615454915269" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="fix message">
       <created>1594469240442</created>
@@ -198,8 +207,18 @@
       <option name="project" value="LOCAL" />
       <updated>1604937291698</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="build app with last flutter version">
+      <created>1615158684060</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1615158684061</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -214,6 +233,7 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="fix message" />
     <MESSAGE value="fix icons" />
@@ -225,20 +245,7 @@
     <MESSAGE value="update favicon" />
     <MESSAGE value="push to firebase" />
     <MESSAGE value="add about me" />
-    <option name="LAST_COMMIT_MESSAGE" value="add about me" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="955" y="308" key="MultipleFileMergeDialog" timestamp="1604937370890">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="955" y="308" key="MultipleFileMergeDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1604937370890" />
-    <state x="914" y="280" key="Vcs.Push.Dialog.v2" timestamp="1604937377303">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="914" y="280" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1604937377303" />
-    <state x="985" y="335" key="git4idea.merge.GitPullDialog" timestamp="1604937357659">
-      <screen x="0" y="0" width="1920" height="1080" />
-    </state>
-    <state x="985" y="335" key="git4idea.merge.GitPullDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1604937357659" />
+    <MESSAGE value="build app with last flutter version" />
+    <option name="LAST_COMMIT_MESSAGE" value="build app with last flutter version" />
   </component>
 </project>
