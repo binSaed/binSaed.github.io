@@ -9,9 +9,9 @@
       // This script takes the current URL and converts the path and query
       // string into a redirect to the index page with the path preserved
       // in sessionStorage, which the index page's script will restore.
-      var pathSegmentsToKeep = 0;
+      const pathSegmentsToKeep = 0;
 
-      var l = window.location;
+      const l = window.location;
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
         l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
