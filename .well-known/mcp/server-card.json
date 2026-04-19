@@ -1,0 +1,46 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/server-card.schema.json",
+  "serverInfo": {
+    "name": "bnsaed-portfolio",
+    "title": "Abdelrahman Saed Portfolio",
+    "version": "1.0.0",
+    "description": "Read-only discovery endpoint exposing the content and metadata of bnsaed.com to AI agents."
+  },
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://bnsaed.com/mcp"
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": false
+  },
+  "resources": [
+    {
+      "uri": "https://bnsaed.com/.well-known/agent-skills/index.json",
+      "name": "agent-skills-index",
+      "mimeType": "application/json",
+      "description": "Discovery index of agent skills for this site"
+    },
+    {
+      "uri": "https://bnsaed.com/.well-known/api-catalog",
+      "name": "api-catalog",
+      "mimeType": "application/linkset+json",
+      "description": "RFC 9727 linkset of site resources"
+    },
+    {
+      "uri": "https://bnsaed.com/sitemap.xml",
+      "name": "sitemap",
+      "mimeType": "application/xml",
+      "description": "Canonical list of indexable URLs"
+    }
+  ],
+  "documentation": {
+    "url": "https://bnsaed.com/.well-known/agent-skills/site-overview/SKILL.md"
+  },
+  "contact": {
+    "name": "Abdelrahman Saed",
+    "email": "me@bnsaed.com",
+    "url": "https://bnsaed.com/#contact"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://bnsaed.com/",
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/",
+          "type": "text/html",
+          "title": "Abdelrahman Saed — Software Engineer Portfolio"
+        },
+        {
+          "rel": "service-desc",
+          "href": "https://bnsaed.com/sitemap.xml",
+          "type": "application/xml",
+          "title": "Site content map"
+        },
+        {
+          "rel": "describedby",
+          "href": "https://bnsaed.com/.well-known/agent-skills/index.json",
+          "type": "application/json",
+          "title": "Agent skills discovery index"
+        },
+        {
+          "rel": "status",
+          "href": "https://bnsaed.com/",
+          "type": "text/html",
+          "title": "Homepage (200 OK = healthy)"
+        },
+        {
+          "rel": "author",
+          "href": "https://github.com/binSaed",
+          "title": "Abdelrahman Saed on GitHub"
+        }
+      ]
+    },
+    {
+      "anchor": "https://bnsaed.com/articles",
+      "links": [
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/flutter-cached-pdfview-guide",
+          "type": "text/html",
+          "title": "Building a Cached PDF Viewer in Flutter"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/clean-architecture-flutter",
+          "type": "text/html",
+          "title": "Clean Architecture in Flutter Apps"
+        }
+      ]
+    }
+  ]
+}
