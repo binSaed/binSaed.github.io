@@ -22,44 +22,62 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="add Animated Text and improve my image (mouse wheel)">
+    <list default="true" id="4c0c8017-cdbd-4123-b45e-dc744a2655c1" name="Default Changelist" comment="Update index.html script references and add new sections for About, Articles, Skills, and Projects">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/NOTICES" beforeDir="false" afterPath="$PROJECT_DIR$/assets/NOTICES" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/bnsaed/Developer/backend_projects/binSaed.github.io" value="1ePnAKHnvbOw64ZVE28qJkrAfaw" />
+    </persistenceIdMap>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;binSaed&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/binSaed/binSaed.github.io.git&quot;,
+    &quot;accountId&quot;: &quot;be001c51-eb9b-4aa9-9bef-47c917b44c71&quot;
+  }
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="1ePnAKHnvbOw64ZVE28qJkrAfaw" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
-    <property name="cidr.known.project.marker" value="true" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/StudioProjects/my_website/build/web" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -67,6 +85,13 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/assets" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-WS-252.27397.92" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -83,6 +108,14 @@
       <workItem from="1615157844392" duration="1442000" />
       <workItem from="1615454915269" duration="2000" />
       <workItem from="1616098532414" duration="375000" />
+      <workItem from="1768174547336" duration="1424000" />
+      <workItem from="1768430904331" duration="111000" />
+      <workItem from="1768431559683" duration="2077000" />
+      <workItem from="1768469170959" duration="1083000" />
+      <workItem from="1768580710888" duration="316000" />
+      <workItem from="1771550506502" duration="89000" />
+      <workItem from="1771551032414" duration="110000" />
+      <workItem from="1776609490326" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="fix message">
       <created>1594469240442</created>
@@ -238,7 +271,87 @@
       <option name="project" value="LOCAL" />
       <updated>1670111364508</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Add robots.txt and multiple new components for skills and about sections">
+      <option name="closed" value="true" />
+      <created>1768174608626</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1768174608626</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Add sitemap.xml and update robots.txt; introduce new components for skills and about sections">
+      <option name="closed" value="true" />
+      <created>1768178360536</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1768178360536</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Add new sections for About, Articles, Skills, and Projects; implement useInView hook for visibility tracking">
+      <option name="closed" value="true" />
+      <created>1768430961432</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1768430961432</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Add 404.html for SPA redirect handling and update index.html with redirect script">
+      <option name="closed" value="true" />
+      <created>1768431651851</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1768431651851</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Refactor 404.html and index.html to use const instead of var for better variable scoping">
+      <option name="closed" value="true" />
+      <created>1768432000169</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1768432000169</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Add new sections for About, Articles, Skills, and Projects; implement useInView hook for visibility tracking">
+      <option name="closed" value="true" />
+      <created>1768433456808</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1768433456808</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Add new sections for About, Articles, Skills, and Projects; implement useInView hook for visibility tracking">
+      <option name="closed" value="true" />
+      <created>1768435438079</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1768435438079</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Add new sections for About, Articles, Skills, and Projects; implement useInView hook for visibility tracking">
+      <option name="closed" value="true" />
+      <created>1768470106991</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1768470106991</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Add index.html for &quot;Building a Cached PDF Viewer in Flutter&quot; article with SEO metadata and SPA redirect handling">
+      <option name="closed" value="true" />
+      <created>1768580787008</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1768580787008</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Update index.html script references and add new sections for About, Articles, Skills, and Projects">
+      <option name="closed" value="true" />
+      <created>1771551136914</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1771551136914</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -271,6 +384,21 @@
     <MESSAGE value="build app with last flutter version" />
     <MESSAGE value="add Animated Text and improve my image (mouse wheel)" />
     <MESSAGE value="push" />
-    <option name="LAST_COMMIT_MESSAGE" value="push" />
+    <MESSAGE value="Add robots.txt and multiple new components for skills and about sections" />
+    <MESSAGE value="Add sitemap.xml and update robots.txt; introduce new components for skills and about sections" />
+    <MESSAGE value="Add 404.html for SPA redirect handling and update index.html with redirect script" />
+    <MESSAGE value="Refactor 404.html and index.html to use const instead of var for better variable scoping" />
+    <MESSAGE value="Add new sections for About, Articles, Skills, and Projects; implement useInView hook for visibility tracking" />
+    <MESSAGE value="Add index.html for &quot;Building a Cached PDF Viewer in Flutter&quot; article with SEO metadata and SPA redirect handling" />
+    <MESSAGE value="Update index.html script references and add new sections for About, Articles, Skills, and Projects" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update index.html script references and add new sections for About, Articles, Skills, and Projects" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

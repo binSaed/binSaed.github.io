@@ -1,7 +1,9 @@
 User-agent: Googlebot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 User-agent: Bingbot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 User-agent: Twitterbot
@@ -10,7 +12,24 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: GPTBot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+User-agent: ClaudeBot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+User-agent: PerplexityBot
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+User-agent: Google-Extended
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://bnsaed.com/sitemap.xml
