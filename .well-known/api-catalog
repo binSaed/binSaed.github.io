@@ -22,6 +22,24 @@
           "title": "Agent skills discovery index"
         },
         {
+          "rel": "describedby",
+          "href": "https://bnsaed.com/.well-known/mcp/server-card.json",
+          "type": "application/json",
+          "title": "MCP server card"
+        },
+        {
+          "rel": "describedby",
+          "href": "https://bnsaed.com/.well-known/oauth-protected-resource",
+          "type": "application/json",
+          "title": "OAuth Protected Resource Metadata (RFC 9728) — anonymous access"
+        },
+        {
+          "rel": "alternate",
+          "href": "https://bnsaed.com/",
+          "type": "text/markdown",
+          "title": "Homepage as markdown (request with Accept: text/markdown)"
+        },
+        {
           "rel": "status",
           "href": "https://bnsaed.com/",
           "type": "text/html",

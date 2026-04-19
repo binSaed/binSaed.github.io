@@ -1,0 +1,11 @@
+{
+  "resource": "https://bnsaed.com",
+  "authorization_servers": [],
+  "scopes_supported": [],
+  "bearer_methods_supported": [],
+  "resource_name": "bnsaed.com (public)",
+  "resource_documentation": "https://bnsaed.com/.well-known/agent-skills/site-overview/SKILL.md",
+  "resource_policy_uri": "https://bnsaed.com/robots.txt",
+  "tls_client_certificate_bound_access_tokens": false,
+  "notes": "All resources on bnsaed.com — including the MCP endpoint at /mcp — are publicly accessible and require no authentication. No OAuth authorization server is hosted on this origin. This document is published per RFC 9728 to make that explicit so agents do not waste cycles attempting token exchange."
+}
