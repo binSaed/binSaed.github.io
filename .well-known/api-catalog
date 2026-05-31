@@ -40,6 +40,12 @@
           "title": "Homepage as markdown (request with Accept: text/markdown)"
         },
         {
+          "rel": "describedby",
+          "href": "https://bnsaed.com/llms.txt",
+          "type": "text/markdown",
+          "title": "llms.txt — curated site summary for AI systems"
+        },
+        {
           "rel": "status",
           "href": "https://bnsaed.com/",
           "type": "text/html",

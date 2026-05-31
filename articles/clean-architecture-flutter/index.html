@@ -29,7 +29,7 @@
     <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
 
     <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Clean Architecture in Flutter Apps","description":"A practical guide to implementing clean architecture patterns in Flutter for maintainable and testable code.","datePublished":"2024-02-20","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"url":"https://bnsaed.com/articles/clean-architecture-flutter","keywords":"Flutter, Architecture, Best Practices"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Clean Architecture in Flutter Apps","description":"A practical guide to implementing clean architecture patterns in Flutter for maintainable and testable code.","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","datePublished":"2024-02-20","dateModified":"2024-02-20","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/clean-architecture-flutter"},"url":"https://bnsaed.com/articles/clean-architecture-flutter","keywords":"Flutter, Architecture, Best Practices"}</script>
 
     <!-- DNS prefetch and preconnect to critical origins for LCP optimization -->
     <link rel="dns-prefetch" href="https://api.github.com" />
@@ -49,10 +49,31 @@
     <link rel="stylesheet" crossorigin href="/assets/index-D99l6aGa.css">
   
     <meta property="article:published_time" content="2024-02-20" />
+    <meta property="article:modified_time" content="2024-02-20" />
     <meta property="article:author" content="Abdelrahman Saed" />
     <meta property="article:tag" content="Flutter" />
     <meta property="article:tag" content="Architecture" />
     <meta property="article:tag" content="Best Practices" />
+    <style id="prerender-fallback">
+#root .prerender-content{min-height:100vh;background:#0b0f17;color:#e6edf3;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+#root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+#root .prerender-content a{color:#2bc6e0;text-decoration:none}
+#root .prerender-content a:hover{text-decoration:underline}
+#root .prerender-content h1{font-size:2.25rem;line-height:1.2;margin:0 0 .5rem}
+#root .prerender-content h2{font-size:1.6rem;margin:2.5rem 0 1rem;border-bottom:1px solid #1e2733;padding-bottom:.4rem}
+#root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
+#root .prerender-content p{margin:0 0 1rem}
+#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content li{margin:.25rem 0}
+#root .prerender-content code{background:#161b22;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
+#root .prerender-content pre{background:#161b22;border-radius:.6rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
+#root .prerender-content pre code{background:none;padding:0}
+#root .prerender-content blockquote{margin:0 0 1rem;padding-left:1rem;border-left:3px solid #2bc6e0;color:#9fb0c0}
+#root .prerender-content .pr-avatar{width:120px;height:120px;border-radius:24px;object-fit:cover;border:2px solid #1e2733;margin-bottom:1rem}
+#root .prerender-content .pr-muted{color:#9fb0c0}
+#root .prerender-content .pr-tags{font-size:.85rem;color:#9fb0c0}
+#root .prerender-content .pr-thumb{max-width:100%;border-radius:.6rem;margin:.5rem 0;border:1px solid #1e2733}
+</style>
   </head>
   <body>
     <!-- GitHub Pages SPA redirect handling script -->
@@ -68,6 +89,66 @@
         }
       }(window.location))
     </script>
-    <div id="root"></div>
+    <div id="root"><div class="prerender-content" data-prerender="article">
+      <div class="pr-wrap">
+        <p><a href="/">← Abdelrahman Saed</a> · <a href="/#articles">All articles</a></p>
+        <article>
+<h1>Clean Architecture in Flutter Apps</h1>
+<p>Building scalable Flutter applications requires a solid architectural foundation. Clean Architecture helps separate concerns and makes your code more maintainable.</p>
+<h2>The Layers</h2>
+<p>Clean Architecture divides your app into distinct layers:</p>
+<h3>1. Presentation Layer</h3>
+<ul>
+<li>Widgets and UI components</li>
+<li>State management (BLoC, Provider, Riverpod)</li>
+<li>View models</li>
+</ul>
+<h3>2. Domain Layer</h3>
+<ul>
+<li>Business logic</li>
+<li>Use cases</li>
+<li>Entity definitions</li>
+</ul>
+<h3>3. Data Layer</h3>
+<ul>
+<li>Repositories implementation</li>
+<li>Data sources (API, local DB)</li>
+<li>Models and mappers</li>
+</ul>
+<h2>Project Structure</h2>
+<pre><code>lib/
+├── core/
+│   ├── error/
+│   ├── network/
+│   └── utils/
+├── features/
+│   └── feature_name/
+│       ├── data/
+│       │   ├── datasources/
+│       │   ├── models/
+│       │   └── repositories/
+│       ├── domain/
+│       │   ├── entities/
+│       │   ├── repositories/
+│       │   └── usecases/
+│       └── presentation/
+│           ├── bloc/
+│           ├── pages/
+│           └── widgets/
+└── main.dart</code></pre>
+<h2>Benefits</h2>
+<ul>
+<li><strong>Testability</strong> — each layer can be tested independently</li>
+<li><strong>Maintainability</strong> — changes in one layer don't affect others</li>
+<li><strong>Scalability</strong> — easy to add new features</li>
+<li><strong>Team collaboration</strong> — clear boundaries between responsibilities</li>
+</ul>
+<h2>Conclusion</h2>
+<p>While Clean Architecture adds initial complexity, it pays off in larger projects where maintainability and testability are crucial.</p>
+
+        </article>
+        <p class="pr-tags">Tags: Flutter · Architecture · Best Practices</p>
+      </div>
+    </div></div>
   </body>
 </html>

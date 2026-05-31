@@ -1,0 +1,32 @@
+# Abdelrahman Saed (binSaed) — Software Engineer
+
+> Personal portfolio of Abdelrahman Saed, a software engineer who builds with Flutter, React, Android, and modern web technologies. This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
+
+## Core content
+
+- [Homepage (markdown)](https://bnsaed.com/_pages/home.md): Who Abdelrahman is, what he ships, site sections, and how to get in touch. Also available at `https://bnsaed.com/` with `Accept: text/markdown`.
+- [Site overview skill](https://bnsaed.com/.well-known/agent-skills/site-overview/SKILL.md): Structured overview of the site for agents — who, sections, endpoints, and content preferences.
+
+## Articles
+
+- [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide): Implementing an efficient, cached PDF viewer for iOS and Android with `flutter_cached_pdfview`. Markdown via `Accept: text/markdown` or [direct .md](https://bnsaed.com/_articles/flutter-cached-pdfview-guide.md).
+- [Clean Architecture in Flutter Apps](https://bnsaed.com/articles/clean-architecture-flutter): A practical guide to layering, project structure, and the trade-offs of clean architecture in Flutter. Markdown via `Accept: text/markdown` or [direct .md](https://bnsaed.com/_articles/clean-architecture-flutter.md).
+
+## Discovery & APIs
+
+- [Sitemap](https://bnsaed.com/sitemap.xml): Canonical list of indexable URLs.
+- [robots.txt](https://bnsaed.com/robots.txt): Crawl rules and per-bot `Content-Signal` preferences (`search=yes, ai-input=yes, ai-train=no`).
+- [API catalog (RFC 9727)](https://bnsaed.com/.well-known/api-catalog): Linkset of every machine-readable resource on the site.
+- [Agent skills index](https://bnsaed.com/.well-known/agent-skills/index.json): Discovery index for the site's agent skills (site-overview, article-reader, contact).
+- [MCP server card](https://bnsaed.com/.well-known/mcp/server-card.json): Describes the read-only MCP endpoint at `https://bnsaed.com/mcp` (tools: `list_articles`, `get_contact_info`, `get_site_metadata`).
+- [OAuth protected-resource (RFC 9728)](https://bnsaed.com/.well-known/oauth-protected-resource): Declares that all resources, including `/mcp`, are public and need no authentication.
+
+## Contact
+
+- [Contact skill](https://bnsaed.com/.well-known/agent-skills/contact/SKILL.md): How an agent should reach Abdelrahman on a user's behalf. Preferred channel is email: <me@bnsaed.com>.
+- [GitHub](https://github.com/binSaed)
+- [LinkedIn](https://www.linkedin.com/in/binsaed/)
+
+## Optional
+
+- [Full text for LLMs](https://bnsaed.com/llms-full.txt): The homepage and every article concatenated as a single markdown document.

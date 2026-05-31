@@ -1,0 +1,280 @@
+# Abdelrahman Saed (binSaed) — full text for LLMs
+
+> Concatenated markdown of bnsaed.com (homepage + all articles). Last built: 2026-05-31.
+> Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
+
+---
+
+# Abdelrahman Saed — Software Engineer
+
+> This is the markdown rendering of [bnsaed.com](https://bnsaed.com/), served when an agent requests `Accept: text/markdown`.
+> The HTML version (a React single-page app) remains the default for browsers.
+
+## About
+
+I'm **Abdelrahman Saed** (also known as **binSaed**) — a software engineer who builds with Flutter, React, Android, and modern web technologies. This site is my personal portfolio: who I am, what I ship, and how to get in touch.
+
+- Email: <me@bnsaed.com>
+- GitHub: <https://github.com/binSaed>
+- LinkedIn: <https://www.linkedin.com/in/binsaed/>
+
+## Sections (deep links)
+
+| Section | URL |
+|---------|-----|
+| Hero / intro | `https://bnsaed.com/#home` |
+| About | `https://bnsaed.com/#about` |
+| Projects | `https://bnsaed.com/#projects` |
+| Articles | `https://bnsaed.com/#articles` |
+| Skills | `https://bnsaed.com/#skills` |
+| Contact | `https://bnsaed.com/#contact` |
+
+## Articles
+
+Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`.
+
+- [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide)
+- [Clean Architecture in Flutter Apps](https://bnsaed.com/articles/clean-architecture-flutter)
+
+## Discovery for agents
+
+Structured endpoints, no JavaScript required:
+
+- `GET /sitemap.xml` — canonical list of indexable URLs
+- `GET /robots.txt` — crawl rules and `Content-Signal` preferences
+- `GET /.well-known/api-catalog` — RFC 9727 linkset of site resources
+- `GET /.well-known/agent-skills/index.json` — agent skills discovery index
+- `GET /.well-known/mcp/server-card.json` — MCP server card
+- `GET /.well-known/oauth-protected-resource` — RFC 9728 (this site requires no auth)
+- `POST /mcp` — MCP JSON-RPC endpoint (anonymous; tools: `list_articles`, `get_contact_info`, `get_site_metadata`)
+
+## Content preferences
+
+Per `robots.txt`:
+
+```
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+```
+
+- **search=yes** — indexing for search is welcome.
+- **ai-input=yes** — agents may use this content as input for a user-facing answer.
+- **ai-train=no** — this content must not be used to train AI models.
+
+Attribute the author when quoting.
+
+## FAQ
+
+### Who is Abdelrahman Saed?
+
+Abdelrahman Saed (also known as binSaed) is a software engineer who builds with Flutter, React, Android, and modern web technologies. He is currently a Lead Software Engineer at iStoria.
+
+### What is Abdelrahman Saed's current role?
+
+He is a Lead Software Engineer at iStoria, an English-language learning app, where he builds and leads development of cross-platform mobile and web experiences.
+
+### What technologies and skills does Abdelrahman Saed work with?
+
+Mobile development (Flutter, Dart, Android, iOS, React Native), frontend (React, TypeScript, JavaScript, Tailwind CSS), backend (Node.js, Python, Firebase, REST APIs, GraphQL), and cloud/DevOps (AWS, Google Cloud, Docker, CI/CD), with an emphasis on clean code, SOLID principles, and TDD.
+
+### What are Abdelrahman Saed's notable projects?
+
+[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (133+ GitHub stars, 499+ pub.dev likes), and [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads.
+
+### How can I contact Abdelrahman Saed?
+
+Email is the preferred channel: <me@bnsaed.com>. He is also reachable on [GitHub](https://github.com/binSaed) and [LinkedIn](https://www.linkedin.com/in/binsaed/).
+
+### Can AI agents and answer engines use content from this site?
+
+Yes for user-facing answers (`ai-input=yes`), but not for training AI models (`ai-train=no`), per the `Content-Signal` directives in `robots.txt`. Please attribute the author when quoting.
+
+---
+
+---
+title: Building a Cached PDF Viewer in Flutter
+slug: flutter-cached-pdfview-guide
+date: 2024-01-15
+readTime: 5 min read
+tags: [Flutter, Dart, PDF, Mobile]
+author: Abdelrahman Saed
+url: https://bnsaed.com/articles/flutter-cached-pdfview-guide
+---
+
+# Building a Cached PDF Viewer in Flutter
+
+PDF viewing is a common requirement in mobile applications. Whether you're building a document reader, an e-book app, or just need to display PDFs from URLs, having an efficient solution is crucial.
+
+## Why Caching Matters
+
+When loading PDFs from remote URLs, you don't want to re-download the file every time the user opens it. This is where caching becomes essential:
+
+- **Faster load times** — cached files load instantly
+- **Reduced bandwidth** — save data for your users
+- **Offline support** — previously viewed PDFs work offline
+
+## Getting Started
+
+First, add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter_cached_pdfview: ^0.4.3
+```
+
+## Basic Usage
+
+Here's a simple implementation:
+
+```dart
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+
+class PDFViewerPage extends StatelessWidget {
+  final String pdfUrl;
+
+  const PDFViewerPage({Key? key, required this.pdfUrl}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('PDF Viewer')),
+      body: const PDF().cachedFromUrl(
+        pdfUrl,
+        placeholder: (progress) => Center(
+          child: CircularProgressIndicator(value: progress / 100),
+        ),
+        errorWidget: (error) => Center(
+          child: Text('Error loading PDF'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+## Key Features
+
+### 1. Multiple Source Support
+
+Load PDFs from different sources:
+
+- **URL** — remote PDF files with automatic caching
+- **Asset** — PDFs bundled with your app
+- **File Path** — local PDF files
+
+### 2. Customizable Loading States
+
+Show progress while loading:
+
+```dart
+placeholder: (progress) => Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      CircularProgressIndicator(value: progress / 100),
+      SizedBox(height: 16),
+      Text('${progress.toStringAsFixed(0)}%'),
+    ],
+  ),
+),
+```
+
+### 3. Error Handling
+
+Gracefully handle errors:
+
+```dart
+errorWidget: (error) => Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(Icons.error, size: 64, color: Colors.red),
+      SizedBox(height: 16),
+      Text('Failed to load PDF'),
+      TextButton(
+        onPressed: () => /* retry logic */,
+        child: Text('Retry'),
+      ),
+    ],
+  ),
+),
+```
+
+## Conclusion
+
+The `flutter_cached_pdfview` package provides a simple yet powerful way to display PDFs in your Flutter apps. With built-in caching, you get better performance and a smoother user experience.
+
+Check out the [package on pub.dev](https://pub.dev/packages/flutter_cached_pdfview) for more details.
+
+---
+
+---
+title: Clean Architecture in Flutter Apps
+slug: clean-architecture-flutter
+date: 2024-02-20
+readTime: 8 min read
+tags: [Flutter, Architecture, Best Practices]
+author: Abdelrahman Saed
+url: https://bnsaed.com/articles/clean-architecture-flutter
+---
+
+# Clean Architecture in Flutter Apps
+
+Building scalable Flutter applications requires a solid architectural foundation. Clean Architecture helps separate concerns and makes your code more maintainable.
+
+## The Layers
+
+Clean Architecture divides your app into distinct layers:
+
+### 1. Presentation Layer
+
+- Widgets and UI components
+- State management (BLoC, Provider, Riverpod)
+- View models
+
+### 2. Domain Layer
+
+- Business logic
+- Use cases
+- Entity definitions
+
+### 3. Data Layer
+
+- Repositories implementation
+- Data sources (API, local DB)
+- Models and mappers
+
+## Project Structure
+
+```
+lib/
+├── core/
+│   ├── error/
+│   ├── network/
+│   └── utils/
+├── features/
+│   └── feature_name/
+│       ├── data/
+│       │   ├── datasources/
+│       │   ├── models/
+│       │   └── repositories/
+│       ├── domain/
+│       │   ├── entities/
+│       │   ├── repositories/
+│       │   └── usecases/
+│       └── presentation/
+│           ├── bloc/
+│           ├── pages/
+│           └── widgets/
+└── main.dart
+```
+
+## Benefits
+
+- **Testability** — each layer can be tested independently
+- **Maintainability** — changes in one layer don't affect others
+- **Scalability** — easy to add new features
+- **Team collaboration** — clear boundaries between responsibilities
+
+## Conclusion
+
+While Clean Architecture adds initial complexity, it pays off in larger projects where maintainability and testability are crucial.

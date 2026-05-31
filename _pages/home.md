@@ -54,3 +54,29 @@ Content-Signal: search=yes, ai-input=yes, ai-train=no
 - **ai-train=no** — this content must not be used to train AI models.
 
 Attribute the author when quoting.
+
+## FAQ
+
+### Who is Abdelrahman Saed?
+
+Abdelrahman Saed (also known as binSaed) is a software engineer who builds with Flutter, React, Android, and modern web technologies. He is currently a Lead Software Engineer at iStoria.
+
+### What is Abdelrahman Saed's current role?
+
+He is a Lead Software Engineer at iStoria, an English-language learning app, where he builds and leads development of cross-platform mobile and web experiences.
+
+### What technologies and skills does Abdelrahman Saed work with?
+
+Mobile development (Flutter, Dart, Android, iOS, React Native), frontend (React, TypeScript, JavaScript, Tailwind CSS), backend (Node.js, Python, Firebase, REST APIs, GraphQL), and cloud/DevOps (AWS, Google Cloud, Docker, CI/CD), with an emphasis on clean code, SOLID principles, and TDD.
+
+### What are Abdelrahman Saed's notable projects?
+
+[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (133+ GitHub stars, 499+ pub.dev likes), and [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads.
+
+### How can I contact Abdelrahman Saed?
+
+Email is the preferred channel: <me@bnsaed.com>. He is also reachable on [GitHub](https://github.com/binSaed) and [LinkedIn](https://www.linkedin.com/in/binsaed/).
+
+### Can AI agents and answer engines use content from this site?
+
+Yes for user-facing answers (`ai-input=yes`), but not for training AI models (`ai-train=no`), per the `Content-Signal` directives in `robots.txt`. Please attribute the author when quoting.
