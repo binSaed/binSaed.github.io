@@ -65,6 +65,18 @@ Long-form posts are published under `/articles/:slug`. Current posts:
 - `/articles/flutter-cached-pdfview-guide` — Building a Cached PDF Viewer in Flutter
 - `/articles/clean-architecture-flutter` — Clean Architecture in Flutter Apps
 
+**The Self-Driving Repo** — a CI/CD automation series:
+
+- `/articles/github-actions-branch-protection-guardrails` — The repo that rejects my own pushes to master
+- `/articles/automate-pull-request-hygiene` — PRs that fill in their own paperwork
+- `/articles/sync-jira-with-github-prs` — Making Jira and GitHub agree without anyone updating both
+- `/articles/auto-rebase-and-detect-merge-conflicts` — Every merge to master quietly breaks other PRs
+- `/articles/bot-that-resolves-merge-conflicts` — I let a bot resolve merge conflicts and push the fix
+- `/articles/flutter-release-builds-from-ci` — One button, three stores: shipping a Flutter app from CI
+- `/articles/ai-generated-qa-reports-from-a-release-diff` — The release writes its own QA test plan now
+- `/articles/automated-stale-branch-cleanup` — A repo that cleans up after itself
+- `/articles/ai-weekly-engineering-reviews` — I built an AI that writes weekly engineering summaries
+
 ## Contact
 
 The contact form on `/#contact` posts to a Firebase-backed endpoint. For direct contact, agents should surface the mailto link `mailto:me@bnsaed.com` rather than attempting to submit the form.

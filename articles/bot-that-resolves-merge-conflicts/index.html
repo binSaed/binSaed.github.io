@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I let a bot resolve merge conflicts and push the fix. Here's how I made that safe. | Abdelrahman Saed</title>
+    <meta name="description" content="How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected." />
+    <meta name="author" content="Abdelrahman Saed" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Software Engineer, Flutter Developer, React Developer, Mobile App Developer, Web Developer, Abdelrahman Saed, binSaed" />
+    <meta name="theme-color" content="#00bcd4" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://bnsaed.com/articles/bot-that-resolves-merge-conflicts" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://bnsaed.com/articles/bot-that-resolves-merge-conflicts" />
+    <meta property="og:title" content="I let a bot resolve merge conflicts and push the fix. Here's how I made that safe." />
+    <meta property="og:description" content="How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected." />
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+    <meta property="og:site_name" content="Abdelrahman Saed Portfolio" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://bnsaed.com/articles/bot-that-resolves-merge-conflicts" />
+    <meta name="twitter:title" content="I let a bot resolve merge conflicts and push the fix. Here's how I made that safe." />
+    <meta name="twitter:description" content="How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected." />
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"I let a bot resolve merge conflicts and push the fix. Here's how I made that safe.","description":"How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected.","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","datePublished":"2026-05-12","dateModified":"2026-05-12","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/bot-that-resolves-merge-conflicts"},"url":"https://bnsaed.com/articles/bot-that-resolves-merge-conflicts","keywords":"GitHub Actions, Git, Automation, CI/CD"}</script>
+
+    <!-- DNS prefetch and preconnect to critical origins for LCP optimization -->
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://avatars.githubusercontent.com" />
+    <link rel="preconnect" href="https://api.github.com" crossorigin />
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin />
+
+    <!-- Preload LCP image for faster discovery -->
+    <link rel="preload" as="image" href="https://avatars.githubusercontent.com/u/33700292?v=4&s=256" fetchpriority="high" type="image/jpeg" />
+
+    <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
+    <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CgLjqaFM.css">
+  
+    <meta property="article:published_time" content="2026-05-12" />
+    <meta property="article:modified_time" content="2026-05-12" />
+    <meta property="article:author" content="Abdelrahman Saed" />
+    <meta property="article:tag" content="GitHub Actions" />
+    <meta property="article:tag" content="Git" />
+    <meta property="article:tag" content="Automation" />
+    <meta property="article:tag" content="CI/CD" />
+    <style id="prerender-fallback">
+#root .prerender-content{min-height:100vh;background:#0b0f17;color:#e6edf3;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+#root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+#root .prerender-content a{color:#2bc6e0;text-decoration:none}
+#root .prerender-content a:hover{text-decoration:underline}
+#root .prerender-content h1{font-size:2.25rem;line-height:1.2;margin:0 0 .5rem}
+#root .prerender-content h2{font-size:1.6rem;margin:2.5rem 0 1rem;border-bottom:1px solid #1e2733;padding-bottom:.4rem}
+#root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
+#root .prerender-content p{margin:0 0 1rem}
+#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content li{margin:.25rem 0}
+#root .prerender-content code{background:#161b22;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
+#root .prerender-content pre{background:#161b22;border-radius:.6rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
+#root .prerender-content pre code{background:none;padding:0}
+#root .prerender-content blockquote{margin:0 0 1rem;padding-left:1rem;border-left:3px solid #2bc6e0;color:#9fb0c0}
+#root .prerender-content .pr-avatar{width:120px;height:120px;border-radius:24px;object-fit:cover;border:2px solid #1e2733;margin-bottom:1rem}
+#root .prerender-content .pr-muted{color:#9fb0c0}
+#root .prerender-content .pr-tags{font-size:.85rem;color:#9fb0c0}
+#root .prerender-content .pr-thumb{max-width:100%;border-radius:.6rem;margin:.5rem 0;border:1px solid #1e2733}
+</style>
+  </head>
+  <body>
+    <!-- GitHub Pages SPA redirect handling script -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/' ) {
+            const decoded = l.search.slice(1).split('&').map(function (s) {
+                return s.replace(/~and~/g, '&')
+            }).join('?');
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <div id="root"><div class="prerender-content" data-prerender="article">
+      <div class="pr-wrap">
+        <p><a href="/">← Abdelrahman Saed</a> · <a href="/#articles">All articles</a></p>
+        <article>
+<h1>I let a bot resolve merge conflicts and push the fix. Here's how I made that safe.</h1>
+<p><em>Subtitle: Auto-committing to other people's branches is terrifying — until you shrink the blast radius to one provably-safe case. This is that story.</em></p>
+<p><em>The Self-Driving Repo · Part 5 — Conflict Management (flagship)</em></p>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/6a060db4-c5f2-4301-90b1-fde23d675d53" alt="A robot arm carefully braiding two translation streams back into one" loading="lazy" /></p>
+<hr />
+<p>Let me start with the version of this idea that should scare you:</p>
+<blockquote>"What if a GitHub Action automatically resolved merge conflicts and force-pushed the result to people's PR branches?"</blockquote>
+<p>If your stomach dropped, good — mine did too. A bot that runs <code>git merge</code> and <code>git push</code> against branches it doesn't own is exactly how you corrupt someone's work, lose a commit, or merge two versions of a file into nonsense. This is the most dangerous automation in the entire series.</p>
+<p>And yet it runs on every push to <code>master</code>, it resolves real conflicts, and I trust it. The trick wasn't writing a smarter merge algorithm. It was making the bot <strong>profoundly cowardly</strong> — it only acts in one narrow situation where the "right answer" is mechanical and provable, and it runs away from everything else.</p>
+<p>This post is about how to take a scary capability and make it safe by aggressively shrinking its blast radius.</p>
+<h2>The problem: translation conflicts are constant and brain-dead</h2>
+<p>We ship in multiple languages. Translations live in per-locale JSON files — <code>assets/translations/en.json</code>, <code>ar.json</code>, and so on. Add a feature and you add keys to all of them. Which means <strong>every feature branch touches the same translation files</strong>, and they conflict constantly.</p>
+<p>But here's the thing: these conflicts are almost never <em>real</em>. Two developers add different keys to <code>en.json</code>. Git sees edits to the same region and throws up its hands. A human opens the file, looks at the two sides, and realizes there's nothing to decide — you want <em>both</em> keys. It's the dumbest possible conflict, and resolving it by hand is pure tax: it blocks the PR, interrupts the author, and contributes exactly zero thought.</p>
+<p>Code conflicts deserve a human. Two people adding <code>"save_button": "Save"</code> and <code>"share_button": "Share"</code> to the same JSON do not.</p>
+<h2>The idea: automate the mechanical case, refuse everything else</h2>
+<p>The workflow runs on every push to <code>master</code>. For each open PR, it tries to merge <code>master</code> in. If the <em>only</em> things that conflict are translation JSON files, it resolves them by merging the key sets, pushes the resolution, and comments to explain itself. If <em>anything else</em> conflicts — a single <code>.dart</code> file, a <code>pubspec.yaml</code>, anything — it aborts, touches nothing, and leaves the PR for a human.</p>
+<p>The safety isn't in the merge logic. It's in the <strong>refusal logic</strong>. Let me walk the guards in the order they execute, because the order <em>is</em> the design.</p>
+<h2>How it works (a fortress of guard clauses)</h2>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/813ce161-2c69-4dc6-bfc1-039cd60e5b47" alt="Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human" loading="lazy" /></p>
+<h3>Guard 0: only conflicted, real, ready PRs</h3>
+<p>Before any git happens, filter hard. Skip drafts. Skip forks (you can't safely push to them, and you shouldn't). And critically, only consider PRs that are <em>actually</em> conflicting — which means waiting out GitHub's eventually-consistent <code>mergeable</code> field, exactly like the conflict radar in Part 4:</p>
+<pre><code class="language-js">let freshPR;
+for (let attempt = 0; attempt &lt; 5; attempt++) {
+  const { data } = await github.rest.pulls.get({ owner, repo, pull_number });
+  if (data.mergeable !== null) { freshPR = data; break; }  // null = not computed yet
+  await new Promise(r =&gt; setTimeout(r, 3000));
+}
+if (!freshPR || freshPR.mergeable !== false) continue;     // only proceed on real conflicts</code></pre>
+<h3>Guard 1: do the merge in throwaway space</h3>
+<p>Never operate on <code>master</code> or the original branch directly. Check out the PR branch into a disposable local branch, then attempt the merge there. If it merges clean, there was nothing to do — move on:</p>
+<pre><code class="language-js">execSync('git checkout master &amp;&amp; git reset --hard origin/master');
+execSync(`git fetch origin "${branch}"`);
+execSync(`git checkout -B _auto_resolve "origin/${branch}"`);
+
+let hasConflicts = false;
+try { execSync('git merge origin/master --no-edit'); }
+catch { hasConflicts = true; }
+if (!hasConflicts) continue;</code></pre>
+<h3>Guard 2: THE important one — is <em>every</em> conflict a translation file?</h3>
+<p>This is the load-bearing guard, the reason the whole thing is safe. List the unmerged files. If even one of them is outside the translations path, abort the entire merge and skip the PR. No partial resolutions. No "fix the easy files and leave the hard ones." All-or-nothing:</p>
+<pre><code class="language-js">const conflictFiles = execSync('git diff --name-only --diff-filter=U')
+  .toString().trim().split('\n');
+
+const TRANSLATION_PATH = /^assets\/translations\/.*\.json$/;
+const allTranslation = conflictFiles.every(f =&gt; TRANSLATION_PATH.test(f));
+
+if (!allTranslation) {
+  execSync('git merge --abort');   // touch nothing, hand it to a human
+  skipped++;
+  continue;
+}</code></pre>
+<p>That <code>every()</code> is the line that lets me sleep. The bot's authority is scoped to a regex. A conflict in <code>lib/</code> the bot never even <em>attempts</em> to resolve — it aborts and walks away. The dangerous version of this feature is the one that tries to be helpful with code. This one is constitutionally incapable of it.</p>
+<h3>Guard 3: resolve by merging key sets, with a defined winner</h3>
+<p>Only now, with every conflict proven to be a translation file, does it resolve. And the resolution is deliberately boring — parse both sides as JSON, spread them together so you keep <em>all</em> keys from both branches:</p>
+<pre><code class="language-js">for (const file of conflictFiles) {
+  const masterJSON = JSON.parse(execSync(`git show origin/master:"${file}"`).toString());
+  const branchJSON = JSON.parse(execSync(`git show "origin/${branch}":"${file}"`).toString());
+
+  const merged = { ...masterJSON, ...branchJSON };   // union; branch wins on true key collisions
+
+  fs.writeFileSync(file, JSON.stringify(merged, null, 2) + '\n');
+  execSync(`git add "${file}"`);
+}</code></pre>
+<p>Two things make this trustworthy. First, it operates on the <strong>clean versions</strong> of each file from each branch (<code>git show origin/master:file</code> and <code>git show origin/branch:file</code>) — not on the conflict-marker-polluted working copy. There's no risk of a stray <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> ending up in the output. Second, the merge rule is <em>defined and documented</em>: it's a union, and on the rare true collision (both branches changed the same key), the <strong>branch value wins</strong>. That's a real decision with a real rationale (the PR author's intent is newer), not an accident of ordering.</p>
+<h3>Guard 4: tell the humans exactly what you did</h3>
+<p>Automation that mutates someone's branch silently is a betrayal. So the bot pushes the resolution and immediately comments — listing the files it touched and stating the merge rule in plain language:</p>
+<pre><code class="language-js">execSync('git commit --no-edit');
+execSync(`git push origin "_auto_resolve:${branch}"`);
+
+await github.rest.issues.createComment({
+  owner, repo, issue_number: pr.number,
+  body: [
+    '🤖 **Auto-resolved translation conflicts**',
+    '',
+    'Merged `master` and resolved conflicts in:',
+    ...conflictFiles.map(f =&gt; `- \`${f}\``),
+    '',
+    'PR branch values were preserved where both branches changed the same key.',
+    'Please review the merged translations.',
+  ].join('\n'),
+});</code></pre>
+<p>"Please review" is not a throwaway line. The bot resolves and <em>unblocks</em>; the human still gets the final look. It removes the toil, not the oversight.</p>
+<h3>Guard 5: fail closed</h3>
+<p>Every PR is wrapped so that any unexpected error aborts the merge and moves on — one failure can't poison the rest of the run, and a half-merge never survives:</p>
+<pre><code class="language-js">} catch (error) {
+  core.warning(`Failed to resolve PR #${pr.number}: ${error.message}`);
+  try { execSync('git merge --abort'); } catch {}
+}</code></pre>
+<p>When in doubt, the bot does <em>nothing</em>. That's the entire philosophy in one catch block.</p>
+<h2>What it bought us</h2>
+<ul>
+<li><strong>A whole category of busywork evaporated.</strong> Translation-only conflicts — frequent, mindless, blocking — resolve themselves within a run of hitting <code>master</code>.</li>
+<li><strong>PRs stay unblocked.</strong> Authors stop losing momentum to a conflict that required no thought.</li>
+<li><strong>Trust, because it's transparent.</strong> Every action is announced on the PR with the rule it followed. Nobody finds a mystery commit.</li>
+<li><strong>Reviewers still review.</strong> The human look survives; only the mechanical merge is gone. Roughly 10 translation conflicts auto-cleared per week.</li>
+</ul>
+<h2>Gotchas &amp; trade-offs</h2>
+<ul>
+<li><strong>A JSON union is not a real semantic merge.</strong> If both branches set the same key to <em>different</em> values, "branch wins" might be wrong. It's a defensible default, not a guarantee — which is exactly why the bot says "please review."</li>
+<li><strong>It assumes flat, valid JSON.</strong> Nested objects or a malformed file would break naive spreading; <code>JSON.parse</code> failing lands you in the fail-closed catch, which is the safe outcome but means that PR isn't auto-resolved.</li>
+<li><strong>Pushing to a contributor's branch needs the right permissions</strong> and is why forks are excluded outright. Know your token's scope.</li>
+<li><strong>Scope creep is the real danger.</strong> The instant someone asks "can it also resolve <code>pubspec.yaml</code>?" you're negotiating away the one guard that makes it safe. The narrowness <em>is</em> the feature. Defend it.</li>
+<li><strong>It is not a merge-conflict AI.</strong> No model, no guessing. For this class, dumb-and-provable beats smart-and-probabilistic every time.</li>
+</ul>
+<h2>Takeaway</h2>
+<p>The way to ship a dangerous automation safely isn't to make it clever — it's to make it <em>cowardly and loud</em>. Shrink its authority to a single case where the correct answer is mechanical and provable (<code>every() conflict matches one regex</code>), operate only in throwaway space, define your tie-breaker explicitly, announce every action, and fail closed on anything unexpected. The capability sounds reckless. The blast radius makes it boring. Boring is the goal.</p>
+<p>Next: stepping out of git plumbing and into shipping — one button that builds and distributes for Android, iOS, and the Play Store.</p>
+
+        </article>
+        <p class="pr-tags">Tags: GitHub Actions · Git · Automation · CI/CD</p>
+      </div>
+    </div></div>
+  </body>
+</html>

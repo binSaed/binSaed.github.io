@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Making Jira and GitHub agree without anyone updating both | Abdelrahman Saed</title>
+    <meta name="description" content="A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping." />
+    <meta name="author" content="Abdelrahman Saed" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Software Engineer, Flutter Developer, React Developer, Mobile App Developer, Web Developer, Abdelrahman Saed, binSaed" />
+    <meta name="theme-color" content="#00bcd4" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://bnsaed.com/articles/sync-jira-with-github-prs" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://bnsaed.com/articles/sync-jira-with-github-prs" />
+    <meta property="og:title" content="Making Jira and GitHub agree without anyone updating both" />
+    <meta property="og:description" content="A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping." />
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+    <meta property="og:site_name" content="Abdelrahman Saed Portfolio" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://bnsaed.com/articles/sync-jira-with-github-prs" />
+    <meta name="twitter:title" content="Making Jira and GitHub agree without anyone updating both" />
+    <meta name="twitter:description" content="A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping." />
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Making Jira and GitHub agree without anyone updating both","description":"A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping.","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","datePublished":"2026-04-28","dateModified":"2026-04-28","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/sync-jira-with-github-prs"},"url":"https://bnsaed.com/articles/sync-jira-with-github-prs","keywords":"GitHub Actions, Jira, CI/CD, Developer Experience"}</script>
+
+    <!-- DNS prefetch and preconnect to critical origins for LCP optimization -->
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://avatars.githubusercontent.com" />
+    <link rel="preconnect" href="https://api.github.com" crossorigin />
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin />
+
+    <!-- Preload LCP image for faster discovery -->
+    <link rel="preload" as="image" href="https://avatars.githubusercontent.com/u/33700292?v=4&s=256" fetchpriority="high" type="image/jpeg" />
+
+    <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
+    <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CgLjqaFM.css">
+  
+    <meta property="article:published_time" content="2026-04-28" />
+    <meta property="article:modified_time" content="2026-04-28" />
+    <meta property="article:author" content="Abdelrahman Saed" />
+    <meta property="article:tag" content="GitHub Actions" />
+    <meta property="article:tag" content="Jira" />
+    <meta property="article:tag" content="CI/CD" />
+    <meta property="article:tag" content="Developer Experience" />
+    <style id="prerender-fallback">
+#root .prerender-content{min-height:100vh;background:#0b0f17;color:#e6edf3;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+#root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+#root .prerender-content a{color:#2bc6e0;text-decoration:none}
+#root .prerender-content a:hover{text-decoration:underline}
+#root .prerender-content h1{font-size:2.25rem;line-height:1.2;margin:0 0 .5rem}
+#root .prerender-content h2{font-size:1.6rem;margin:2.5rem 0 1rem;border-bottom:1px solid #1e2733;padding-bottom:.4rem}
+#root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
+#root .prerender-content p{margin:0 0 1rem}
+#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content li{margin:.25rem 0}
+#root .prerender-content code{background:#161b22;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
+#root .prerender-content pre{background:#161b22;border-radius:.6rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
+#root .prerender-content pre code{background:none;padding:0}
+#root .prerender-content blockquote{margin:0 0 1rem;padding-left:1rem;border-left:3px solid #2bc6e0;color:#9fb0c0}
+#root .prerender-content .pr-avatar{width:120px;height:120px;border-radius:24px;object-fit:cover;border:2px solid #1e2733;margin-bottom:1rem}
+#root .prerender-content .pr-muted{color:#9fb0c0}
+#root .prerender-content .pr-tags{font-size:.85rem;color:#9fb0c0}
+#root .prerender-content .pr-thumb{max-width:100%;border-radius:.6rem;margin:.5rem 0;border:1px solid #1e2733}
+</style>
+  </head>
+  <body>
+    <!-- GitHub Pages SPA redirect handling script -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/' ) {
+            const decoded = l.search.slice(1).split('&').map(function (s) {
+                return s.replace(/~and~/g, '&')
+            }).join('?');
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <div id="root"><div class="prerender-content" data-prerender="article">
+      <div class="pr-wrap">
+        <p><a href="/">← Abdelrahman Saed</a> · <a href="/#articles">All articles</a></p>
+        <article>
+<h1>Making Jira and GitHub agree without anyone updating both</h1>
+<p><em>Subtitle: Two tools, two sources of truth, one tax: keeping them in sync by hand. So I built a bridge that mirrors Jira onto every PR — and quietly flags the work that's stuck.</em></p>
+<p><em>The Self-Driving Repo · Part 3 — Integration</em></p>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/a9f1cbe0-7e1c-4b95-8cb7-0a20cbfe2d8d" alt="A glowing bridge syncing an issue board and a pull request" loading="lazy" /></p>
+<hr />
+<p>Every team that uses Jira and GitHub pays the same small, constant tax: <strong>keeping the two of them telling the same story.</strong> The ticket is "In Review" but the PR is merged. The PR is open but the ticket is "Done." Which one do you believe? Usually neither, so you go ask the person — and now three people are doing status archaeology instead of building.</p>
+<p>I didn't want a heavyweight integration or a paid app. I wanted the PR to <em>know things about its ticket</em> automatically: what release it's targeting, what labels it carries, whether it's been marked Done — and, the part that turned out most useful, whether it's been Done for <em>too long</em> without merging.</p>
+<h2>The problem</h2>
+<p>The mismatch between issue tracker and code host shows up as three distinct annoyances:</p>
+<p>1. <strong>No release visibility on the PR.</strong> Which version is this fix shipping in? That lives in Jira's "Fix Version" field, invisible from GitHub. Reviewers and release managers had to cross-reference. 2. <strong>No size signal.</strong> Is this a two-line fix or a 40-file refactor? You can't triage review effort from the PR list. 3. <strong>The "Done but not merged" black hole.</strong> A ticket gets marked Done in Jira, but the PR sits unmerged for days — blocked on QA, on a dependency, on someone's attention. Nobody notices until the release manager goes looking.</p>
+<h2>The idea</h2>
+<p>One workflow, triggered both on PR events <em>and</em> on a schedule, that for each open PR:</p>
+<ul>
+<li>pulls the ticket ID from the branch name,</li>
+<li>calls the Jira REST API for that issue's status, fix versions, labels, and resolution date,</li>
+<li><strong>mirrors</strong> that metadata onto the PR as prefixed labels,</li>
+<li>adds an automatic <strong>size</strong> label from the file count,</li>
+<li>and raises a <strong>"Slow PR"</strong> flag when a ticket has been Done for more than three days but the PR is still open.</li>
+</ul>
+<p>The scheduled trigger is the unlock. PR events only fire when <em>code</em> changes — but Jira status changes on its own timeline (someone moves a card hours later). Running twice a day on weekdays catches those async changes without anyone touching the PR.</p>
+<pre><code class="language-yaml">on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: '0 9 * * 0-4'    # 9:00 — weekdays
+    - cron: '0 13 * * 0-4'   # 13:00 — weekdays</code></pre>
+<h2>How it works</h2>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/de8487d8-1420-4cbe-97ad-570827383039" alt="Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels" loading="lazy" /></p>
+<h3>Branch name → Jira issue</h3>
+<p>Same trick as the rest of the system: the ticket ID is encoded in the branch, so a regex is all the "integration" you need to start.</p>
+<pre><code class="language-js">const jiraId = branch.match(/([A-Z]+-\d+)/)?.[1];   // e.g. PROJ-123</code></pre>
+<p>Then a plain authenticated REST call — no SDK, no app install. Jira uses Basic auth with an API token, base64-encoded client-side:</p>
+<pre><code class="language-js">const auth = Buffer.from(`${email}:${apiToken}`).toString('base64');
+const res = await fetch(
+  `${JIRA_BASE}/rest/api/3/issue/${jiraId}?fields=status,resolutiondate,labels,fixVersions`,
+  { headers: { Authorization: `Basic ${auth}`, Accept: 'application/json' } }
+);
+const issue = await res.json();</code></pre>
+<h3>Mirroring with prefixes</h3>
+<p>The fix versions and Jira labels become GitHub labels, but namespaced so they're visually distinct and easy to clean up — <code>fix:</code> for release versions, <code>jira:</code> for tags:</p>
+<pre><code class="language-js">for (const v of issue.fields.fixVersions) {
+  await ensureLabel(`fix:${v.name}`);          // fix:1.42.0
+  await addLabel(`fix:${v.name}`);
+}</code></pre>
+<p>The non-obvious half is <strong>removal</strong>. A bridge that only adds labels rots fast — drop a fix version in Jira and the stale <code>fix:</code> label lingers on the PR forever. So the sync is reconciling, not append-only: it computes the set of <code>fix:</code>/<code>jira:</code> labels the PR <em>should</em> have from Jira, and removes any prefixed label that's no longer backed by Jira. Add <em>and</em> subtract, every run.</p>
+<h3>Size labels from the file count</h3>
+<p>Cheap, and genuinely useful for triage. Pull the file list, bucket it:</p>
+<pre><code class="language-js">const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number });
+const n = files.length;
+if (n &lt;= 2)      setExclusive('tiny PR');     // a glance
+else if (n &lt; 10) setExclusive('small PR');    // a coffee
+else             clearSizeLabels();            // block out real time</code></pre>
+<p><code>setExclusive</code> adds the right bucket and removes the other, so a PR is never both "tiny" and "small" at once — the labels stay mutually exclusive as the PR grows.</p>
+<h3>The "Slow PR" flag (the sleeper feature)</h3>
+<p>This is the one people actually thanked me for. When Jira says the ticket is Done, the workflow checks <em>how long</em> it's been done. If the resolution date is more than three days old and the PR is still open, it flags it:</p>
+<pre><code class="language-js">const DONE_GRACE_MS = 3 * 24 * 60 * 60 * 1000;
+if (status === 'done') {
+  addLabel('Done');
+  removeLabel('wip');
+  const age = Date.now() - new Date(resolutionDate).getTime();
+  if (age &gt; DONE_GRACE_MS) addLabel('Slow PR');   // done, but stuck
+}</code></pre>
+<p>A "Slow PR" label is a tiny thing that surfaces a real, expensive problem: <strong>work that's finished but not shipping.</strong> That's value sitting on the shelf — the most wasteful state in the whole pipeline, and the easiest to miss because everyone <em>thinks</em> it's done. Now it's visible on the board without anyone running a report.</p>
+<p>When the ticket flips back from Done (reopened, more work), the same logic removes the <code>Done</code> and <code>Slow PR</code> labels. Reconcile, don't accumulate.</p>
+<h2>What it bought us</h2>
+<ul>
+<li><strong>Release scope is visible on every PR.</strong> <code>fix:1.42.0</code> right on the card — no Jira spelunking to answer "what's in the next build?"</li>
+<li><strong>Reviewers triage by size at a glance.</strong> "tiny PR" gets a quick pass; a 40-file change gets scheduled.</li>
+<li><strong>Stuck-but-done work stops hiding.</strong> The "Slow PR" flag turned an invisible cost into a visible one we could actually clear.</li>
+<li><strong>Nobody updates two tools by hand.</strong> The PR reflects Jira within hours, automatically — roughly 5 fewer "is this merged yet?" pings a week.</li>
+</ul>
+<h2>Gotchas &amp; trade-offs</h2>
+<ul>
+<li><strong>It's eventually consistent, not real-time.</strong> A status change shows up at the next scheduled run, not instantly. For this use case that's fine; if you need instant, you need Jira webhooks, which is a bigger build.</li>
+<li><strong>Naive PR-body edits are fragile.</strong> Auto-ticking a "quality approved" checkbox by string replacement breaks silently if the template wording changes. Keep templates stable.</li>
+<li><strong>No pagination cap on the PR loop.</strong> Iterate every open PR each run and a repo with hundreds of open PRs will eventually brush the job timeout. Batch or shard before you get there.</li>
+<li><strong>Two-way "sync" is really one-way mirroring.</strong> This reflects Jira onto GitHub, not the reverse. True bidirectional sync invites loops and conflicts — I deliberately didn't build it. Decide your source of truth and mirror <em>from</em> it.</li>
+<li><strong>Token scope is a real risk.</strong> A Jira API token in CI reads your tracker. Scope it minimally and store it as a secret, never in the workflow.</li>
+</ul>
+<h2>Takeaway</h2>
+<p>You don't need a marketplace integration to make two tools agree — a branch-name regex, one REST call, and a reconciling label sync get you most of the value. And while you're bridging, look for the <em>flag</em> that exposes a hidden cost. The labels were nice. "Slow PR" — surfacing finished work that wasn't shipping — was the actual win.</p>
+<p>Next: what happens to all those open PRs the moment something lands on <code>master</code>.</p>
+
+        </article>
+        <p class="pr-tags">Tags: GitHub Actions · Jira · CI/CD · Developer Experience</p>
+      </div>
+    </div></div>
+  </body>
+</html>

@@ -278,3 +278,1319 @@ lib/
 ## Conclusion
 
 While Clean Architecture adds initial complexity, it pays off in larger projects where maintainability and testability are crucial.
+
+---
+
+---
+title: "The repo that rejects my own pushes to master"
+slug: github-actions-branch-protection-guardrails
+date: 2026-04-14
+readTime: 6 min read
+tags: [GitHub Actions, DevOps, CI/CD, Flutter]
+author: Abdelrahman Saed
+description: "Two small GitHub Actions that stop accidental direct pushes to master and auto-restore build-breaking files — reversible by design, with an explicit escape hatch."
+url: https://bnsaed.com/articles/github-actions-branch-protection-guardrails
+---
+
+# The repo that rejects my own pushes to master
+
+*Subtitle: Branch protection rules are step one. Two small GitHub Actions turned "please don't do that" into "the repo won't let you."*
+
+*The Self-Driving Repo · Part 1 — Governance*
+
+![Guardrails — a neon shield protecting the master branch](https://github.com/user-attachments/assets/86e4a4ea-f3e6-42a9-9638-369a3865c03a)
+
+---
+
+Every team has the unwritten rule: **don't push straight to `master`.** And every team has the Tuesday afternoon where someone does it anyway — a fast hotfix, a muscle-memory `git push`, a rebase gone sideways — and now production history has a commit that never saw review.
+
+You can write that rule in the README. You can put it in the onboarding doc. People will still break it, including the person who wrote it. (Hi.)
+
+So I stopped relying on discipline and made the repo enforce itself. Two small workflows, under 200 lines combined. One guards the branch. One guards the files that quietly break everyone's build.
+
+## The problem
+
+Two recurring failures, both cheap individually and expensive in aggregate:
+
+1. **Direct pushes to `master`.** Not malicious — just human. The cost isn't the one commit; it's the eroded guarantee. Once "`master` is always reviewed" stops being true, you can't trust it for releases, bisects, or rollbacks.
+
+2. **The "innocent" file change that detonates a build.** Lockfiles (`pubspec.lock`, `Podfile.lock`), generated iOS symlinks, IDE settings, CI config. Someone commits their local `pubspec.lock` from a different Flutter version, and now CI fails for everyone until somebody figures out *why*. These files shouldn't change in a feature PR, but nothing stops them from doing so.
+
+GitHub's built-in branch protection helps with (1), but it's coarse, it's UI-configured (not in the repo), and it doesn't address (2) at all. I wanted **guardrails as code** — versioned, reviewable, with an explicit escape hatch.
+
+## The idea
+
+Two push/PR-triggered workflows that don't *ask*, they *correct*:
+
+- **`protect-master`** runs on every push to `master`. If the push isn't an allowed merge, it reverts it automatically.
+- **`protect-files`** runs on PRs. If a protected path was touched, it restores that file from `master` and commits the restoration back to the PR branch.
+
+Both share one principle: **reversible enforcement.** Nothing is blocked with a scary red X you have to beg an admin to override. The bad change is *undone*, in the open, with a commit you can read — and there's a documented way to say "yes, I really mean it."
+
+## How it works
+
+![Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized](https://github.com/user-attachments/assets/f9ecc2a1-9997-4509-b8d1-be7162178a24)
+
+### Guarding the branch
+
+`protect-master` triggers on push and asks one question: *was this an allowed way to land on `master`?*
+
+```yaml
+on:
+  push:
+    branches: [master]
+```
+
+Allowed means one of three things: it's a PR merge, the actor is an allow-listed maintainer, or the commit explicitly opts out. The merge check is the interesting part — GitHub writes recognizable commit subjects for merges, squashes, and rebases, so a regex covers all three:
+
+```bash
+# A normal merge: "Merge pull request #123 from ..."
+# A squash/rebase: subject ends with "(#123)"
+if echo "$COMMIT_MSG" | grep -qE '^Merge pull request #|\(#[0-9]+\)$'; then
+  echo "PR merge — allowed."
+  exit 0
+fi
+```
+
+If none of the allowances match, the workflow reverts the offending commit and pushes the revert:
+
+```bash
+git revert HEAD --no-edit
+git push
+```
+
+I chose `git revert` over `git reset --hard` deliberately. A reset rewrites public history — the exact crime I'm trying to prevent. A revert is additive: the bad commit stays in the log, followed by a commit that undoes it. The audit trail is intact, nobody's local clone gets into a fight with the remote, and the message to the author is clear: *this landed the wrong way; here's the receipt.*
+
+One subtlety worth knowing: `github.event.head_commit.message` only exists on push events. The whole workflow leans on that, which is fine — it's push-triggered by design — but it's the kind of thing that bites you if you copy the snippet into a PR-triggered job.
+
+### Guarding the files
+
+`protect-files` runs on PRs and watches a specific list of paths — lockfiles, generated native folders, IDE and CI config:
+
+```yaml
+on:
+  pull_request:
+    paths:
+      - 'pubspec.lock'
+      - 'ios/Podfile.lock'
+      - 'ios/.symlinks/**'
+      - '.vscode/settings.json'
+      - '.github/workflows/protect-*.yml'
+```
+
+When one of those changes in a PR, the job restores the file from `master` and commits it back to the PR branch:
+
+```bash
+git fetch origin master
+git checkout origin/master -- "$FILE" || true   # tolerate files absent on master
+if ! git diff --cached --quiet; then
+  git commit -m "chore: restore protected files from master"
+  git push
+fi
+```
+
+Two details make this safe to run on every PR. The `|| true` means a path that doesn't exist on `master` (a brand-new generated file) doesn't crash the job. And the `git diff --cached --quiet` guard means it only commits when something actually changed — no empty commits, no noise on the 95% of PRs that touch nothing protected.
+
+### The escape hatch (this is the important part)
+
+Automated enforcement without an override is a trap. Sometimes you *do* need to bump the lockfile. Sometimes the maintainer really is doing an intentional direct commit. So both workflows honor an opt-out token in the commit message:
+
+```bash
+if echo "$COMMIT_MSG" | grep -q -- '--skip-protection'; then
+  echo "Opt-out flag present — skipping enforcement."
+  exit 0
+fi
+```
+
+Want to push a deliberate lockfile change? `git commit -m "chore: bump pods --skip-protection"`. The intent is explicit, it's in the history, and it's greppable later when you're auditing who bypassed what. The guardrail has a gate, and the gate has a name.
+
+## What it bought us
+
+- **`master` is trustworthy again.** Every commit on it is either a reviewed merge or an explicitly-flagged exception. Releases and rollbacks rest on that.
+- **A class of "why is CI red?" mysteries disappeared.** Protected files can't drift in through a feature PR by accident.
+- **Zero meetings about process.** The rule enforces itself, so I stopped being the person who pings people about their pushes. Around 5 fewer "hey can you revert that" messages a month.
+
+## Gotchas & trade-offs
+
+- **An auto-revert can surprise an author.** Mitigation: the revert commit message should say *why* and point to the PR flow. Surprise is a docs problem, not a reason to skip enforcement.
+- **The allow-list is a single point of trust.** Keep it tiny and in code review. A long allow-list is just the original problem with extra steps.
+- **`paths:` filters are easy to under-scope.** New generated artifacts appear over time; the protected list is a living thing, not set-and-forget.
+- **This is not a security boundary.** A determined committer with push rights and the `--skip-protection` flag can still do anything. It's a guardrail against *accidents and drift*, not an access-control system. Branch protection rules and `CODEOWNERS` are the real perimeter; this is the seatbelt.
+
+## Takeaway
+
+The cheapest way to enforce a team norm isn't a doc or a nag — it's a small workflow that *reverses* the mistake and leaves a readable trail, with a named escape hatch for the times you mean it. Reversible beats blocking. Visible beats silent.
+
+Next in the series: PRs that fill in their own context and refuse to merge when the analyzer is unhappy.
+
+---
+
+---
+title: "PRs that fill in their own paperwork (and a gate that won't let bad code merge)"
+slug: automate-pull-request-hygiene
+date: 2026-04-21
+readTime: 6 min read
+tags: [GitHub Actions, Developer Experience, CI/CD, Code Review]
+author: Abdelrahman Saed
+description: "Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself."
+url: https://bnsaed.com/articles/automate-pull-request-hygiene
+---
+
+# PRs that fill in their own paperwork (and a gate that won't let bad code merge)
+
+*Subtitle: Half of code review is chores — linking the ticket, assigning yourself, checking the analyzer. So I automated the chores and kept humans for the judgment.*
+
+*The Self-Driving Repo · Part 2 — Developer Experience*
+
+![A pull request auto-filling its own context beside a quality gate](https://github.com/user-attachments/assets/4d056c62-c767-4b7e-8d33-13943d7c5683)
+
+---
+
+Open a pull request on most teams and you're greeted by a checklist: link the Jira ticket, assign yourself, confirm the analyzer passes, tick the boxes. None of it is hard. All of it is friction. And friction at the *start* of review is the worst kind, because it delays the part that actually matters — a human reading your code.
+
+So I split PR review into two buckets. **Chores** (mechanical, rule-based, boring) get automated. **Judgment** (is this the right change?) stays with people. Two workflows handle the chores: one enriches every new PR with context, the other runs a real quality gate and manages its own labels and comments.
+
+## The problem
+
+The opening minutes of every PR were spent on the same low-value motions:
+
+- Copy the ticket ID from the branch name, build the Jira URL, paste it in.
+- Assign yourself (or get pinged because you forgot).
+- Tick the template checkboxes.
+- And on the reviewer's side: pull the branch, run the analyzer, discover the translation file has a trailing-comma syntax error that breaks the build, leave a comment, wait.
+
+Every one of those is deterministic. A human doing them is a human not reading code.
+
+## The idea
+
+Two PR-triggered workflows:
+
+1. **PR automation** — on `opened`, derive context from the branch and write it into the PR: the ticket link, the assignee, a `wip` label.
+2. **The analysis gate** — on `opened` and every push, validate translation JSON, run the analyzer, then **label, comment, and block** on failure — and *remove* the label and comment when the next push fixes it.
+
+The theme that makes them feel good to use: **idempotency and self-cleanup.** They never double-post, never leave stale state, and converge to "correct" no matter how many times you push.
+
+## How it works
+
+![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](https://github.com/user-attachments/assets/56baeaf6-9e53-40c2-8302-a8b001c8e447)
+
+### Auto-context on open
+
+The ticket ID already lives in the branch name — `feature/PROJ-123-add-audio-seek`. A regex lifts it out, no external lookup needed:
+
+```js
+const match = branch.match(/([A-Z]+-\d+)/);
+if (match) {
+  const jiraId = match[1];                 // PROJ-123
+  const url = `https://your-tracker/browse/${jiraId}`;
+  // write the link into the PR body, replacing the template placeholder
+}
+```
+
+The same step ticks the "I added the Jira link" checkbox in the template, assigns the author if the PR has no assignee yet, and adds a `wip` label. Each action guards itself first — *does it already have an assignee? does the label exist?* — so re-runs are no-ops:
+
+```js
+// Create the label only if it's missing (404 = doesn't exist yet)
+try {
+  await github.rest.issues.getLabel({ owner, repo, name: 'wip' });
+} catch (e) {
+  if (e.status === 404) {
+    await github.rest.issues.createLabel({ owner, repo, name: 'wip', color: 'fbca04' });
+  }
+}
+```
+
+That try/get-create-on-404 pattern shows up in every one of these workflows. GitHub has no "ensure label exists" call, so you build it yourself — and once you have it, label management stops being something humans think about.
+
+### A gate that validates more than Dart
+
+The analysis workflow runs on open and on every push, scoped to the files that matter:
+
+```yaml
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: ['**.dart', 'pubspec.yaml', 'assets/translations/**.json']
+
+concurrency:
+  group: dart-analysis-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+```
+
+That `concurrency` block matters more than it looks. Push three times in a minute and you don't want three analyzer runs racing to comment on the same PR — you want the latest one to win and the rest to cancel. `cancel-in-progress: true` gives you exactly that.
+
+First it validates translation files, because a malformed localization JSON breaks the build in a way the Dart analyzer won't catch:
+
+```bash
+for f in assets/translations/*.json; do
+  python3 -c "import json; json.load(open('$f'))" || { echo "Invalid JSON: $f"; exit 1; }
+done
+```
+
+Then the analyzer, captured rather than fail-fast so we can format the result ourselves:
+
+```bash
+flutter analyze > analysis-output.txt 2>&1 || true
+grep "error •" analysis-output.txt && echo "has_errors=true" >> "$GITHUB_OUTPUT"
+```
+
+### The part I'm proud of: bidirectional state
+
+Most "lint bot" workflows only know how to complain. This one also knows how to *take it back*. On failure, it adds an `analysis-failed` label and posts one comment with the errors tucked inside a collapsible `<details>` block (so the PR stays skimmable). On the next push, if analysis passes, it removes the label and **deletes its own comment**:
+
+```js
+// On pass: find the bot's previous failure comment and remove it
+const comments = await github.rest.issues.listComments({ owner, repo, issue_number });
+const stale = comments.data.find(c =>
+  c.user.type === 'Bot' && c.body.includes('Dart Analysis Failed'));
+if (stale) await github.rest.issues.deleteComment({ owner, repo, comment_id: stale.id });
+```
+
+The `c.user.type === 'Bot'` filter is the safety latch: the workflow only ever deletes comments *it* wrote, never a human's. The result is a PR timeline that reflects the *current* state, not a graveyard of "❌ failed / ✅ fixed / ❌ failed again" noise. When the gate is green, it's silent.
+
+And when it's red, it actually blocks — the job exits non-zero so the merge is gated, not just decorated:
+
+```bash
+[ "$has_errors" = "true" ] && exit 1
+```
+
+## What it bought us
+
+- **Reviewers start on the code, not the chores.** Context is already there when they open the PR.
+- **A whole category of broken builds never reaches `master`** — malformed translations and analyzer errors are caught at the door.
+- **The PR timeline stays clean.** Self-deleting comments mean no stale failure noise to scroll past.
+- **Around 5 fewer "please link the ticket / please rebase / CI is red because of a comma" round-trips per week.**
+
+## Gotchas & trade-offs
+
+- **Editing the PR body is brittle.** Auto-ticking checkboxes is naive string replacement — if someone reworded the template, the match silently fails. Keep the template text stable, or match loosely.
+- **`paths:` is a double-edged filter.** Scope it too tightly and a relevant change skips the gate; too loosely and you run the analyzer on doc-only PRs. Revisit it as the repo grows.
+- **Bot-comment deletion depends on the bot identity.** If you switch the token the comments are posted under, the `user.type === 'Bot'` filter can stop matching your own history. Test after any auth change.
+- **Automating chores can hide them.** New teammates never learn *why* the ticket link matters because they never do it manually. Worth a sentence in onboarding so the automation is understood, not just trusted.
+
+## Takeaway
+
+Separate the **chores** of review from the **judgment** of review, and automate only the chores — idempotently, with self-cleanup, so the bot's output always reflects current reality. The win isn't "look, a bot." It's that every human minute on a PR now goes to the one thing humans are uniquely good at: deciding whether the change is right.
+
+Next: making two sources of truth — Jira and GitHub — actually agree with each other.
+
+---
+
+---
+title: "Making Jira and GitHub agree without anyone updating both"
+slug: sync-jira-with-github-prs
+date: 2026-04-28
+readTime: 7 min read
+tags: [GitHub Actions, Jira, CI/CD, Developer Experience]
+author: Abdelrahman Saed
+description: "A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping."
+url: https://bnsaed.com/articles/sync-jira-with-github-prs
+---
+
+# Making Jira and GitHub agree without anyone updating both
+
+*Subtitle: Two tools, two sources of truth, one tax: keeping them in sync by hand. So I built a bridge that mirrors Jira onto every PR — and quietly flags the work that's stuck.*
+
+*The Self-Driving Repo · Part 3 — Integration*
+
+![A glowing bridge syncing an issue board and a pull request](https://github.com/user-attachments/assets/a9f1cbe0-7e1c-4b95-8cb7-0a20cbfe2d8d)
+
+---
+
+Every team that uses Jira and GitHub pays the same small, constant tax: **keeping the two of them telling the same story.** The ticket is "In Review" but the PR is merged. The PR is open but the ticket is "Done." Which one do you believe? Usually neither, so you go ask the person — and now three people are doing status archaeology instead of building.
+
+I didn't want a heavyweight integration or a paid app. I wanted the PR to *know things about its ticket* automatically: what release it's targeting, what labels it carries, whether it's been marked Done — and, the part that turned out most useful, whether it's been Done for *too long* without merging.
+
+## The problem
+
+The mismatch between issue tracker and code host shows up as three distinct annoyances:
+
+1. **No release visibility on the PR.** Which version is this fix shipping in? That lives in Jira's "Fix Version" field, invisible from GitHub. Reviewers and release managers had to cross-reference.
+2. **No size signal.** Is this a two-line fix or a 40-file refactor? You can't triage review effort from the PR list.
+3. **The "Done but not merged" black hole.** A ticket gets marked Done in Jira, but the PR sits unmerged for days — blocked on QA, on a dependency, on someone's attention. Nobody notices until the release manager goes looking.
+
+## The idea
+
+One workflow, triggered both on PR events *and* on a schedule, that for each open PR:
+
+- pulls the ticket ID from the branch name,
+- calls the Jira REST API for that issue's status, fix versions, labels, and resolution date,
+- **mirrors** that metadata onto the PR as prefixed labels,
+- adds an automatic **size** label from the file count,
+- and raises a **"Slow PR"** flag when a ticket has been Done for more than three days but the PR is still open.
+
+The scheduled trigger is the unlock. PR events only fire when *code* changes — but Jira status changes on its own timeline (someone moves a card hours later). Running twice a day on weekdays catches those async changes without anyone touching the PR.
+
+```yaml
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: '0 9 * * 0-4'    # 9:00 — weekdays
+    - cron: '0 13 * * 0-4'   # 13:00 — weekdays
+```
+
+## How it works
+
+![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](https://github.com/user-attachments/assets/de8487d8-1420-4cbe-97ad-570827383039)
+
+### Branch name → Jira issue
+
+Same trick as the rest of the system: the ticket ID is encoded in the branch, so a regex is all the "integration" you need to start.
+
+```js
+const jiraId = branch.match(/([A-Z]+-\d+)/)?.[1];   // e.g. PROJ-123
+```
+
+Then a plain authenticated REST call — no SDK, no app install. Jira uses Basic auth with an API token, base64-encoded client-side:
+
+```js
+const auth = Buffer.from(`${email}:${apiToken}`).toString('base64');
+const res = await fetch(
+  `${JIRA_BASE}/rest/api/3/issue/${jiraId}?fields=status,resolutiondate,labels,fixVersions`,
+  { headers: { Authorization: `Basic ${auth}`, Accept: 'application/json' } }
+);
+const issue = await res.json();
+```
+
+### Mirroring with prefixes
+
+The fix versions and Jira labels become GitHub labels, but namespaced so they're visually distinct and easy to clean up — `fix:` for release versions, `jira:` for tags:
+
+```js
+for (const v of issue.fields.fixVersions) {
+  await ensureLabel(`fix:${v.name}`);          // fix:1.42.0
+  await addLabel(`fix:${v.name}`);
+}
+```
+
+The non-obvious half is **removal**. A bridge that only adds labels rots fast — drop a fix version in Jira and the stale `fix:` label lingers on the PR forever. So the sync is reconciling, not append-only: it computes the set of `fix:`/`jira:` labels the PR *should* have from Jira, and removes any prefixed label that's no longer backed by Jira. Add *and* subtract, every run.
+
+### Size labels from the file count
+
+Cheap, and genuinely useful for triage. Pull the file list, bucket it:
+
+```js
+const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number });
+const n = files.length;
+if (n <= 2)      setExclusive('tiny PR');     // a glance
+else if (n < 10) setExclusive('small PR');    // a coffee
+else             clearSizeLabels();            // block out real time
+```
+
+`setExclusive` adds the right bucket and removes the other, so a PR is never both "tiny" and "small" at once — the labels stay mutually exclusive as the PR grows.
+
+### The "Slow PR" flag (the sleeper feature)
+
+This is the one people actually thanked me for. When Jira says the ticket is Done, the workflow checks *how long* it's been done. If the resolution date is more than three days old and the PR is still open, it flags it:
+
+```js
+const DONE_GRACE_MS = 3 * 24 * 60 * 60 * 1000;
+if (status === 'done') {
+  addLabel('Done');
+  removeLabel('wip');
+  const age = Date.now() - new Date(resolutionDate).getTime();
+  if (age > DONE_GRACE_MS) addLabel('Slow PR');   // done, but stuck
+}
+```
+
+A "Slow PR" label is a tiny thing that surfaces a real, expensive problem: **work that's finished but not shipping.** That's value sitting on the shelf — the most wasteful state in the whole pipeline, and the easiest to miss because everyone *thinks* it's done. Now it's visible on the board without anyone running a report.
+
+When the ticket flips back from Done (reopened, more work), the same logic removes the `Done` and `Slow PR` labels. Reconcile, don't accumulate.
+
+## What it bought us
+
+- **Release scope is visible on every PR.** `fix:1.42.0` right on the card — no Jira spelunking to answer "what's in the next build?"
+- **Reviewers triage by size at a glance.** "tiny PR" gets a quick pass; a 40-file change gets scheduled.
+- **Stuck-but-done work stops hiding.** The "Slow PR" flag turned an invisible cost into a visible one we could actually clear.
+- **Nobody updates two tools by hand.** The PR reflects Jira within hours, automatically — roughly 5 fewer "is this merged yet?" pings a week.
+
+## Gotchas & trade-offs
+
+- **It's eventually consistent, not real-time.** A status change shows up at the next scheduled run, not instantly. For this use case that's fine; if you need instant, you need Jira webhooks, which is a bigger build.
+- **Naive PR-body edits are fragile.** Auto-ticking a "quality approved" checkbox by string replacement breaks silently if the template wording changes. Keep templates stable.
+- **No pagination cap on the PR loop.** Iterate every open PR each run and a repo with hundreds of open PRs will eventually brush the job timeout. Batch or shard before you get there.
+- **Two-way "sync" is really one-way mirroring.** This reflects Jira onto GitHub, not the reverse. True bidirectional sync invites loops and conflicts — I deliberately didn't build it. Decide your source of truth and mirror *from* it.
+- **Token scope is a real risk.** A Jira API token in CI reads your tracker. Scope it minimally and store it as a secret, never in the workflow.
+
+## Takeaway
+
+You don't need a marketplace integration to make two tools agree — a branch-name regex, one REST call, and a reconciling label sync get you most of the value. And while you're bridging, look for the *flag* that exposes a hidden cost. The labels were nice. "Slow PR" — surfacing finished work that wasn't shipping — was the actual win.
+
+Next: what happens to all those open PRs the moment something lands on `master`.
+
+---
+
+---
+title: "Every merge to master quietly breaks other PRs. So I built a radar for it."
+slug: auto-rebase-and-detect-merge-conflicts
+date: 2026-05-05
+readTime: 6 min read
+tags: [GitHub Actions, Git, CI/CD, DevOps]
+author: Abdelrahman Saed
+description: "A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person."
+url: https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts
+---
+
+# Every merge to master quietly breaks other PRs. So I built a radar for it.
+
+*Subtitle: A merge to master is a tiny earthquake that nobody feels until later. Two workflows detect the damage immediately — and tell the right people.*
+
+*The Self-Driving Repo · Part 4 — Conflict Management*
+
+![A radar sweep over branch lines with conflicts pulsing red](https://github.com/user-attachments/assets/c9c666f9-3d47-4aa2-a1f5-d0c1359dd045)
+
+---
+
+Here's a failure mode so normal you've stopped noticing it: you merge a PR to `master`, and in that instant some number of *other* open PRs become un-mergeable. They were fine a second ago. Now they conflict. But nobody knows yet — the authors are working on something else, and they'll find out hours or days later when they try to merge and GitHub says no.
+
+Multiply that by a busy `master` and a dozen open PRs and you get a slow, invisible tax: branches drifting out of sync, conflicts discovered at the worst possible moment (merge time), and a steady drip of "can you rebase?" comments.
+
+I wanted the opposite: the *moment* `master` moves, every open PR gets refreshed against it, and anything that conflicts gets flagged and announced — immediately, while the change is still fresh in everyone's head.
+
+## The problem
+
+Three things were going wrong, all downstream of the same root cause (master moves, PRs don't):
+
+1. **Stale branches.** PRs fall behind `master` and their CI results stop meaning anything — they passed against an old base.
+2. **Late conflict discovery.** Authors learn about conflicts when they try to merge, which is the most disruptive possible time.
+3. **Notification fatigue.** GitHub *can* tell you a PR is conflicted, but it's buried in a UI nobody watches. The signal never reaches the person who needs it.
+
+## The idea
+
+Two workflows working as a pair:
+
+- **The sweep** — triggered on every push to `master`. Walk every open PR, update its branch against the new `master`, then check whether it now conflicts and label it accordingly.
+- **The broadcast** — takes the conflicted PRs and posts a digest to team chat, grouped by author, so each person sees exactly their PRs that need attention.
+
+Detection and notification are deliberately separate. The sweep maintains accurate *state* (labels on PRs). The broadcast turns that state into a *message*. Splitting them means I can re-run or reschedule the announcement without re-running the (heavier) sweep.
+
+## How it works
+
+![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](https://github.com/user-attachments/assets/b0d1cfac-058f-456a-ac59-0dc6e2baf7f6)
+
+### Refresh everything on every merge
+
+The sweep triggers on push to `master` and pages through all open PRs against it:
+
+```yaml
+on:
+  push:
+    branches: [master]
+```
+
+```js
+const prs = await github.paginate(github.rest.pulls.list, {
+  owner, repo, state: 'open', base: 'master', per_page: 100,
+});
+```
+
+For each one, it asks GitHub to update the branch (the same "Update branch" button you click by hand, as an API call), skipping forks where you don't have permission:
+
+```js
+if (!(pr.head?.repo?.fork && !pr.maintainer_can_modify)) {
+  try {
+    await github.rest.pulls.updateBranch({ owner, repo, pull_number: pr.number });
+  } catch (e) {
+    if (e.status === 422) { /* conflict or already up to date — skip */ }
+    else if (e.status === 403) { /* no permission — skip */ }
+  }
+}
+```
+
+The `422` handling is the bit you only learn by getting burned: `updateBranch` throws 422 both when the branch can't be fast-forwarded (a real conflict) *and* in benign "nothing to do" cases. You don't treat it as failure — you treat it as "move on and let the mergeability check below tell the truth."
+
+### Wait for GitHub to make up its mind
+
+Here's the trap that makes naive versions of this flaky. When you ask GitHub whether a PR is mergeable, the answer is often `null` — "I haven't computed that yet, check back." Read it too early and you'll mislabel a perfectly clean PR as conflicted.
+
+So you poll, with backoff, until the state settles:
+
+```js
+let pr = await github.rest.pulls.get({ owner, repo, pull_number });
+for (let i = 0; i < 5 && pr.data.mergeable === null; i++) {
+  await new Promise(r => setTimeout(r, 2000));   // let GitHub compute
+  pr = await github.rest.pulls.get({ owner, repo, pull_number });
+}
+const hasConflicts =
+  pr.data.mergeable === false || pr.data.mergeable_state === 'dirty';
+```
+
+Treating `mergeable` as **eventually consistent** rather than a synchronous value is the single most important thing in this workflow. Everything else is bookkeeping.
+
+Then the label is reconciled — added if conflicting, removed if not — so the `conflict` label always reflects the live state:
+
+```js
+if (hasConflicts && !hasLabel)      await addLabel('conflict');
+else if (!hasConflicts && hasLabel) await removeLabel('conflict');
+```
+
+### Turn state into a message people see
+
+The broadcast workflow reads the `conflict`-labeled PRs and builds an author → PRs map, then posts one grouped digest to team chat:
+
+```js
+const map = {};                       // author -> [pr urls]
+for (const pr of conflictedPRs) {
+  (map[pr.user.login] ??= []).push(pr.html_url);
+}
+```
+
+Each GitHub author is translated to their chat handle so the message actually pings the right human, and a clean run gets a cheerful "no conflicts 🎉" instead of awkward silence. It also runs on a daily schedule, not just on demand — so even conflicts that appear through other paths get a regular nudge.
+
+The reason this lands where GitHub's own notifications don't: it's **push-based, grouped, and routed.** It arrives in the tool the team already lives in, addressed to the person who can fix it, listing exactly their PRs. No dashboard to remember to check.
+
+## What it bought us
+
+- **Conflicts surface in seconds, not days** — right after the merge that caused them, while context is fresh.
+- **PR branches stay current**, so green CI actually means "green against today's `master`."
+- **The right person gets pinged**, in chat, with their specific PRs — around 10 fewer manual "please rebase" comments a week.
+- **Less merge-time drama.** By the time you go to merge, you already knew (and probably already fixed) the conflict.
+
+## Gotchas & trade-offs
+
+- **Auto-updating branches re-triggers CI.** Refresh 20 PRs and you just queued 20 CI runs. Usually worth it (fresh results), but mind your runner minutes — you may want to scope which PRs get swept.
+- **Forks need permission.** `updateBranch` only works where "maintainers can edit" is on; the workflow skips the rest rather than erroring. Know that some PRs won't be auto-refreshed.
+- **`422` is overloaded.** It means both "real conflict" and "nothing to update." Don't treat it as a failure signal — let the mergeability poll be your source of truth.
+- **Chat handle mapping is manual.** A GitHub-login → chat-ID table has to be maintained as people join and leave. It's the kind of small debt that silently breaks pings.
+- **Don't over-notify.** A conflict digest every hour becomes wallpaper. Daily + on-merge was the right dose; tune it to your team's tolerance.
+
+## Takeaway
+
+A merge to `master` has a blast radius, and the cheapest time to deal with that radius is *immediately*. Refresh every PR on every merge, treat mergeability as eventually consistent (poll it, don't trust the first read), and route the result to a human in the tool they already watch. Detect fast; notify where people actually look.
+
+Next: the flagship. What if, for one common class of conflict, the repo didn't just *detect* it — it *fixed* it and pushed the resolution for you?
+
+---
+
+---
+title: "I let a bot resolve merge conflicts and push the fix. Here's how I made that safe."
+slug: bot-that-resolves-merge-conflicts
+date: 2026-05-12
+readTime: 8 min read
+tags: [GitHub Actions, Git, Automation, CI/CD]
+author: Abdelrahman Saed
+description: "How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected."
+url: https://bnsaed.com/articles/bot-that-resolves-merge-conflicts
+---
+
+# I let a bot resolve merge conflicts and push the fix. Here's how I made that safe.
+
+*Subtitle: Auto-committing to other people's branches is terrifying — until you shrink the blast radius to one provably-safe case. This is that story.*
+
+*The Self-Driving Repo · Part 5 — Conflict Management (flagship)*
+
+![A robot arm carefully braiding two translation streams back into one](https://github.com/user-attachments/assets/6a060db4-c5f2-4301-90b1-fde23d675d53)
+
+---
+
+Let me start with the version of this idea that should scare you:
+
+> "What if a GitHub Action automatically resolved merge conflicts and force-pushed the result to people's PR branches?"
+
+If your stomach dropped, good — mine did too. A bot that runs `git merge` and `git push` against branches it doesn't own is exactly how you corrupt someone's work, lose a commit, or merge two versions of a file into nonsense. This is the most dangerous automation in the entire series.
+
+And yet it runs on every push to `master`, it resolves real conflicts, and I trust it. The trick wasn't writing a smarter merge algorithm. It was making the bot **profoundly cowardly** — it only acts in one narrow situation where the "right answer" is mechanical and provable, and it runs away from everything else.
+
+This post is about how to take a scary capability and make it safe by aggressively shrinking its blast radius.
+
+## The problem: translation conflicts are constant and brain-dead
+
+We ship in multiple languages. Translations live in per-locale JSON files — `assets/translations/en.json`, `ar.json`, and so on. Add a feature and you add keys to all of them. Which means **every feature branch touches the same translation files**, and they conflict constantly.
+
+But here's the thing: these conflicts are almost never *real*. Two developers add different keys to `en.json`. Git sees edits to the same region and throws up its hands. A human opens the file, looks at the two sides, and realizes there's nothing to decide — you want *both* keys. It's the dumbest possible conflict, and resolving it by hand is pure tax: it blocks the PR, interrupts the author, and contributes exactly zero thought.
+
+Code conflicts deserve a human. Two people adding `"save_button": "Save"` and `"share_button": "Share"` to the same JSON do not.
+
+## The idea: automate the mechanical case, refuse everything else
+
+The workflow runs on every push to `master`. For each open PR, it tries to merge `master` in. If the *only* things that conflict are translation JSON files, it resolves them by merging the key sets, pushes the resolution, and comments to explain itself. If *anything else* conflicts — a single `.dart` file, a `pubspec.yaml`, anything — it aborts, touches nothing, and leaves the PR for a human.
+
+The safety isn't in the merge logic. It's in the **refusal logic**. Let me walk the guards in the order they execute, because the order *is* the design.
+
+## How it works (a fortress of guard clauses)
+
+![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](https://github.com/user-attachments/assets/813ce161-2c69-4dc6-bfc1-039cd60e5b47)
+
+### Guard 0: only conflicted, real, ready PRs
+
+Before any git happens, filter hard. Skip drafts. Skip forks (you can't safely push to them, and you shouldn't). And critically, only consider PRs that are *actually* conflicting — which means waiting out GitHub's eventually-consistent `mergeable` field, exactly like the conflict radar in Part 4:
+
+```js
+let freshPR;
+for (let attempt = 0; attempt < 5; attempt++) {
+  const { data } = await github.rest.pulls.get({ owner, repo, pull_number });
+  if (data.mergeable !== null) { freshPR = data; break; }  // null = not computed yet
+  await new Promise(r => setTimeout(r, 3000));
+}
+if (!freshPR || freshPR.mergeable !== false) continue;     // only proceed on real conflicts
+```
+
+### Guard 1: do the merge in throwaway space
+
+Never operate on `master` or the original branch directly. Check out the PR branch into a disposable local branch, then attempt the merge there. If it merges clean, there was nothing to do — move on:
+
+```js
+execSync('git checkout master && git reset --hard origin/master');
+execSync(`git fetch origin "${branch}"`);
+execSync(`git checkout -B _auto_resolve "origin/${branch}"`);
+
+let hasConflicts = false;
+try { execSync('git merge origin/master --no-edit'); }
+catch { hasConflicts = true; }
+if (!hasConflicts) continue;
+```
+
+### Guard 2: THE important one — is *every* conflict a translation file?
+
+This is the load-bearing guard, the reason the whole thing is safe. List the unmerged files. If even one of them is outside the translations path, abort the entire merge and skip the PR. No partial resolutions. No "fix the easy files and leave the hard ones." All-or-nothing:
+
+```js
+const conflictFiles = execSync('git diff --name-only --diff-filter=U')
+  .toString().trim().split('\n');
+
+const TRANSLATION_PATH = /^assets\/translations\/.*\.json$/;
+const allTranslation = conflictFiles.every(f => TRANSLATION_PATH.test(f));
+
+if (!allTranslation) {
+  execSync('git merge --abort');   // touch nothing, hand it to a human
+  skipped++;
+  continue;
+}
+```
+
+That `every()` is the line that lets me sleep. The bot's authority is scoped to a regex. A conflict in `lib/` the bot never even *attempts* to resolve — it aborts and walks away. The dangerous version of this feature is the one that tries to be helpful with code. This one is constitutionally incapable of it.
+
+### Guard 3: resolve by merging key sets, with a defined winner
+
+Only now, with every conflict proven to be a translation file, does it resolve. And the resolution is deliberately boring — parse both sides as JSON, spread them together so you keep *all* keys from both branches:
+
+```js
+for (const file of conflictFiles) {
+  const masterJSON = JSON.parse(execSync(`git show origin/master:"${file}"`).toString());
+  const branchJSON = JSON.parse(execSync(`git show "origin/${branch}":"${file}"`).toString());
+
+  const merged = { ...masterJSON, ...branchJSON };   // union; branch wins on true key collisions
+
+  fs.writeFileSync(file, JSON.stringify(merged, null, 2) + '\n');
+  execSync(`git add "${file}"`);
+}
+```
+
+Two things make this trustworthy. First, it operates on the **clean versions** of each file from each branch (`git show origin/master:file` and `git show origin/branch:file`) — not on the conflict-marker-polluted working copy. There's no risk of a stray `<<<<<<<` ending up in the output. Second, the merge rule is *defined and documented*: it's a union, and on the rare true collision (both branches changed the same key), the **branch value wins**. That's a real decision with a real rationale (the PR author's intent is newer), not an accident of ordering.
+
+### Guard 4: tell the humans exactly what you did
+
+Automation that mutates someone's branch silently is a betrayal. So the bot pushes the resolution and immediately comments — listing the files it touched and stating the merge rule in plain language:
+
+```js
+execSync('git commit --no-edit');
+execSync(`git push origin "_auto_resolve:${branch}"`);
+
+await github.rest.issues.createComment({
+  owner, repo, issue_number: pr.number,
+  body: [
+    '🤖 **Auto-resolved translation conflicts**',
+    '',
+    'Merged `master` and resolved conflicts in:',
+    ...conflictFiles.map(f => `- \`${f}\``),
+    '',
+    'PR branch values were preserved where both branches changed the same key.',
+    'Please review the merged translations.',
+  ].join('\n'),
+});
+```
+
+"Please review" is not a throwaway line. The bot resolves and *unblocks*; the human still gets the final look. It removes the toil, not the oversight.
+
+### Guard 5: fail closed
+
+Every PR is wrapped so that any unexpected error aborts the merge and moves on — one failure can't poison the rest of the run, and a half-merge never survives:
+
+```js
+} catch (error) {
+  core.warning(`Failed to resolve PR #${pr.number}: ${error.message}`);
+  try { execSync('git merge --abort'); } catch {}
+}
+```
+
+When in doubt, the bot does *nothing*. That's the entire philosophy in one catch block.
+
+## What it bought us
+
+- **A whole category of busywork evaporated.** Translation-only conflicts — frequent, mindless, blocking — resolve themselves within a run of hitting `master`.
+- **PRs stay unblocked.** Authors stop losing momentum to a conflict that required no thought.
+- **Trust, because it's transparent.** Every action is announced on the PR with the rule it followed. Nobody finds a mystery commit.
+- **Reviewers still review.** The human look survives; only the mechanical merge is gone. Roughly 10 translation conflicts auto-cleared per week.
+
+## Gotchas & trade-offs
+
+- **A JSON union is not a real semantic merge.** If both branches set the same key to *different* values, "branch wins" might be wrong. It's a defensible default, not a guarantee — which is exactly why the bot says "please review."
+- **It assumes flat, valid JSON.** Nested objects or a malformed file would break naive spreading; `JSON.parse` failing lands you in the fail-closed catch, which is the safe outcome but means that PR isn't auto-resolved.
+- **Pushing to a contributor's branch needs the right permissions** and is why forks are excluded outright. Know your token's scope.
+- **Scope creep is the real danger.** The instant someone asks "can it also resolve `pubspec.yaml`?" you're negotiating away the one guard that makes it safe. The narrowness *is* the feature. Defend it.
+- **It is not a merge-conflict AI.** No model, no guessing. For this class, dumb-and-provable beats smart-and-probabilistic every time.
+
+## Takeaway
+
+The way to ship a dangerous automation safely isn't to make it clever — it's to make it *cowardly and loud*. Shrink its authority to a single case where the correct answer is mechanical and provable (`every() conflict matches one regex`), operate only in throwaway space, define your tie-breaker explicitly, announce every action, and fail closed on anything unexpected. The capability sounds reckless. The blast radius makes it boring. Boring is the goal.
+
+Next: stepping out of git plumbing and into shipping — one button that builds and distributes for Android, iOS, and the Play Store.
+
+---
+
+---
+title: "One button, three stores: shipping a Flutter app from CI"
+slug: flutter-release-builds-from-ci
+date: 2026-05-19
+readTime: 7 min read
+tags: [Flutter, CI/CD, Mobile Development, GitHub Actions]
+author: Abdelrahman Saed
+description: "The unglamorous engineering behind a green Release button: disk cleanup, layered caching, secure keychain signing, and App Bundles for Android, iOS, and the Play Store."
+url: https://bnsaed.com/articles/flutter-release-builds-from-ci
+---
+
+# One button, three stores: shipping a Flutter app from CI
+
+*Subtitle: Mobile release builds are full of boring landmines — disk space, caches, code signing. Here's how three workflows turned a manual ritual into a button anyone can press.*
+
+*The Self-Driving Repo · Part 6 — Release Engineering*
+
+![One Release button producing Android, iOS and Play Store packages](https://github.com/user-attachments/assets/b0dc74e3-c287-4411-9aca-4e167e1ec4c7)
+
+---
+
+For a long time, "cut a build" meant a specific person opened a specific laptop. They'd run the Flutter build, wait, find the artifact, upload it somewhere, and message the team. If that person was on vacation, releases waited. The build environment was a human.
+
+That's a bus-factor of one for the single most important operation a mobile team does. So I moved release builds into CI — three workflows, one per target: an Android APK for internal distribution, an iOS archive, and a Play Store App Bundle. Now anyone with repo access can ship from a dropdown.
+
+None of it is glamorous. Mobile CI is a parade of unglamorous landmines — runners that run out of disk, caches that don't cache, code signing that fails in ways the error message won't explain. This post is the field guide.
+
+## The problem
+
+Manual release builds failed in three predictable ways:
+
+1. **Bus factor.** One person's machine was the build server. Knowledge and capability concentrated in a human.
+2. **"Works on my machine" releases.** Local builds inherit local state — a stray dependency, a different SDK version. A release artifact should come from a clean, reproducible environment.
+3. **Slow and toil-heavy.** Build, wait, find the file, compress, upload, notify. Twenty minutes of babysitting per build, every build.
+
+## The idea
+
+Three `workflow_dispatch` workflows — manually triggered, because releases should be intentional, with a dropdown to pick environment (staging vs production via Flutter flavors). Each one builds in a clean runner, caches aggressively, signs correctly, and hands off the artifact plus a notification.
+
+```yaml
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options: [staging, production]
+```
+
+The flavor system is what lets one codebase produce different apps. `--flavor` + a per-flavor entrypoint swaps API endpoints, feature flags, and branding at build time:
+
+```bash
+flutter build apk --release \
+  --flavor "$ENV" \
+  --target "lib/main_$ENV.dart" \
+  --target-platform android-arm64
+```
+
+## How it works
+
+![Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify](https://github.com/user-attachments/assets/e8323e7f-3be8-44a7-95a3-80ead2e982b9)
+
+### Landmine 1: the runner runs out of disk
+
+This one fails *mysteriously*. A hosted runner comes preloaded with toolchains you'll never use — and a Flutter release build is disk-hungry. Halfway through, you get an opaque failure that has nothing to do with your code. The fix is to reclaim space *before* building:
+
+```bash
+# Free ~20GB the build will never miss
+sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+```
+
+It looks like a hack. It is a hack. It's also the difference between a green build and a 45-minute investigation into a "No space left on device" error that surfaced three steps after the actual problem.
+
+### Landmine 2: caching the three things that matter
+
+A cold Flutter build re-downloads the SDK, the pub packages, and the entire Gradle dependency graph. Cache all three, keyed so they invalidate exactly when they should — the lockfile hash for packages, the gradle files for Gradle:
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: ~/.pub-cache
+    key: pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+- uses: actions/cache@v4
+  with:
+    path: |
+      ~/.gradle/caches
+      ~/.gradle/wrapper
+    key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+```
+
+Content-hash keys are the whole game: change a dependency and the key changes and the cache rebuilds; otherwise you get the warm path for free. Get the key wrong and you either never hit the cache or you serve a stale one — both worse than no cache.
+
+### Landmine 3: iOS code signing (the keychain dance)
+
+iOS is where CI newcomers lose a day. Signing needs your certificates and provisioning profiles available to the build, which on macOS means they have to live in an *unlocked* keychain. The build also runs long enough that a default keychain can re-lock mid-build and fail with an error that doesn't mention keychains at all.
+
+The correct pattern: create or unlock a keychain using a password **injected from secrets** (never hardcoded), and extend its lock timeout for the build:
+
+```bash
+# Password comes from a secret — NEVER commit a literal password
+security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+security set-keychain-settings -t 3600 -l "$KEYCHAIN"   # don't re-lock mid-build
+```
+
+> A note worth making loudly, because it's a common smell in starter CI configs: **never hardcode a keychain password in your workflow.** It belongs in your secrets store and gets referenced as an environment variable, exactly like above. Better still, create a *throwaway* keychain per run from secret-stored credentials and delete it at the end, so nothing persists on the runner.
+
+Then build the archive, deferring the actual signing of the artifact so the build step and the signing step have clean responsibilities:
+
+```bash
+flutter build ipa --flavor "$ENV" \
+  --target "lib/main_$ENV.dart" \
+  --export-options-plist ios/exportOptions.plist
+```
+
+`exportOptions.plist` centralizes the signing configuration (team, profiles, method) in one versioned file instead of scattering flags across the workflow.
+
+### Landmine 4: Play Store wants App Bundles, not APKs
+
+For the Play Store, you don't ship an APK — you ship an Android App Bundle and let Google generate per-device APKs. That's a real size win for users: each device downloads only the code and resources for its architecture.
+
+```bash
+flutter build appbundle --release \
+  --flavor production \
+  --target lib/main_production.dart \
+  --split-per-abi
+```
+
+The Play Store also requires a **strictly increasing build number** on every upload — duplicate it and the upload bounces. That's a great thing to automate (read the current version, bump the build number, build) so a human never has to remember. One caveat from experience: if you bump the number during the build, make sure the bump is actually *persisted* (committed back), or the next run starts from the same base and you're fighting the store again. An un-committed bump is a bug that hides until your second release.
+
+### The handoff
+
+A build nobody can find didn't happen. Each workflow compresses the artifact, uploads it (to build artifacts and/or a shared drive), and posts a notification to team chat with who triggered it, which environment, and a link. The release announces itself.
+
+## What it bought us
+
+- **Bus factor gone.** Anyone with access ships from a dropdown; no one's laptop is the build server.
+- **Reproducible artifacts** from a clean environment — no "works on my machine" releases.
+- **Minutes of attention, not hours.** Trigger, walk away, get a chat ping when it's done and uploaded.
+- **Smaller downloads for users** via per-ABI App Bundles, and ~12-minute warm builds thanks to caching.
+
+## Gotchas & trade-offs
+
+- **Pin your toolchain versions.** Letting the runner drift to "latest" Flutter is how a release build breaks for reasons unrelated to your change. Pin per workflow and bump deliberately.
+- **Cache keys are load-bearing.** A wrong key silently disables caching (slow) or serves stale deps (worse). Verify you're actually getting hits.
+- **Secrets discipline on signing material.** Keystores, certs, and keychain passwords live in your secrets store, full stop. Prefer ephemeral keychains that don't outlive the run.
+- **Manual trigger is a deliberate choice.** I didn't auto-release on merge. Releases are intentional acts; a human picking the environment from a dropdown is a feature, not a missing automation.
+- **Three workflows means three things to maintain.** Per-target separation is clearer but invites drift — keep the shared steps (caching, notify) consistent so a fix in one lands in all.
+
+## Takeaway
+
+Mobile release CI isn't about clever pipelines — it's about defusing a sequence of boring landmines: reclaim disk before you build, cache the three heavy things with content-hash keys, treat code signing as a secrets-and-keychain problem (never a hardcoded password), and make the build announce itself when it's done. Do that and "cut a release" stops being a person and becomes a button.
+
+Next: the flagship that reads a release diff and writes the QA test plan for you.
+
+---
+
+---
+title: "The release writes its own QA test plan now"
+slug: ai-generated-qa-reports-from-a-release-diff
+date: 2026-05-26
+readTime: 8 min read
+tags: [AI in Development, CI/CD, Flutter, QA]
+author: Abdelrahman Saed
+description: "An AI step that reads a release diff, maps changes to features, classifies risk, and writes a tester-ready checklist — and why context engineering, not the prompt, is the real work."
+url: https://bnsaed.com/articles/ai-generated-qa-reports-from-a-release-diff
+---
+
+# The release writes its own QA test plan now
+
+*Subtitle: When a release is cut, an AI step reads the diff, maps changes to features, classifies risk, and writes a QA plan a tester can actually follow. Here's the engineering that makes it reliable, not a gimmick.*
+
+*The Self-Driving Repo · Part 7 — AI in the Pipeline (flagship)*
+
+![A release diff feeding an AI lens and emerging as a QA checklist](https://github.com/user-attachments/assets/b87eb64e-5275-4f2e-a554-ac2e2d06f2a6)
+
+---
+
+"What do we test for this release?"
+
+That question, asked before every release, used to kick off an hour of archaeology. Someone scrolled the commit log, tried to remember what each change touched, guessed at the risky bits, and wrote a test plan from memory. The plan's quality depended entirely on how much that person happened to know about every corner of the app. Miss a subtle change in a shared module and it ships untested.
+
+It's a perfect task to hand to a machine — *if* you can make the machine reliable. The change set is right there in git. The risk patterns are knowable. What's missing is the reading-and-reasoning, and that's now something an LLM can do well over a bounded, well-prepared input.
+
+So the release pipeline now writes its own QA report. When a release is published, an AI agent reads the diff, maps every change to a feature area, classifies risk, and emits a tester-ready Markdown checklist — then converts it to PDF and posts it to the team. This post is about the engineering around the AI that makes it trustworthy, because the AI call is the easy 10%. The other 90% is preparation and guardrails.
+
+## The problem
+
+Manual release QA planning had three failure modes:
+
+1. **It's knowledge-bound.** The plan is only as good as one person's mental model of the whole codebase. Nobody holds all of it.
+2. **It's slow and reactive.** An hour of log-reading per release, done under time pressure, right when everyone wants to ship.
+3. **It's inconsistent.** Different authors write different plans. No standard structure, no reliable risk lens, no guarantee the riskiest change got the most attention.
+
+## The idea
+
+Trigger on release publish. Compute a precise, *bounded* diff between this release tag and the previous one. Hand that to an agentic AI step with a strict template and project context. Get back a structured report. Distribute it everywhere the team already looks.
+
+```yaml
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag: { description: 'Release tag (semver). Empty = latest.' }
+```
+
+The critical insight: **an LLM is only as good as the context you hand it, and the bounds you put around it.** Most of the workflow is not the AI call. It's the diff preparation that makes the AI call reliable.
+
+## How it works
+
+![Pipeline: resolve tags, prepare a bounded diff through a filter funnel, run the AI agent, verify, then PDF and distribute](https://github.com/user-attachments/assets/fb333893-882e-4348-8ae5-bf0a251395e7)
+
+### Step 1: resolve exactly what shipped
+
+You can't diff a release without knowing its predecessor. Resolve the current tag (from the release event, an input, or the latest), validate it's real semver, then find the previous tag by version-sorted order:
+
+```bash
+PREVIOUS=$(git tag --sort=-version:refname \
+  | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+  | grep -xF "$CURRENT" -A1 | tail -1)
+```
+
+Defensive throughout — validate the format, confirm both tags exist, fail loudly if this looks like the first release. Garbage tag resolution means garbage diff means garbage report.
+
+### Step 2: prepare a *bounded* diff (this is the real work)
+
+A naive `git diff` between two releases can be tens of thousands of lines. Feed that raw to a model and you blow the context window, bury the signal, and pay for noise. So the diff is curated:
+
+**Filter out the noise.** Generated files carry no QA signal — exclude them:
+
+```bash
+git diff --name-only "$PREVIOUS".."$CURRENT" -- 'lib/core/' 'lib/features/' \
+  | grep -v '\.g\.dart$' | grep -v '\.freezed\.dart$' | grep -v '\.drift\.dart$'
+```
+
+**Cap the volume, deliberately and visibly.** Limit to the first N changed files, truncate any single diff to a few hundred lines, and cap the total context — but *announce* every truncation in the output so neither the model nor a human mistakes a clipped diff for the whole story:
+
+```bash
+if [ "$TOTAL" -gt 50 ]; then
+  echo "> Note: showing 50 of $TOTAL changed files. Remaining omitted." >> "$CONTEXT"
+fi
+```
+
+**Structure it.** The prepared context isn't a raw dump — it's sections: diff stats, the changed-file list, the commit log, dependency changes from the lockfile, then the actual code diffs grouped by file, then native platform changes. The model gets a *briefing*, not a haystack. This step is the difference between a useful report and a hallucinated one.
+
+### Step 3: the AI step, on a leash
+
+Only now does the AI run — an agentic assistant action (a GitHub Action that runs an LLM with file read/write tools) pointed at two inputs: the prepared diff and a **template document** that lives in the repo.
+
+```yaml
+- uses: <agentic-llm-action>
+  with:
+    prompt: |
+      Read /tmp/diff_context.md and docs/release_report/TEMPLATE.md.
+      Map each changed file to its feature module. Classify risk per the template.
+      Test cases must be SPECIFIC to the actual code change — read the diffs.
+      For fix: commits, test the original bug AND related edge cases.
+      Write the report to docs/releases/<tag>_qa_report.md.
+```
+
+Three deliberate constraints keep it grounded:
+
+- **A template, not a vibe.** `TEMPLATE.md` defines the report structure, the risk classification rules, and the feature-module mapping. The model fills a defined shape; it doesn't invent one. This is what makes the output *consistent across releases* — the reliability the manual process never had.
+- **Specificity is demanded.** "Read the diffs, not just the file names." Test cases must trace to actual code changes. A generic "test the login flow" is a failure; "verify the new seek-bar offset on the audio player after the change to `player_controller.dart`" is the bar.
+- **Bounded autonomy.** The agent is capped on turns and runs with `continue-on-error`, so an AI hiccup degrades gracefully instead of failing the release. A verification step right after checks the report actually exists and is non-empty — the AI is *allowed* to fail, the pipeline is not.
+
+### Step 4: verify, convert, distribute
+
+The pipeline doesn't trust the AI blindly. It checks the file was written and has content, and warns loudly if not:
+
+```bash
+if [ ! -s "$REPORT" ]; then echo "::error::Report not generated"; exit 1; fi
+```
+
+Then it converts the Markdown to PDF (nicer to read and share), attaches both to the GitHub Release, uploads them as build artifacts, and posts the report to team chat with the version range. The QA plan is waiting for testers before anyone thought to ask for it — in the format they want, where they already are.
+
+## What it bought us
+
+- **A QA plan on every release, in minutes, with zero human prompting.** It's ready before the "what do we test?" question gets asked.
+- **Coverage that isn't knowledge-bound.** The agent reads *every* changed file in the bounded set — it doesn't forget the subtle change in a shared module the way a tired human does.
+- **Consistency.** Same structure, same risk lens, every release, because the template enforces it.
+- **Risk made explicit.** Changes are classified and the riskiest get the most test detail — around 45 minutes of pre-release archaeology eliminated per release.
+
+## Gotchas & trade-offs
+
+- **Context engineering is the actual product.** The AI call is a few lines; the diff filtering, capping, and structuring are the reason it works. Skimp there and you get confident nonsense.
+- **It assists QA; it doesn't replace it.** The report is a *starting point* a human tester reviews and extends — especially for cross-cutting behavior no diff reveals. Sold as a replacement, it would be dangerous.
+- **Truncation can hide things.** Caps are necessary, but a giant release can clip real changes. That's why every cap is announced in the output — silent truncation would be the worst outcome.
+- **Generated-file exclusion is a judgment call.** It removes noise, but if your codegen output is the only place a behavior change is visible, you'd miss it. Know what you're filtering.
+- **Don't fail the release on an AI wobble.** `continue-on-error` plus a hard verification step is the right shape: the report is best-effort, the release is not hostage to it.
+- **Determinism isn't guaranteed.** Two runs can word things differently. For a *checklist* that's fine; don't build anything that needs byte-identical output on top of it.
+
+## Takeaway
+
+Putting an LLM in a pipeline isn't about the prompt — it's about everything *around* the prompt. Resolve precise inputs, curate and bound the context, constrain the model with a versioned template, demand specificity, cap its autonomy, and verify its output before you trust it. Do that and an AI step becomes a reliable colleague that reads every diff so your testers can focus on judgment. Skip it and you've automated hallucination.
+
+Next: the repo cleans up after itself — classifying and deleting stale branches without ever touching the ones that matter.
+
+---
+
+---
+title: "A repo that cleans up after itself — without deleting the wrong branch"
+slug: automated-stale-branch-cleanup
+date: 2026-06-02
+readTime: 6 min read
+tags: [GitHub Actions, Git, DevOps, Automation]
+author: Abdelrahman Saed
+description: "Bulk branch deletion done safely, as a careful classification with a per-run cap, deferral, and a full audit trail — never a blunt age filter."
+url: https://bnsaed.com/articles/automated-stale-branch-cleanup
+---
+
+# A repo that cleans up after itself — without deleting the wrong branch
+
+*Subtitle: Deleting branches in bulk is a one-keystroke disaster waiting to happen. The fix is to make deletion the last step of a careful classification — and to cap, defer, and audit everything.*
+
+*The Self-Driving Repo · Part 8 — Housekeeping*
+
+![A robot broom sweeping dead branches from a healthy git tree](https://github.com/user-attachments/assets/64cc7969-98bf-40fc-80df-d18312bcd489)
+
+---
+
+Old branches are the junk drawer of a repo. Every merged feature, every abandoned experiment, every "let me just try something" leaves one behind. They pile up silently — clones get slower, branch pickers get unusable, and `git branch -r` scrolls for a screen and a half. On a long-lived repo with a busy team, you wake up one day with hundreds of dead branches.
+
+The naive fix — a script that deletes anything old — is how you delete a release branch someone needed, or a long-running integration branch that just hadn't been touched in a while. With deletion, "oops" is expensive. You don't get to be cavalier.
+
+So I built branch cleanup as a **classification problem first and a deletion problem second.** The deleting is three lines. The safety is everything before it.
+
+## The problem
+
+Unmanaged branches cause slow, compounding pain:
+
+1. **Clutter that slows people down.** Hundreds of stale refs make branch lists and tooling sluggish and confusing.
+2. **No signal about what's safe to remove.** Is this branch merged? Abandoned? An active long-runner that's just quiet this week? You can't tell at a glance, so nobody cleans up at all.
+3. **Cleanup is scary, so it never happens.** The risk of nuking something important means the junk drawer just grows forever.
+
+## The idea
+
+A scheduled workflow — Sunday at 4am, when nobody's pushing — that fetches *every* branch and the full PR history, then sorts each branch into a category before a single deletion happens:
+
+- **Sacred** — `master`, `develop`, the default branch. Never touched.
+- **Protected** — anything with branch protection on. Never touched.
+- **Open-PR** — the head or base of an open PR. Active; leave it.
+- **Merged** — already merged via a PR. Safe to delete.
+- **Stale** — last commit older than a threshold (default ~2 years). Safe to delete.
+- **Active** — recent commits, no reason to remove. Keep.
+
+Only the *Merged* and *Stale* buckets get deleted, and even then, carefully.
+
+```yaml
+on:
+  schedule:
+    - cron: '0 4 * * 0'      # Sunday 04:00 UTC
+  workflow_dispatch:
+    inputs:
+      age_days:      { default: '730' }   # ~2 years
+      max_deletions: { default: '50' }    # hard cap per run
+```
+
+## How it works
+
+![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](https://github.com/user-attachments/assets/7d41f474-84c8-47b8-8c83-8c1a0755b1b0)
+
+### Build the world before you judge it
+
+You can't classify a branch in isolation — you need to know whether it backs an open PR, whether it was merged, and how old its tip is. So the first step assembles the full picture: all open PRs (to collect their head/base refs), all merged PRs (to know what's been merged and by whom), and every branch with its last-commit timestamp and protection flag.
+
+```bash
+# Every branch with sha + protected flag, as TSV
+gh api repos/$REPO/branches --paginate \
+  | jq -r '.[] | [.name, .commit.sha, (.protected|tostring)] | @tsv'
+```
+
+### Classify with a strict precedence
+
+Each branch runs through the categories in priority order — and **safety always wins ties.** Sacred beats protected beats open-PR beats merged beats stale. A branch that is both "merged" and "backs an open PR" is kept, because the open-PR check comes first. The ordering is the safety policy:
+
+```bash
+if   in_list "$NAME" "$SACRED";    then echo "SKIP:sacred"
+elif [ "$PROTECTED" = "true" ];    then echo "SKIP:protected"
+elif in_list "$NAME" "$OPEN_REFS"; then echo "SKIP:open-pr"
+elif is_merged "$NAME";            then echo "DELETE:merged"
+elif older_than "$CUTOFF" "$NAME"; then echo "DELETE:stale"
+else                                    echo "KEEP:active"
+fi
+```
+
+Stale detection is just epoch math — compare the tip commit's timestamp to a cutoff:
+
+```bash
+CUTOFF=$(( $(date -u +%s) - AGE_DAYS * 86400 ))
+```
+
+### Cap and defer — never delete unboundedly
+
+Here's the rule that turns a bulk operation from terrifying into routine: **never delete more than N in one run.** If 400 branches qualify, delete the first 50, and *defer the rest to next week*. A capped, repeated cleanup converges safely; an uncapped one is a single command that can wreck a repo. The cap is a circuit breaker against a bad classification — if something's wrong, you've harmed 50 branches, not 800, and you'll see it before the next run.
+
+The deferred branches are logged, not lost — the run reports exactly what it skipped for capacity so there are no surprises.
+
+### Delete carefully, link back, and audit
+
+Even the deletion step is defensive. Branch names contain slashes and the occasional oddity, so they're URL-encoded before the API call. And when a *merged* branch is deleted, the workflow comments on its original PR — closing the loop so there's a trail from "this branch is gone" back to "here's why":
+
+```bash
+ENC=$(jq -rn --arg x "$NAME" '$x|@uri')          # handle slashes/special chars
+gh api -X DELETE "repos/$REPO/git/refs/heads/$ENC"
+# then, for merged branches, comment on the source PR: "branch auto-deleted by cleanup"
+```
+
+Every action lands in two places: a digest posted to team chat (counts, grouped by reason, with author attribution) and a full job summary with tables of what was deleted, what was deferred, and what was kept. Bulk deletion without an audit trail is how you lose the ability to answer "what happened to my branch?" — so the trail is non-negotiable.
+
+## What it bought us
+
+- **The junk drawer stays empty** without anyone doing scary manual cleanup.
+- **Zero accidents**, because deletion is the last step of a conservative classification, not a blunt age filter.
+- **A clear record.** Every deletion is attributable and explained, with merged branches linked back to their PRs.
+- **It self-throttles.** A big backlog clears over several capped runs instead of one heart-stopping purge — around 100 dead branches reclaimed.
+
+## Gotchas & trade-offs
+
+- **"Merged" is subtler than it looks.** Squash-merges don't leave the branch as an ancestor of `master`, so ancestry checks lie — rely on the *PR* merge record, not `git branch --merged`.
+- **Protection flags are only as good as your config.** The workflow honors branch protection, but if an important long-runner isn't protected and goes quiet past the threshold, it qualifies as stale. Protect what matters, or widen "sacred."
+- **API pagination has real limits.** Listing thousands of PRs/branches can truncate; the job logs when a list may be incomplete rather than pretending it saw everything. Trust-but-verify your counts on large repos.
+- **The cap is a feature, resist removing it.** "Just clean it all up at once" is the request that precedes the incident. Defer-and-repeat is slower and far safer.
+- **Schedule it for quiet hours.** Deleting branches while people push invites races. Off-peak isn't just politeness; it reduces edge cases.
+
+## Takeaway
+
+Any automation that deletes should be a classifier with a delete step bolted on the end — never a delete step with a filter. Order your categories so safety wins every tie, cap the blast radius per run, defer the overflow, and audit every action with a trail back to *why*. Make the destructive thing boring and reversible-in-spirit, and bulk cleanup stops being a thing you're afraid to run.
+
+Next, the finale: aggregating git and Jira into per-person weekly summaries with an LLM — and the hard conversation about doing that responsibly.
+
+---
+
+---
+title: "I built an AI that writes weekly engineering summaries. Then I had to decide whether I should."
+slug: ai-weekly-engineering-reviews
+date: 2026-06-09
+readTime: 8 min read
+tags: [AI in Development, Engineering Leadership, Team Management, Automation]
+author: Abdelrahman Saed
+description: "Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Doing it responsibly — private, descriptive, transparent — is the actual work."
+url: https://bnsaed.com/articles/ai-weekly-engineering-reviews
+---
+
+# I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.
+
+*Subtitle: Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Deciding how to use it without it becoming surveillance is the actual work.*
+
+*The Self-Driving Repo · Part 9 — AI & People (flagship)*
+
+![Private, per-engineer weekly summary cards routed individually](https://github.com/user-attachments/assets/f68eb21f-2a7d-42c2-a585-15bcf10d75d6)
+
+---
+
+This is the workflow I hesitated to write about, because it's the one most likely to be misunderstood — and the one where the engineering was genuinely the easy part.
+
+Every Sunday, a job aggregates the week's git activity and issue-tracker tickets for each engineer, compares it to the previous week, and uses an LLM to write a short, personalized summary that gets delivered privately to each person — in their own language. It also updates a stats table in the repo's README.
+
+Read that back and you can hear two very different reactions. One: "great, automated visibility into team contributions." The other: "that's surveillance with a friendly font." Both are correct, and which one it actually becomes depends entirely on choices that have nothing to do with code. So this post is half engineering, half the harder thing: how to build something this powerful *responsibly* — or whether to point it at people at all.
+
+## The problem
+
+On a busy team, two real needs go chronically unmet:
+
+1. **Contribution is invisible.** Quiet, high-impact work goes unseen; loud, low-impact work gets noticed. A lead working from vibes will misjudge both.
+2. **Feedback is sporadic.** Most engineers get meaningful individual feedback a couple of times a year, in review season, about a period nobody remembers clearly.
+
+The honest goal was a gentle, regular signal — a "here's what your week looked like, nice work on X, maybe watch Y" — at a cadence no human lead can sustain across a whole team by hand.
+
+And right next to that honest goal sits the trap: the same machinery, pointed slightly differently, becomes a ranking engine that reduces people to commit counts. Holding both of those in view at once is the entire job.
+
+## The idea
+
+A scheduled workflow that, per engineer:
+
+- aggregates **two data sources** — git (commits, files, insertions/deletions, change types) and the issue tracker (tickets resolved, in progress, updated),
+- computes a **week-over-week comparison**,
+- has an **LLM turn the numbers into a short, human, localized paragraph**,
+- and **routes each summary privately** to that person.
+
+```yaml
+on:
+  schedule:
+    - cron: '0 6 * * 0'    # Sunday 06:00 UTC
+```
+
+## How it works (the easy part)
+
+![Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately](https://github.com/user-attachments/assets/eccddff7-e8c9-4e6b-b1c2-b80c42615983)
+
+### Aggregate two noisy sources into clean per-person stats
+
+Git is the messier source. People commit under multiple names and emails, so each person maps to a set of aliases, and the script dedupes commits by hash across them. It buckets commit subjects into types (fix / feat / chore / refactor) and sums the diffstat — for the current week *and* the previous one, so every number has a comparison:
+
+```bash
+git log --all --no-merges --author="$alias" \
+  --since="$WEEK_AGO" --until="$TODAY" --format="%H|%s"
+# dedupe by hash, classify subject, sum files/insertions/deletions
+```
+
+The issue tracker fills in the other half — what shipped, what's in flight — pulled per person via its REST API and reduced to per-assignee counts with `jq`. The output of this stage is a compact, structured JSON blob per engineer: this week vs last week, across both sources. Boring, deterministic, debuggable. This is 90% of the workflow and 100% of the part I'd call "solved."
+
+### Let the LLM do the one thing it's uniquely good at
+
+Numbers don't motivate anyone. "12 commits, +1,400/−300" is a fact, not feedback. The LLM's only job is translation — turning the structured stats into a few warm, specific sentences, in the team's own language, with the week-over-week trend made human ("busier week than last, mostly bug-fixing — nice").
+
+The model gets the stats and a strict set of rules about tone, length, and what *not* to do. The guardrails I put in the prompt are the interesting part, and every one of them is an ethical choice wearing an engineering hat:
+
+- **No raw identifiers.** It must not quote ticket IDs, commit hashes, or PR numbers. The summary is about the shape of the week, not a paper trail.
+- **Short and singular.** A few sentences, one voice, no bulleted scorecard. The format resists "ranking" by construction.
+- **Strengths *and* a growth point**, phrased supportively. Never a verdict.
+- **Localized.** Delivered in the language the team actually speaks, because feedback should feel personal, not like a system log.
+
+Then each summary is routed **privately to the individual** — not dumped in a public channel where it implicitly becomes a leaderboard. Delivery is per-person, with the numbers and the paragraph kept as separate fields so presentation stays clean.
+
+### Update the shared stats table
+
+Separately, an aggregate (non-ranking) contributions table in the README is regenerated and committed. Note one self-referential detail: this commit has to pass the very guardrails from Part 1 of this series, so it carries the explicit opt-out flag — the automation plays by the same rules it enforces on everyone else.
+
+## What it bought us — and the part that isn't about code
+
+The engineering delivered exactly what I described: regular, specific, localized summaries at a cadence no human could match. 8 summaries a week, zero manual effort.
+
+But "what it bought us" is the wrong frame for this one, so let me switch to the frame that matters.
+
+## Doing this responsibly (the actual hard part)
+
+If you build this, you are now holding a tool that can quietly corrode trust. Here's the discipline I hold myself to. Take it as the real content of this post.
+
+**1. Metrics describe; they never rank.** The moment per-person commit counts become a scoreboard, you've taught your team that the goal is commits — and you'll get more, smaller, emptier commits. That's Goodhart's Law, not a hypothesis. These numbers are a conversation starter for a human lead, never an input to compensation, stack-ranking, or who's "underperforming." If you can't commit to that, don't build it.
+
+**2. Private by default.** A summary delivered to *you* about *your* week is supportive. The same summary in a public channel is a comparison nobody consented to. Route individually. Never broadcast individual stats.
+
+**3. The numbers lie about the work that matters most.** Mentoring, design review, unblocking three teammates, the careful 5-line fix that prevented an outage — git can't see any of it. A reviewer who leaves brilliant comments shows up as "low activity." If you ever let this tool's view of a person override your own, you will reward the wrong things and punish your best people. The diffstat is the least important part of engineering; the tool only sees the diffstat.
+
+**4. Transparency, not surveillance.** Everyone knows it exists, knows exactly what it measures, and knows it isn't feeding their performance review. A measurement people don't know about is monitoring. A measurement people understand and can see is a shared dashboard. Be the second thing, loudly.
+
+**5. The lead stays in the loop.** This *augments* a lead who already pays attention; it doesn't replace one. If you're using it to *avoid* knowing your team, the tool has become a liability and so have you.
+
+I'll be honest that reasonable people land in different places on whether to point any automated measurement at individuals at all. I built it as private, supportive, non-ranking, and transparent, and under those constraints I think it earns its keep. Loosen any one of those constraints and I'd tear it out. That line — not the `jq` — is the engineering judgment this workflow is really about.
+
+## Gotchas & trade-offs
+
+- **Goodhart's Law is the default outcome, not a risk.** Optimize for any visible metric and you'll get the metric and lose the intent. Guard against it actively or don't measure.
+- **Alias mapping is fragile and consequential.** Miss one of someone's commit emails and you under-count *that specific person* — a quietly unfair bug. Audit the mapping.
+- **LLM tone needs a tight leash.** Without firm rules an automated reviewer drifts into either hollow praise or unearned criticism. Constrain hard; spot-check output.
+- **Localization adds review burden.** Generating feedback in another language means you must actually verify the tone lands right there — don't ship feedback you can't read.
+- **This can erode trust faster than any other automation in the series.** Every other workflow touches code. This one touches people. That asymmetry deserves more caution than the code does, and it's why this is the last episode, not the first.
+
+## Takeaway
+
+The engineering here — aggregate two sources, diff two weeks, have an LLM phrase it, route it privately — is a weekend. The judgment is the job: keep it descriptive not ranked, private not public, transparent not covert, and subordinate to a human who actually pays attention. Point AI at people and the question stops being "can I build this?" and becomes "*should* I, and under what constraints?" If you can't answer the second question crisply, the right move is to not build it. That restraint is the most senior thing in this entire series.
+
+---
+
+*That's the series — nine workflows that turned a production mobile repo into something that mostly runs itself. If there's a theme across all of it, it's this: good automation is cowardly, transparent, and reversible, and the best engineering judgment is often knowing where to stop. Thanks for reading along.*

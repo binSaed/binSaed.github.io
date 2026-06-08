@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>One button, three stores: shipping a Flutter app from CI | Abdelrahman Saed</title>
+    <meta name="description" content="The unglamorous engineering behind a green Release button: disk cleanup, layered caching, secure keychain signing, and App Bundles for Android, iOS, and the Play Store." />
+    <meta name="author" content="Abdelrahman Saed" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Software Engineer, Flutter Developer, React Developer, Mobile App Developer, Web Developer, Abdelrahman Saed, binSaed" />
+    <meta name="theme-color" content="#00bcd4" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://bnsaed.com/articles/flutter-release-builds-from-ci" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://bnsaed.com/articles/flutter-release-builds-from-ci" />
+    <meta property="og:title" content="One button, three stores: shipping a Flutter app from CI" />
+    <meta property="og:description" content="The unglamorous engineering behind a green Release button: disk cleanup, layered caching, secure keychain signing, and App Bundles for Android, iOS, and the Play Store." />
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+    <meta property="og:site_name" content="Abdelrahman Saed Portfolio" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://bnsaed.com/articles/flutter-release-builds-from-ci" />
+    <meta name="twitter:title" content="One button, three stores: shipping a Flutter app from CI" />
+    <meta name="twitter:description" content="The unglamorous engineering behind a green Release button: disk cleanup, layered caching, secure keychain signing, and App Bundles for Android, iOS, and the Play Store." />
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"One button, three stores: shipping a Flutter app from CI","description":"The unglamorous engineering behind a green Release button: disk cleanup, layered caching, secure keychain signing, and App Bundles for Android, iOS, and the Play Store.","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","datePublished":"2026-05-19","dateModified":"2026-05-19","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/flutter-release-builds-from-ci"},"url":"https://bnsaed.com/articles/flutter-release-builds-from-ci","keywords":"Flutter, CI/CD, Mobile Development, GitHub Actions"}</script>
+
+    <!-- DNS prefetch and preconnect to critical origins for LCP optimization -->
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://avatars.githubusercontent.com" />
+    <link rel="preconnect" href="https://api.github.com" crossorigin />
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin />
+
+    <!-- Preload LCP image for faster discovery -->
+    <link rel="preload" as="image" href="https://avatars.githubusercontent.com/u/33700292?v=4&s=256" fetchpriority="high" type="image/jpeg" />
+
+    <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
+    <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CgLjqaFM.css">
+  
+    <meta property="article:published_time" content="2026-05-19" />
+    <meta property="article:modified_time" content="2026-05-19" />
+    <meta property="article:author" content="Abdelrahman Saed" />
+    <meta property="article:tag" content="Flutter" />
+    <meta property="article:tag" content="CI/CD" />
+    <meta property="article:tag" content="Mobile Development" />
+    <meta property="article:tag" content="GitHub Actions" />
+    <style id="prerender-fallback">
+#root .prerender-content{min-height:100vh;background:#0b0f17;color:#e6edf3;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+#root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+#root .prerender-content a{color:#2bc6e0;text-decoration:none}
+#root .prerender-content a:hover{text-decoration:underline}
+#root .prerender-content h1{font-size:2.25rem;line-height:1.2;margin:0 0 .5rem}
+#root .prerender-content h2{font-size:1.6rem;margin:2.5rem 0 1rem;border-bottom:1px solid #1e2733;padding-bottom:.4rem}
+#root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
+#root .prerender-content p{margin:0 0 1rem}
+#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content li{margin:.25rem 0}
+#root .prerender-content code{background:#161b22;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
+#root .prerender-content pre{background:#161b22;border-radius:.6rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
+#root .prerender-content pre code{background:none;padding:0}
+#root .prerender-content blockquote{margin:0 0 1rem;padding-left:1rem;border-left:3px solid #2bc6e0;color:#9fb0c0}
+#root .prerender-content .pr-avatar{width:120px;height:120px;border-radius:24px;object-fit:cover;border:2px solid #1e2733;margin-bottom:1rem}
+#root .prerender-content .pr-muted{color:#9fb0c0}
+#root .prerender-content .pr-tags{font-size:.85rem;color:#9fb0c0}
+#root .prerender-content .pr-thumb{max-width:100%;border-radius:.6rem;margin:.5rem 0;border:1px solid #1e2733}
+</style>
+  </head>
+  <body>
+    <!-- GitHub Pages SPA redirect handling script -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/' ) {
+            const decoded = l.search.slice(1).split('&').map(function (s) {
+                return s.replace(/~and~/g, '&')
+            }).join('?');
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <div id="root"><div class="prerender-content" data-prerender="article">
+      <div class="pr-wrap">
+        <p><a href="/">← Abdelrahman Saed</a> · <a href="/#articles">All articles</a></p>
+        <article>
+<h1>One button, three stores: shipping a Flutter app from CI</h1>
+<p><em>Subtitle: Mobile release builds are full of boring landmines — disk space, caches, code signing. Here's how three workflows turned a manual ritual into a button anyone can press.</em></p>
+<p><em>The Self-Driving Repo · Part 6 — Release Engineering</em></p>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/b0dc74e3-c287-4411-9aca-4e167e1ec4c7" alt="One Release button producing Android, iOS and Play Store packages" loading="lazy" /></p>
+<hr />
+<p>For a long time, "cut a build" meant a specific person opened a specific laptop. They'd run the Flutter build, wait, find the artifact, upload it somewhere, and message the team. If that person was on vacation, releases waited. The build environment was a human.</p>
+<p>That's a bus-factor of one for the single most important operation a mobile team does. So I moved release builds into CI — three workflows, one per target: an Android APK for internal distribution, an iOS archive, and a Play Store App Bundle. Now anyone with repo access can ship from a dropdown.</p>
+<p>None of it is glamorous. Mobile CI is a parade of unglamorous landmines — runners that run out of disk, caches that don't cache, code signing that fails in ways the error message won't explain. This post is the field guide.</p>
+<h2>The problem</h2>
+<p>Manual release builds failed in three predictable ways:</p>
+<p>1. <strong>Bus factor.</strong> One person's machine was the build server. Knowledge and capability concentrated in a human. 2. <strong>"Works on my machine" releases.</strong> Local builds inherit local state — a stray dependency, a different SDK version. A release artifact should come from a clean, reproducible environment. 3. <strong>Slow and toil-heavy.</strong> Build, wait, find the file, compress, upload, notify. Twenty minutes of babysitting per build, every build.</p>
+<h2>The idea</h2>
+<p>Three <code>workflow_dispatch</code> workflows — manually triggered, because releases should be intentional, with a dropdown to pick environment (staging vs production via Flutter flavors). Each one builds in a clean runner, caches aggressively, signs correctly, and hands off the artifact plus a notification.</p>
+<pre><code class="language-yaml">on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options: [staging, production]</code></pre>
+<p>The flavor system is what lets one codebase produce different apps. <code>--flavor</code> + a per-flavor entrypoint swaps API endpoints, feature flags, and branding at build time:</p>
+<pre><code class="language-bash">flutter build apk --release \
+  --flavor "$ENV" \
+  --target "lib/main_$ENV.dart" \
+  --target-platform android-arm64</code></pre>
+<h2>How it works</h2>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/e8323e7f-3be8-44a7-95a3-80ead2e982b9" alt="Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify" loading="lazy" /></p>
+<h3>Landmine 1: the runner runs out of disk</h3>
+<p>This one fails <em>mysteriously</em>. A hosted runner comes preloaded with toolchains you'll never use — and a Flutter release build is disk-hungry. Halfway through, you get an opaque failure that has nothing to do with your code. The fix is to reclaim space <em>before</em> building:</p>
+<pre><code class="language-bash"># Free ~20GB the build will never miss
+sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"</code></pre>
+<p>It looks like a hack. It is a hack. It's also the difference between a green build and a 45-minute investigation into a "No space left on device" error that surfaced three steps after the actual problem.</p>
+<h3>Landmine 2: caching the three things that matter</h3>
+<p>A cold Flutter build re-downloads the SDK, the pub packages, and the entire Gradle dependency graph. Cache all three, keyed so they invalidate exactly when they should — the lockfile hash for packages, the gradle files for Gradle:</p>
+<pre><code class="language-yaml">- uses: actions/cache@v4
+  with:
+    path: ~/.pub-cache
+    key: pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+- uses: actions/cache@v4
+  with:
+    path: |
+      ~/.gradle/caches
+      ~/.gradle/wrapper
+    key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}</code></pre>
+<p>Content-hash keys are the whole game: change a dependency and the key changes and the cache rebuilds; otherwise you get the warm path for free. Get the key wrong and you either never hit the cache or you serve a stale one — both worse than no cache.</p>
+<h3>Landmine 3: iOS code signing (the keychain dance)</h3>
+<p>iOS is where CI newcomers lose a day. Signing needs your certificates and provisioning profiles available to the build, which on macOS means they have to live in an <em>unlocked</em> keychain. The build also runs long enough that a default keychain can re-lock mid-build and fail with an error that doesn't mention keychains at all.</p>
+<p>The correct pattern: create or unlock a keychain using a password <strong>injected from secrets</strong> (never hardcoded), and extend its lock timeout for the build:</p>
+<pre><code class="language-bash"># Password comes from a secret — NEVER commit a literal password
+security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+security set-keychain-settings -t 3600 -l "$KEYCHAIN"   # don't re-lock mid-build</code></pre>
+<blockquote>A note worth making loudly, because it's a common smell in starter CI configs: <strong>never hardcode a keychain password in your workflow.</strong> It belongs in your secrets store and gets referenced as an environment variable, exactly like above. Better still, create a <em>throwaway</em> keychain per run from secret-stored credentials and delete it at the end, so nothing persists on the runner.</blockquote>
+<p>Then build the archive, deferring the actual signing of the artifact so the build step and the signing step have clean responsibilities:</p>
+<pre><code class="language-bash">flutter build ipa --flavor "$ENV" \
+  --target "lib/main_$ENV.dart" \
+  --export-options-plist ios/exportOptions.plist</code></pre>
+<p><code>exportOptions.plist</code> centralizes the signing configuration (team, profiles, method) in one versioned file instead of scattering flags across the workflow.</p>
+<h3>Landmine 4: Play Store wants App Bundles, not APKs</h3>
+<p>For the Play Store, you don't ship an APK — you ship an Android App Bundle and let Google generate per-device APKs. That's a real size win for users: each device downloads only the code and resources for its architecture.</p>
+<pre><code class="language-bash">flutter build appbundle --release \
+  --flavor production \
+  --target lib/main_production.dart \
+  --split-per-abi</code></pre>
+<p>The Play Store also requires a <strong>strictly increasing build number</strong> on every upload — duplicate it and the upload bounces. That's a great thing to automate (read the current version, bump the build number, build) so a human never has to remember. One caveat from experience: if you bump the number during the build, make sure the bump is actually <em>persisted</em> (committed back), or the next run starts from the same base and you're fighting the store again. An un-committed bump is a bug that hides until your second release.</p>
+<h3>The handoff</h3>
+<p>A build nobody can find didn't happen. Each workflow compresses the artifact, uploads it (to build artifacts and/or a shared drive), and posts a notification to team chat with who triggered it, which environment, and a link. The release announces itself.</p>
+<h2>What it bought us</h2>
+<ul>
+<li><strong>Bus factor gone.</strong> Anyone with access ships from a dropdown; no one's laptop is the build server.</li>
+<li><strong>Reproducible artifacts</strong> from a clean environment — no "works on my machine" releases.</li>
+<li><strong>Minutes of attention, not hours.</strong> Trigger, walk away, get a chat ping when it's done and uploaded.</li>
+<li><strong>Smaller downloads for users</strong> via per-ABI App Bundles, and ~12-minute warm builds thanks to caching.</li>
+</ul>
+<h2>Gotchas &amp; trade-offs</h2>
+<ul>
+<li><strong>Pin your toolchain versions.</strong> Letting the runner drift to "latest" Flutter is how a release build breaks for reasons unrelated to your change. Pin per workflow and bump deliberately.</li>
+<li><strong>Cache keys are load-bearing.</strong> A wrong key silently disables caching (slow) or serves stale deps (worse). Verify you're actually getting hits.</li>
+<li><strong>Secrets discipline on signing material.</strong> Keystores, certs, and keychain passwords live in your secrets store, full stop. Prefer ephemeral keychains that don't outlive the run.</li>
+<li><strong>Manual trigger is a deliberate choice.</strong> I didn't auto-release on merge. Releases are intentional acts; a human picking the environment from a dropdown is a feature, not a missing automation.</li>
+<li><strong>Three workflows means three things to maintain.</strong> Per-target separation is clearer but invites drift — keep the shared steps (caching, notify) consistent so a fix in one lands in all.</li>
+</ul>
+<h2>Takeaway</h2>
+<p>Mobile release CI isn't about clever pipelines — it's about defusing a sequence of boring landmines: reclaim disk before you build, cache the three heavy things with content-hash keys, treat code signing as a secrets-and-keychain problem (never a hardcoded password), and make the build announce itself when it's done. Do that and "cut a release" stops being a person and becomes a button.</p>
+<p>Next: the flagship that reads a release diff and writes the QA test plan for you.</p>
+
+        </article>
+        <p class="pr-tags">Tags: Flutter · CI/CD · Mobile Development · GitHub Actions</p>
+      </div>
+    </div></div>
+  </body>
+</html>

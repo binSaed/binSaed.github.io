@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRs that fill in their own paperwork (and a gate that won't let bad code merge) | Abdelrahman Saed</title>
+    <meta name="description" content="Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself." />
+    <meta name="author" content="Abdelrahman Saed" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Software Engineer, Flutter Developer, React Developer, Mobile App Developer, Web Developer, Abdelrahman Saed, binSaed" />
+    <meta name="theme-color" content="#00bcd4" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://bnsaed.com/articles/automate-pull-request-hygiene" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://bnsaed.com/articles/automate-pull-request-hygiene" />
+    <meta property="og:title" content="PRs that fill in their own paperwork (and a gate that won't let bad code merge)" />
+    <meta property="og:description" content="Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself." />
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+    <meta property="og:site_name" content="Abdelrahman Saed Portfolio" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://bnsaed.com/articles/automate-pull-request-hygiene" />
+    <meta name="twitter:title" content="PRs that fill in their own paperwork (and a gate that won't let bad code merge)" />
+    <meta name="twitter:description" content="Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself." />
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/33700292?v=4&s=512" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PRs that fill in their own paperwork (and a gate that won't let bad code merge)","description":"Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself.","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","datePublished":"2026-04-21","dateModified":"2026-04-21","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/automate-pull-request-hygiene"},"url":"https://bnsaed.com/articles/automate-pull-request-hygiene","keywords":"GitHub Actions, Developer Experience, CI/CD, Code Review"}</script>
+
+    <!-- DNS prefetch and preconnect to critical origins for LCP optimization -->
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://avatars.githubusercontent.com" />
+    <link rel="preconnect" href="https://api.github.com" crossorigin />
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin />
+
+    <!-- Preload LCP image for faster discovery -->
+    <link rel="preload" as="image" href="https://avatars.githubusercontent.com/u/33700292?v=4&s=256" fetchpriority="high" type="image/jpeg" />
+
+    <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
+    <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CgLjqaFM.css">
+  
+    <meta property="article:published_time" content="2026-04-21" />
+    <meta property="article:modified_time" content="2026-04-21" />
+    <meta property="article:author" content="Abdelrahman Saed" />
+    <meta property="article:tag" content="GitHub Actions" />
+    <meta property="article:tag" content="Developer Experience" />
+    <meta property="article:tag" content="CI/CD" />
+    <meta property="article:tag" content="Code Review" />
+    <style id="prerender-fallback">
+#root .prerender-content{min-height:100vh;background:#0b0f17;color:#e6edf3;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+#root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+#root .prerender-content a{color:#2bc6e0;text-decoration:none}
+#root .prerender-content a:hover{text-decoration:underline}
+#root .prerender-content h1{font-size:2.25rem;line-height:1.2;margin:0 0 .5rem}
+#root .prerender-content h2{font-size:1.6rem;margin:2.5rem 0 1rem;border-bottom:1px solid #1e2733;padding-bottom:.4rem}
+#root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
+#root .prerender-content p{margin:0 0 1rem}
+#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content li{margin:.25rem 0}
+#root .prerender-content code{background:#161b22;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
+#root .prerender-content pre{background:#161b22;border-radius:.6rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
+#root .prerender-content pre code{background:none;padding:0}
+#root .prerender-content blockquote{margin:0 0 1rem;padding-left:1rem;border-left:3px solid #2bc6e0;color:#9fb0c0}
+#root .prerender-content .pr-avatar{width:120px;height:120px;border-radius:24px;object-fit:cover;border:2px solid #1e2733;margin-bottom:1rem}
+#root .prerender-content .pr-muted{color:#9fb0c0}
+#root .prerender-content .pr-tags{font-size:.85rem;color:#9fb0c0}
+#root .prerender-content .pr-thumb{max-width:100%;border-radius:.6rem;margin:.5rem 0;border:1px solid #1e2733}
+</style>
+  </head>
+  <body>
+    <!-- GitHub Pages SPA redirect handling script -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/' ) {
+            const decoded = l.search.slice(1).split('&').map(function (s) {
+                return s.replace(/~and~/g, '&')
+            }).join('?');
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <div id="root"><div class="prerender-content" data-prerender="article">
+      <div class="pr-wrap">
+        <p><a href="/">← Abdelrahman Saed</a> · <a href="/#articles">All articles</a></p>
+        <article>
+<h1>PRs that fill in their own paperwork (and a gate that won't let bad code merge)</h1>
+<p><em>Subtitle: Half of code review is chores — linking the ticket, assigning yourself, checking the analyzer. So I automated the chores and kept humans for the judgment.</em></p>
+<p><em>The Self-Driving Repo · Part 2 — Developer Experience</em></p>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/4d056c62-c767-4b7e-8d33-13943d7c5683" alt="A pull request auto-filling its own context beside a quality gate" loading="lazy" /></p>
+<hr />
+<p>Open a pull request on most teams and you're greeted by a checklist: link the Jira ticket, assign yourself, confirm the analyzer passes, tick the boxes. None of it is hard. All of it is friction. And friction at the <em>start</em> of review is the worst kind, because it delays the part that actually matters — a human reading your code.</p>
+<p>So I split PR review into two buckets. <strong>Chores</strong> (mechanical, rule-based, boring) get automated. <strong>Judgment</strong> (is this the right change?) stays with people. Two workflows handle the chores: one enriches every new PR with context, the other runs a real quality gate and manages its own labels and comments.</p>
+<h2>The problem</h2>
+<p>The opening minutes of every PR were spent on the same low-value motions:</p>
+<ul>
+<li>Copy the ticket ID from the branch name, build the Jira URL, paste it in.</li>
+<li>Assign yourself (or get pinged because you forgot).</li>
+<li>Tick the template checkboxes.</li>
+<li>And on the reviewer's side: pull the branch, run the analyzer, discover the translation file has a trailing-comma syntax error that breaks the build, leave a comment, wait.</li>
+</ul>
+<p>Every one of those is deterministic. A human doing them is a human not reading code.</p>
+<h2>The idea</h2>
+<p>Two PR-triggered workflows:</p>
+<p>1. <strong>PR automation</strong> — on <code>opened</code>, derive context from the branch and write it into the PR: the ticket link, the assignee, a <code>wip</code> label. 2. <strong>The analysis gate</strong> — on <code>opened</code> and every push, validate translation JSON, run the analyzer, then <strong>label, comment, and block</strong> on failure — and <em>remove</em> the label and comment when the next push fixes it.</p>
+<p>The theme that makes them feel good to use: <strong>idempotency and self-cleanup.</strong> They never double-post, never leave stale state, and converge to "correct" no matter how many times you push.</p>
+<h2>How it works</h2>
+<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/56baeaf6-9e53-40c2-8302-a8b001c8e447" alt="Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment" loading="lazy" /></p>
+<h3>Auto-context on open</h3>
+<p>The ticket ID already lives in the branch name — <code>feature/PROJ-123-add-audio-seek</code>. A regex lifts it out, no external lookup needed:</p>
+<pre><code class="language-js">const match = branch.match(/([A-Z]+-\d+)/);
+if (match) {
+  const jiraId = match[1];                 // PROJ-123
+  const url = `https://your-tracker/browse/${jiraId}`;
+  // write the link into the PR body, replacing the template placeholder
+}</code></pre>
+<p>The same step ticks the "I added the Jira link" checkbox in the template, assigns the author if the PR has no assignee yet, and adds a <code>wip</code> label. Each action guards itself first — <em>does it already have an assignee? does the label exist?</em> — so re-runs are no-ops:</p>
+<pre><code class="language-js">// Create the label only if it's missing (404 = doesn't exist yet)
+try {
+  await github.rest.issues.getLabel({ owner, repo, name: 'wip' });
+} catch (e) {
+  if (e.status === 404) {
+    await github.rest.issues.createLabel({ owner, repo, name: 'wip', color: 'fbca04' });
+  }
+}</code></pre>
+<p>That try/get-create-on-404 pattern shows up in every one of these workflows. GitHub has no "ensure label exists" call, so you build it yourself — and once you have it, label management stops being something humans think about.</p>
+<h3>A gate that validates more than Dart</h3>
+<p>The analysis workflow runs on open and on every push, scoped to the files that matter:</p>
+<pre><code class="language-yaml">on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: ['**.dart', 'pubspec.yaml', 'assets/translations/**.json']
+
+concurrency:
+  group: dart-analysis-${{ github.event.pull_request.number }}
+  cancel-in-progress: true</code></pre>
+<p>That <code>concurrency</code> block matters more than it looks. Push three times in a minute and you don't want three analyzer runs racing to comment on the same PR — you want the latest one to win and the rest to cancel. <code>cancel-in-progress: true</code> gives you exactly that.</p>
+<p>First it validates translation files, because a malformed localization JSON breaks the build in a way the Dart analyzer won't catch:</p>
+<pre><code class="language-bash">for f in assets/translations/*.json; do
+  python3 -c "import json; json.load(open('$f'))" || { echo "Invalid JSON: $f"; exit 1; }
+done</code></pre>
+<p>Then the analyzer, captured rather than fail-fast so we can format the result ourselves:</p>
+<pre><code class="language-bash">flutter analyze &gt; analysis-output.txt 2&gt;&amp;1 || true
+grep "error •" analysis-output.txt &amp;&amp; echo "has_errors=true" &gt;&gt; "$GITHUB_OUTPUT"</code></pre>
+<h3>The part I'm proud of: bidirectional state</h3>
+<p>Most "lint bot" workflows only know how to complain. This one also knows how to <em>take it back</em>. On failure, it adds an <code>analysis-failed</code> label and posts one comment with the errors tucked inside a collapsible <code>&lt;details&gt;</code> block (so the PR stays skimmable). On the next push, if analysis passes, it removes the label and <strong>deletes its own comment</strong>:</p>
+<pre><code class="language-js">// On pass: find the bot's previous failure comment and remove it
+const comments = await github.rest.issues.listComments({ owner, repo, issue_number });
+const stale = comments.data.find(c =&gt;
+  c.user.type === 'Bot' &amp;&amp; c.body.includes('Dart Analysis Failed'));
+if (stale) await github.rest.issues.deleteComment({ owner, repo, comment_id: stale.id });</code></pre>
+<p>The <code>c.user.type === 'Bot'</code> filter is the safety latch: the workflow only ever deletes comments <em>it</em> wrote, never a human's. The result is a PR timeline that reflects the <em>current</em> state, not a graveyard of "❌ failed / ✅ fixed / ❌ failed again" noise. When the gate is green, it's silent.</p>
+<p>And when it's red, it actually blocks — the job exits non-zero so the merge is gated, not just decorated:</p>
+<pre><code class="language-bash">[ "$has_errors" = "true" ] &amp;&amp; exit 1</code></pre>
+<h2>What it bought us</h2>
+<ul>
+<li><strong>Reviewers start on the code, not the chores.</strong> Context is already there when they open the PR.</li>
+<li><strong>A whole category of broken builds never reaches <code>master</code></strong> — malformed translations and analyzer errors are caught at the door.</li>
+<li><strong>The PR timeline stays clean.</strong> Self-deleting comments mean no stale failure noise to scroll past.</li>
+<li><strong>Around 5 fewer "please link the ticket / please rebase / CI is red because of a comma" round-trips per week.</strong></li>
+</ul>
+<h2>Gotchas &amp; trade-offs</h2>
+<ul>
+<li><strong>Editing the PR body is brittle.</strong> Auto-ticking checkboxes is naive string replacement — if someone reworded the template, the match silently fails. Keep the template text stable, or match loosely.</li>
+<li><strong><code>paths:</code> is a double-edged filter.</strong> Scope it too tightly and a relevant change skips the gate; too loosely and you run the analyzer on doc-only PRs. Revisit it as the repo grows.</li>
+<li><strong>Bot-comment deletion depends on the bot identity.</strong> If you switch the token the comments are posted under, the <code>user.type === 'Bot'</code> filter can stop matching your own history. Test after any auth change.</li>
+<li><strong>Automating chores can hide them.</strong> New teammates never learn <em>why</em> the ticket link matters because they never do it manually. Worth a sentence in onboarding so the automation is understood, not just trusted.</li>
+</ul>
+<h2>Takeaway</h2>
+<p>Separate the <strong>chores</strong> of review from the <strong>judgment</strong> of review, and automate only the chores — idempotently, with self-cleanup, so the bot's output always reflects current reality. The win isn't "look, a bot." It's that every human minute on a PR now goes to the one thing humans are uniquely good at: deciding whether the change is right.</p>
+<p>Next: making two sources of truth — Jira and GitHub — actually agree with each other.</p>
+
+        </article>
+        <p class="pr-tags">Tags: GitHub Actions · Developer Experience · CI/CD · Code Review</p>
+      </div>
+    </div></div>
+  </body>
+</html>
