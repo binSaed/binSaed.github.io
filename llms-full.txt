@@ -298,7 +298,7 @@ url: https://bnsaed.com/articles/github-actions-branch-protection-guardrails
 
 *The Self-Driving Repo · Part 1 — Governance*
 
-![Guardrails — a neon shield protecting the master branch](https://github.com/user-attachments/assets/86e4a4ea-f3e6-42a9-9638-369a3865c03a)
+![Guardrails — a neon shield protecting the master branch](/article-images/github-actions-branch-protection-guardrails-hero.png)
 
 ---
 
@@ -329,7 +329,7 @@ Both share one principle: **reversible enforcement.** Nothing is blocked with a 
 
 ## How it works
 
-![Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized](https://github.com/user-attachments/assets/f9ecc2a1-9997-4509-b8d1-be7162178a24)
+![Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized](/article-images/github-actions-branch-protection-guardrails-diagram.png)
 
 ### Guarding the branch
 
@@ -442,7 +442,7 @@ url: https://bnsaed.com/articles/automate-pull-request-hygiene
 
 *The Self-Driving Repo · Part 2 — Developer Experience*
 
-![A pull request auto-filling its own context beside a quality gate](https://github.com/user-attachments/assets/4d056c62-c767-4b7e-8d33-13943d7c5683)
+![A pull request auto-filling its own context beside a quality gate](/article-images/automate-pull-request-hygiene-hero.png)
 
 ---
 
@@ -472,7 +472,7 @@ The theme that makes them feel good to use: **idempotency and self-cleanup.** Th
 
 ## How it works
 
-![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](https://github.com/user-attachments/assets/56baeaf6-9e53-40c2-8302-a8b001c8e447)
+![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](/article-images/automate-pull-request-hygiene-diagram.png)
 
 ### Auto-context on open
 
@@ -593,7 +593,7 @@ url: https://bnsaed.com/articles/sync-jira-with-github-prs
 
 *The Self-Driving Repo · Part 3 — Integration*
 
-![A glowing bridge syncing an issue board and a pull request](https://github.com/user-attachments/assets/a9f1cbe0-7e1c-4b95-8cb7-0a20cbfe2d8d)
+![A glowing bridge syncing an issue board and a pull request](/article-images/sync-jira-with-github-prs-hero.png)
 
 ---
 
@@ -632,7 +632,7 @@ on:
 
 ## How it works
 
-![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](https://github.com/user-attachments/assets/de8487d8-1420-4cbe-97ad-570827383039)
+![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](/article-images/sync-jira-with-github-prs-diagram.png)
 
 ### Branch name → Jira issue
 
@@ -738,7 +738,7 @@ url: https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts
 
 *The Self-Driving Repo · Part 4 — Conflict Management*
 
-![A radar sweep over branch lines with conflicts pulsing red](https://github.com/user-attachments/assets/c9c666f9-3d47-4aa2-a1f5-d0c1359dd045)
+![A radar sweep over branch lines with conflicts pulsing red](/article-images/auto-rebase-and-detect-merge-conflicts-hero.png)
 
 ---
 
@@ -767,7 +767,7 @@ Detection and notification are deliberately separate. The sweep maintains accura
 
 ## How it works
 
-![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](https://github.com/user-attachments/assets/b0d1cfac-058f-456a-ac59-0dc6e2baf7f6)
+![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](/article-images/auto-rebase-and-detect-merge-conflicts-diagram.png)
 
 ### Refresh everything on every merge
 
@@ -880,7 +880,7 @@ url: https://bnsaed.com/articles/bot-that-resolves-merge-conflicts
 
 *The Self-Driving Repo · Part 5 — Conflict Management (flagship)*
 
-![A robot arm carefully braiding two translation streams back into one](https://github.com/user-attachments/assets/6a060db4-c5f2-4301-90b1-fde23d675d53)
+![A robot arm carefully braiding two translation streams back into one](/article-images/bot-that-resolves-merge-conflicts-hero.png)
 
 ---
 
@@ -910,7 +910,7 @@ The safety isn't in the merge logic. It's in the **refusal logic**. Let me walk 
 
 ## How it works (a fortress of guard clauses)
 
-![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](https://github.com/user-attachments/assets/813ce161-2c69-4dc6-bfc1-039cd60e5b47)
+![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](/article-images/bot-that-resolves-merge-conflicts-diagram.png)
 
 ### Guard 0: only conflicted, real, ready PRs
 
@@ -1056,7 +1056,7 @@ url: https://bnsaed.com/articles/flutter-release-builds-from-ci
 
 *The Self-Driving Repo · Part 6 — Release Engineering*
 
-![One Release button producing Android, iOS and Play Store packages](https://github.com/user-attachments/assets/b0dc74e3-c287-4411-9aca-4e167e1ec4c7)
+![One Release button producing Android, iOS and Play Store packages](/article-images/flutter-release-builds-from-ci-hero.png)
 
 ---
 
@@ -1098,7 +1098,7 @@ flutter build apk --release \
 
 ## How it works
 
-![Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify](https://github.com/user-attachments/assets/e8323e7f-3be8-44a7-95a3-80ead2e982b9)
+![Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify](/article-images/flutter-release-builds-from-ci-diagram.png)
 
 ### Landmine 1: the runner runs out of disk
 
@@ -1211,7 +1211,7 @@ url: https://bnsaed.com/articles/ai-generated-qa-reports-from-a-release-diff
 
 *The Self-Driving Repo · Part 7 — AI in the Pipeline (flagship)*
 
-![A release diff feeding an AI lens and emerging as a QA checklist](https://github.com/user-attachments/assets/b87eb64e-5275-4f2e-a554-ac2e2d06f2a6)
+![A release diff feeding an AI lens and emerging as a QA checklist](/article-images/ai-generated-qa-reports-from-a-release-diff-hero.png)
 
 ---
 
@@ -1248,7 +1248,7 @@ The critical insight: **an LLM is only as good as the context you hand it, and t
 
 ## How it works
 
-![Pipeline: resolve tags, prepare a bounded diff through a filter funnel, run the AI agent, verify, then PDF and distribute](https://github.com/user-attachments/assets/fb333893-882e-4348-8ae5-bf0a251395e7)
+![Pipeline: resolve tags, prepare a bounded diff through a filter funnel, run the AI agent, verify, then PDF and distribute](/article-images/ai-generated-qa-reports-from-a-release-diff-diagram.png)
 
 ### Step 1: resolve exactly what shipped
 
@@ -1355,7 +1355,7 @@ url: https://bnsaed.com/articles/automated-stale-branch-cleanup
 
 *The Self-Driving Repo · Part 8 — Housekeeping*
 
-![A robot broom sweeping dead branches from a healthy git tree](https://github.com/user-attachments/assets/64cc7969-98bf-40fc-80df-d18312bcd489)
+![A robot broom sweeping dead branches from a healthy git tree](/article-images/automated-stale-branch-cleanup-hero.png)
 
 ---
 
@@ -1398,7 +1398,7 @@ on:
 
 ## How it works
 
-![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](https://github.com/user-attachments/assets/7d41f474-84c8-47b8-8c83-8c1a0755b1b0)
+![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](/article-images/automated-stale-branch-cleanup-diagram.png)
 
 ### Build the world before you judge it
 
@@ -1488,7 +1488,7 @@ url: https://bnsaed.com/articles/ai-weekly-engineering-reviews
 
 *The Self-Driving Repo · Part 9 — AI & People (flagship)*
 
-![Private, per-engineer weekly summary cards routed individually](https://github.com/user-attachments/assets/f68eb21f-2a7d-42c2-a585-15bcf10d75d6)
+![Private, per-engineer weekly summary cards routed individually](/article-images/ai-weekly-engineering-reviews-hero.png)
 
 ---
 
@@ -1526,7 +1526,7 @@ on:
 
 ## How it works (the easy part)
 
-![Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately](https://github.com/user-attachments/assets/eccddff7-e8c9-4e6b-b1c2-b80c42615983)
+![Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately](/article-images/ai-weekly-engineering-reviews-diagram.png)
 
 ### Aggregate two noisy sources into clean per-person stats
 

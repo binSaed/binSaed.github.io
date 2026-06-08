@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/bot-that-resolves-merge-conflicts
 
 *The Self-Driving Repo · Part 5 — Conflict Management (flagship)*
 
-![A robot arm carefully braiding two translation streams back into one](https://github.com/user-attachments/assets/6a060db4-c5f2-4301-90b1-fde23d675d53)
+![A robot arm carefully braiding two translation streams back into one](/article-images/bot-that-resolves-merge-conflicts-hero.png)
 
 ---
 
@@ -45,7 +45,7 @@ The safety isn't in the merge logic. It's in the **refusal logic**. Let me walk 
 
 ## How it works (a fortress of guard clauses)
 
-![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](https://github.com/user-attachments/assets/813ce161-2c69-4dc6-bfc1-039cd60e5b47)
+![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](/article-images/bot-that-resolves-merge-conflicts-diagram.png)
 
 ### Guard 0: only conflicted, real, ready PRs
 

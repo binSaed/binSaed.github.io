@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>Making Jira and GitHub agree without anyone updating both</h1>
 <p><em>Subtitle: Two tools, two sources of truth, one tax: keeping them in sync by hand. So I built a bridge that mirrors Jira onto every PR — and quietly flags the work that's stuck.</em></p>
 <p><em>The Self-Driving Repo · Part 3 — Integration</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/a9f1cbe0-7e1c-4b95-8cb7-0a20cbfe2d8d" alt="A glowing bridge syncing an issue board and a pull request" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/sync-jira-with-github-prs-hero.png" alt="A glowing bridge syncing an issue board and a pull request" loading="lazy" /></p>
 <hr />
 <p>Every team that uses Jira and GitHub pays the same small, constant tax: <strong>keeping the two of them telling the same story.</strong> The ticket is "In Review" but the PR is merged. The PR is open but the ticket is "Done." Which one do you believe? Usually neither, so you go ask the person — and now three people are doing status archaeology instead of building.</p>
 <p>I didn't want a heavyweight integration or a paid app. I wanted the PR to <em>know things about its ticket</em> automatically: what release it's targeting, what labels it carries, whether it's been marked Done — and, the part that turned out most useful, whether it's been Done for <em>too long</em> without merging.</p>
@@ -121,7 +121,7 @@
     - cron: '0 9 * * 0-4'    # 9:00 — weekdays
     - cron: '0 13 * * 0-4'   # 13:00 — weekdays</code></pre>
 <h2>How it works</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/de8487d8-1420-4cbe-97ad-570827383039" alt="Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/sync-jira-with-github-prs-diagram.png" alt="Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels" loading="lazy" /></p>
 <h3>Branch name → Jira issue</h3>
 <p>Same trick as the rest of the system: the ticket ID is encoded in the branch, so a regex is all the "integration" you need to start.</p>
 <pre><code class="language-js">const jiraId = branch.match(/([A-Z]+-\d+)/)?.[1];   // e.g. PROJ-123</code></pre>

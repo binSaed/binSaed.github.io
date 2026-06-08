@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/automated-stale-branch-cleanup
 
 *The Self-Driving Repo · Part 8 — Housekeeping*
 
-![A robot broom sweeping dead branches from a healthy git tree](https://github.com/user-attachments/assets/64cc7969-98bf-40fc-80df-d18312bcd489)
+![A robot broom sweeping dead branches from a healthy git tree](/article-images/automated-stale-branch-cleanup-hero.png)
 
 ---
 
@@ -58,7 +58,7 @@ on:
 
 ## How it works
 
-![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](https://github.com/user-attachments/assets/7d41f474-84c8-47b8-8c83-8c1a0755b1b0)
+![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](/article-images/automated-stale-branch-cleanup-diagram.png)
 
 ### Build the world before you judge it
 

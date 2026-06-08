@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/flutter-release-builds-from-ci
 
 *The Self-Driving Repo · Part 6 — Release Engineering*
 
-![One Release button producing Android, iOS and Play Store packages](https://github.com/user-attachments/assets/b0dc74e3-c287-4411-9aca-4e167e1ec4c7)
+![One Release button producing Android, iOS and Play Store packages](/article-images/flutter-release-builds-from-ci-hero.png)
 
 ---
 
@@ -57,7 +57,7 @@ flutter build apk --release \
 
 ## How it works
 
-![Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify](https://github.com/user-attachments/assets/e8323e7f-3be8-44a7-95a3-80ead2e982b9)
+![Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify](/article-images/flutter-release-builds-from-ci-diagram.png)
 
 ### Landmine 1: the runner runs out of disk
 

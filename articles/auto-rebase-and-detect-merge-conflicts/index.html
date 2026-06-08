@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>Every merge to master quietly breaks other PRs. So I built a radar for it.</h1>
 <p><em>Subtitle: A merge to master is a tiny earthquake that nobody feels until later. Two workflows detect the damage immediately — and tell the right people.</em></p>
 <p><em>The Self-Driving Repo · Part 4 — Conflict Management</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/c9c666f9-3d47-4aa2-a1f5-d0c1359dd045" alt="A radar sweep over branch lines with conflicts pulsing red" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/auto-rebase-and-detect-merge-conflicts-hero.png" alt="A radar sweep over branch lines with conflicts pulsing red" loading="lazy" /></p>
 <hr />
 <p>Here's a failure mode so normal you've stopped noticing it: you merge a PR to <code>master</code>, and in that instant some number of <em>other</em> open PRs become un-mergeable. They were fine a second ago. Now they conflict. But nobody knows yet — the authors are working on something else, and they'll find out hours or days later when they try to merge and GitHub says no.</p>
 <p>Multiply that by a busy <code>master</code> and a dozen open PRs and you get a slow, invisible tax: branches drifting out of sync, conflicts discovered at the worst possible moment (merge time), and a steady drip of "can you rebase?" comments.</p>
@@ -113,7 +113,7 @@
 </ul>
 <p>Detection and notification are deliberately separate. The sweep maintains accurate <em>state</em> (labels on PRs). The broadcast turns that state into a <em>message</em>. Splitting them means I can re-run or reschedule the announcement without re-running the (heavier) sweep.</p>
 <h2>How it works</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/b0d1cfac-058f-456a-ac59-0dc6e2baf7f6" alt="Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/auto-rebase-and-detect-merge-conflicts-diagram.png" alt="Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest" loading="lazy" /></p>
 <h3>Refresh everything on every merge</h3>
 <p>The sweep triggers on push to <code>master</code> and pages through all open PRs against it:</p>
 <pre><code class="language-yaml">on:

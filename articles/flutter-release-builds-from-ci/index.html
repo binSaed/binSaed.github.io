@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>One button, three stores: shipping a Flutter app from CI</h1>
 <p><em>Subtitle: Mobile release builds are full of boring landmines — disk space, caches, code signing. Here's how three workflows turned a manual ritual into a button anyone can press.</em></p>
 <p><em>The Self-Driving Repo · Part 6 — Release Engineering</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/b0dc74e3-c287-4411-9aca-4e167e1ec4c7" alt="One Release button producing Android, iOS and Play Store packages" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/flutter-release-builds-from-ci-hero.png" alt="One Release button producing Android, iOS and Play Store packages" loading="lazy" /></p>
 <hr />
 <p>For a long time, "cut a build" meant a specific person opened a specific laptop. They'd run the Flutter build, wait, find the artifact, upload it somewhere, and message the team. If that person was on vacation, releases waited. The build environment was a human.</p>
 <p>That's a bus-factor of one for the single most important operation a mobile team does. So I moved release builds into CI — three workflows, one per target: an Android APK for internal distribution, an iOS archive, and a Play Store App Bundle. Now anyone with repo access can ship from a dropdown.</p>
@@ -119,7 +119,7 @@
   --target "lib/main_$ENV.dart" \
   --target-platform android-arm64</code></pre>
 <h2>How it works</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/e8323e7f-3be8-44a7-95a3-80ead2e982b9" alt="Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/flutter-release-builds-from-ci-diagram.png" alt="Build pipeline: free disk, restore caches, select flavor, unlock keychain from secrets, build APK/IPA/AAB, notify" loading="lazy" /></p>
 <h3>Landmine 1: the runner runs out of disk</h3>
 <p>This one fails <em>mysteriously</em>. A hosted runner comes preloaded with toolchains you'll never use — and a Flutter release build is disk-hungry. Halfway through, you get an opaque failure that has nothing to do with your code. The fix is to reclaim space <em>before</em> building:</p>
 <pre><code class="language-bash"># Free ~20GB the build will never miss

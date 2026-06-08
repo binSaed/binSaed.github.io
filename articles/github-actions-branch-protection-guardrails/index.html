@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>The repo that rejects my own pushes to master</h1>
 <p><em>Subtitle: Branch protection rules are step one. Two small GitHub Actions turned "please don't do that" into "the repo won't let you."</em></p>
 <p><em>The Self-Driving Repo · Part 1 — Governance</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/86e4a4ea-f3e6-42a9-9638-369a3865c03a" alt="Guardrails — a neon shield protecting the master branch" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/github-actions-branch-protection-guardrails-hero.png" alt="Guardrails — a neon shield protecting the master branch" loading="lazy" /></p>
 <hr />
 <p>Every team has the unwritten rule: <strong>don't push straight to <code>master</code>.</strong> And every team has the Tuesday afternoon where someone does it anyway — a fast hotfix, a muscle-memory <code>git push</code>, a rebase gone sideways — and now production history has a commit that never saw review.</p>
 <p>You can write that rule in the README. You can put it in the onboarding doc. People will still break it, including the person who wrote it. (Hi.)</p>
@@ -115,7 +115,7 @@
 </ul>
 <p>Both share one principle: <strong>reversible enforcement.</strong> Nothing is blocked with a scary red X you have to beg an admin to override. The bad change is <em>undone</em>, in the open, with a commit you can read — and there's a documented way to say "yes, I really mean it."</p>
 <h2>How it works</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/f9ecc2a1-9997-4509-b8d1-be7162178a24" alt="Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/github-actions-branch-protection-guardrails-diagram.png" alt="Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized" loading="lazy" /></p>
 <h3>Guarding the branch</h3>
 <p><code>protect-master</code> triggers on push and asks one question: <em>was this an allowed way to land on <code>master</code>?</em></p>
 <pre><code class="language-yaml">on:

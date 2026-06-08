@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>The release writes its own QA test plan now</h1>
 <p><em>Subtitle: When a release is cut, an AI step reads the diff, maps changes to features, classifies risk, and writes a QA plan a tester can actually follow. Here's the engineering that makes it reliable, not a gimmick.</em></p>
 <p><em>The Self-Driving Repo · Part 7 — AI in the Pipeline (flagship)</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/b87eb64e-5275-4f2e-a554-ac2e2d06f2a6" alt="A release diff feeding an AI lens and emerging as a QA checklist" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/ai-generated-qa-reports-from-a-release-diff-hero.png" alt="A release diff feeding an AI lens and emerging as a QA checklist" loading="lazy" /></p>
 <hr />
 <p>"What do we test for this release?"</p>
 <p>That question, asked before every release, used to kick off an hour of archaeology. Someone scrolled the commit log, tried to remember what each change touched, guessed at the risky bits, and wrote a test plan from memory. The plan's quality depended entirely on how much that person happened to know about every corner of the app. Miss a subtle change in a shared module and it ships untested.</p>
@@ -116,7 +116,7 @@
       tag: { description: 'Release tag (semver). Empty = latest.' }</code></pre>
 <p>The critical insight: <strong>an LLM is only as good as the context you hand it, and the bounds you put around it.</strong> Most of the workflow is not the AI call. It's the diff preparation that makes the AI call reliable.</p>
 <h2>How it works</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/fb333893-882e-4348-8ae5-bf0a251395e7" alt="Pipeline: resolve tags, prepare a bounded diff through a filter funnel, run the AI agent, verify, then PDF and distribute" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/ai-generated-qa-reports-from-a-release-diff-diagram.png" alt="Pipeline: resolve tags, prepare a bounded diff through a filter funnel, run the AI agent, verify, then PDF and distribute" loading="lazy" /></p>
 <h3>Step 1: resolve exactly what shipped</h3>
 <p>You can't diff a release without knowing its predecessor. Resolve the current tag (from the release event, an input, or the latest), validate it's real semver, then find the previous tag by version-sorted order:</p>
 <pre><code class="language-bash">PREVIOUS=$(git tag --sort=-version:refname \

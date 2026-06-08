@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.</h1>
 <p><em>Subtitle: Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Deciding how to use it without it becoming surveillance is the actual work.</em></p>
 <p><em>The Self-Driving Repo · Part 9 — AI &amp; People (flagship)</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/f68eb21f-2a7d-42c2-a585-15bcf10d75d6" alt="Private, per-engineer weekly summary cards routed individually" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/ai-weekly-engineering-reviews-hero.png" alt="Private, per-engineer weekly summary cards routed individually" loading="lazy" /></p>
 <hr />
 <p>This is the workflow I hesitated to write about, because it's the one most likely to be misunderstood — and the one where the engineering was genuinely the easy part.</p>
 <p>Every Sunday, a job aggregates the week's git activity and issue-tracker tickets for each engineer, compares it to the previous week, and uses an LLM to write a short, personalized summary that gets delivered privately to each person — in their own language. It also updates a stats table in the repo's README.</p>
@@ -119,7 +119,7 @@
   schedule:
     - cron: '0 6 * * 0'    # Sunday 06:00 UTC</code></pre>
 <h2>How it works (the easy part)</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/eccddff7-e8c9-4e6b-b1c2-b80c42615983" alt="Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/ai-weekly-engineering-reviews-diagram.png" alt="Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately" loading="lazy" /></p>
 <h3>Aggregate two noisy sources into clean per-person stats</h3>
 <p>Git is the messier source. People commit under multiple names and emails, so each person maps to a set of aliases, and the script dedupes commits by hash across them. It buckets commit subjects into types (fix / feat / chore / refactor) and sums the diffstat — for the current week <em>and</em> the previous one, so every number has a comparison:</p>
 <pre><code class="language-bash">git log --all --no-merges --author="$alias" \

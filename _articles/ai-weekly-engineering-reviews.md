@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/ai-weekly-engineering-reviews
 
 *The Self-Driving Repo · Part 9 — AI & People (flagship)*
 
-![Private, per-engineer weekly summary cards routed individually](https://github.com/user-attachments/assets/f68eb21f-2a7d-42c2-a585-15bcf10d75d6)
+![Private, per-engineer weekly summary cards routed individually](/article-images/ai-weekly-engineering-reviews-hero.png)
 
 ---
 
@@ -53,7 +53,7 @@ on:
 
 ## How it works (the easy part)
 
-![Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately](https://github.com/user-attachments/assets/eccddff7-e8c9-4e6b-b1c2-b80c42615983)
+![Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately](/article-images/ai-weekly-engineering-reviews-diagram.png)
 
 ### Aggregate two noisy sources into clean per-person stats
 

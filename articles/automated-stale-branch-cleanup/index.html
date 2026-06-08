@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>A repo that cleans up after itself — without deleting the wrong branch</h1>
 <p><em>Subtitle: Deleting branches in bulk is a one-keystroke disaster waiting to happen. The fix is to make deletion the last step of a careful classification — and to cap, defer, and audit everything.</em></p>
 <p><em>The Self-Driving Repo · Part 8 — Housekeeping</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/64cc7969-98bf-40fc-80df-d18312bcd489" alt="A robot broom sweeping dead branches from a healthy git tree" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/automated-stale-branch-cleanup-hero.png" alt="A robot broom sweeping dead branches from a healthy git tree" loading="lazy" /></p>
 <hr />
 <p>Old branches are the junk drawer of a repo. Every merged feature, every abandoned experiment, every "let me just try something" leaves one behind. They pile up silently — clones get slower, branch pickers get unusable, and <code>git branch -r</code> scrolls for a screen and a half. On a long-lived repo with a busy team, you wake up one day with hundreds of dead branches.</p>
 <p>The naive fix — a script that deletes anything old — is how you delete a release branch someone needed, or a long-running integration branch that just hadn't been touched in a while. With deletion, "oops" is expensive. You don't get to be cavalier.</p>
@@ -124,7 +124,7 @@
       age_days:      { default: '730' }   # ~2 years
       max_deletions: { default: '50' }    # hard cap per run</code></pre>
 <h2>How it works</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/7d41f474-84c8-47b8-8c83-8c1a0755b1b0" alt="Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/automated-stale-branch-cleanup-diagram.png" alt="Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray" loading="lazy" /></p>
 <h3>Build the world before you judge it</h3>
 <p>You can't classify a branch in isolation — you need to know whether it backs an open PR, whether it was merged, and how old its tip is. So the first step assembles the full picture: all open PRs (to collect their head/base refs), all merged PRs (to know what's been merged and by whom), and every branch with its last-commit timestamp and protection flag.</p>
 <pre><code class="language-bash"># Every branch with sha + protected flag, as TSV

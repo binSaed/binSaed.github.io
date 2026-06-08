@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>PRs that fill in their own paperwork (and a gate that won't let bad code merge)</h1>
 <p><em>Subtitle: Half of code review is chores — linking the ticket, assigning yourself, checking the analyzer. So I automated the chores and kept humans for the judgment.</em></p>
 <p><em>The Self-Driving Repo · Part 2 — Developer Experience</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/4d056c62-c767-4b7e-8d33-13943d7c5683" alt="A pull request auto-filling its own context beside a quality gate" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/automate-pull-request-hygiene-hero.png" alt="A pull request auto-filling its own context beside a quality gate" loading="lazy" /></p>
 <hr />
 <p>Open a pull request on most teams and you're greeted by a checklist: link the Jira ticket, assign yourself, confirm the analyzer passes, tick the boxes. None of it is hard. All of it is friction. And friction at the <em>start</em> of review is the worst kind, because it delays the part that actually matters — a human reading your code.</p>
 <p>So I split PR review into two buckets. <strong>Chores</strong> (mechanical, rule-based, boring) get automated. <strong>Judgment</strong> (is this the right change?) stays with people. Two workflows handle the chores: one enriches every new PR with context, the other runs a real quality gate and manages its own labels and comments.</p>
@@ -115,7 +115,7 @@
 <p>1. <strong>PR automation</strong> — on <code>opened</code>, derive context from the branch and write it into the PR: the ticket link, the assignee, a <code>wip</code> label. 2. <strong>The analysis gate</strong> — on <code>opened</code> and every push, validate translation JSON, run the analyzer, then <strong>label, comment, and block</strong> on failure — and <em>remove</em> the label and comment when the next push fixes it.</p>
 <p>The theme that makes them feel good to use: <strong>idempotency and self-cleanup.</strong> They never double-post, never leave stale state, and converge to "correct" no matter how many times you push.</p>
 <h2>How it works</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/56baeaf6-9e53-40c2-8302-a8b001c8e447" alt="Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/automate-pull-request-hygiene-diagram.png" alt="Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment" loading="lazy" /></p>
 <h3>Auto-context on open</h3>
 <p>The ticket ID already lives in the branch name — <code>feature/PROJ-123-add-audio-seek</code>. A regex lifts it out, no external lookup needed:</p>
 <pre><code class="language-js">const match = branch.match(/([A-Z]+-\d+)/);

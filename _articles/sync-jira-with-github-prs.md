@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/sync-jira-with-github-prs
 
 *The Self-Driving Repo · Part 3 — Integration*
 
-![A glowing bridge syncing an issue board and a pull request](https://github.com/user-attachments/assets/a9f1cbe0-7e1c-4b95-8cb7-0a20cbfe2d8d)
+![A glowing bridge syncing an issue board and a pull request](/article-images/sync-jira-with-github-prs-hero.png)
 
 ---
 
@@ -54,7 +54,7 @@ on:
 
 ## How it works
 
-![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](https://github.com/user-attachments/assets/de8487d8-1420-4cbe-97ad-570827383039)
+![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](/article-images/sync-jira-with-github-prs-diagram.png)
 
 ### Branch name → Jira issue
 

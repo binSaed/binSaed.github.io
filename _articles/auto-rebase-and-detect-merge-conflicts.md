@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts
 
 *The Self-Driving Repo · Part 4 — Conflict Management*
 
-![A radar sweep over branch lines with conflicts pulsing red](https://github.com/user-attachments/assets/c9c666f9-3d47-4aa2-a1f5-d0c1359dd045)
+![A radar sweep over branch lines with conflicts pulsing red](/article-images/auto-rebase-and-detect-merge-conflicts-hero.png)
 
 ---
 
@@ -44,7 +44,7 @@ Detection and notification are deliberately separate. The sweep maintains accura
 
 ## How it works
 
-![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](https://github.com/user-attachments/assets/b0d1cfac-058f-456a-ac59-0dc6e2baf7f6)
+![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](/article-images/auto-rebase-and-detect-merge-conflicts-diagram.png)
 
 ### Refresh everything on every merge
 

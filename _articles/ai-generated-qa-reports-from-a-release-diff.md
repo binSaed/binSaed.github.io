@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/ai-generated-qa-reports-from-a-release-diff
 
 *The Self-Driving Repo · Part 7 — AI in the Pipeline (flagship)*
 
-![A release diff feeding an AI lens and emerging as a QA checklist](https://github.com/user-attachments/assets/b87eb64e-5275-4f2e-a554-ac2e2d06f2a6)
+![A release diff feeding an AI lens and emerging as a QA checklist](/article-images/ai-generated-qa-reports-from-a-release-diff-hero.png)
 
 ---
 
@@ -52,7 +52,7 @@ The critical insight: **an LLM is only as good as the context you hand it, and t
 
 ## How it works
 
-![Pipeline: resolve tags, prepare a bounded diff through a filter funnel, run the AI agent, verify, then PDF and distribute](https://github.com/user-attachments/assets/fb333893-882e-4348-8ae5-bf0a251395e7)
+![Pipeline: resolve tags, prepare a bounded diff through a filter funnel, run the AI agent, verify, then PDF and distribute](/article-images/ai-generated-qa-reports-from-a-release-diff-diagram.png)
 
 ### Step 1: resolve exactly what shipped
 

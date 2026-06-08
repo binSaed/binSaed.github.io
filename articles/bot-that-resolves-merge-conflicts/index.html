@@ -42,7 +42,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-lVEqUpG0.js"></script>
+    <script type="module" crossorigin src="/assets/index-CX-AFiPS.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
@@ -97,7 +97,7 @@
 <h1>I let a bot resolve merge conflicts and push the fix. Here's how I made that safe.</h1>
 <p><em>Subtitle: Auto-committing to other people's branches is terrifying — until you shrink the blast radius to one provably-safe case. This is that story.</em></p>
 <p><em>The Self-Driving Repo · Part 5 — Conflict Management (flagship)</em></p>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/6a060db4-c5f2-4301-90b1-fde23d675d53" alt="A robot arm carefully braiding two translation streams back into one" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/bot-that-resolves-merge-conflicts-hero.png" alt="A robot arm carefully braiding two translation streams back into one" loading="lazy" /></p>
 <hr />
 <p>Let me start with the version of this idea that should scare you:</p>
 <blockquote>"What if a GitHub Action automatically resolved merge conflicts and force-pushed the result to people's PR branches?"</blockquote>
@@ -112,7 +112,7 @@
 <p>The workflow runs on every push to <code>master</code>. For each open PR, it tries to merge <code>master</code> in. If the <em>only</em> things that conflict are translation JSON files, it resolves them by merging the key sets, pushes the resolution, and comments to explain itself. If <em>anything else</em> conflicts — a single <code>.dart</code> file, a <code>pubspec.yaml</code>, anything — it aborts, touches nothing, and leaves the PR for a human.</p>
 <p>The safety isn't in the merge logic. It's in the <strong>refusal logic</strong>. Let me walk the guards in the order they execute, because the order <em>is</em> the design.</p>
 <h2>How it works (a fortress of guard clauses)</h2>
-<p><img class="pr-thumb" src="https://github.com/user-attachments/assets/813ce161-2c69-4dc6-bfc1-039cd60e5b47" alt="Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human" loading="lazy" /></p>
+<p><img class="pr-thumb" src="/article-images/bot-that-resolves-merge-conflicts-diagram.png" alt="Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human" loading="lazy" /></p>
 <h3>Guard 0: only conflicted, real, ready PRs</h3>
 <p>Before any git happens, filter hard. Skip drafts. Skip forks (you can't safely push to them, and you shouldn't). And critically, only consider PRs that are <em>actually</em> conflicting — which means waiting out GitHub's eventually-consistent <code>mergeable</code> field, exactly like the conflict radar in Part 4:</p>
 <pre><code class="language-js">let freshPR;
