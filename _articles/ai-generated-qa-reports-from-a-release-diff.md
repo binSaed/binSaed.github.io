@@ -139,3 +139,394 @@ Then it converts the Markdown to PDF (nicer to read and share), attaches both to
 Putting an LLM in a pipeline isn't about the prompt — it's about everything *around* the prompt. Resolve precise inputs, curate and bound the context, constrain the model with a versioned template, demand specificity, cap its autonomy, and verify its output before you trust it. Do that and an AI step becomes a reliable colleague that reads every diff so your testers can focus on judgment. Skip it and you've automated hallucination.
 
 Next: the repo cleans up after itself — classifying and deleting stale branches without ever touching the ones that matter.
+
+## The complete workflow
+
+Here is the full, genericized workflow — drop it into `.github/workflows/` and replace the placeholders (`your-org`, the `PROJ` project key, `<@DISCORD_USER_ID>`, the example team, and the secret names) with your own.
+
+### `.github/workflows/release-qa-report.yml`
+
+````yaml
+name: Release QA Report
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. 5.2.5). Must be semver without prefix. Leave empty to use latest.'
+        required: false
+        type: string
+
+concurrency:
+  group: release-qa-report
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: read
+  issues: read
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve release tags
+        id: tags
+        shell: bash
+        run: |
+          if [ "$EVENT_NAME" = "release" ]; then
+            CURRENT="$RELEASE_TAG"
+          elif [ -n "$INPUT_TAG" ]; then
+            if ! echo "$INPUT_TAG" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+              echo "::error::Invalid tag format '$INPUT_TAG'. Expected semver (e.g. 5.2.5)"
+              exit 1
+            fi
+            CURRENT="$INPUT_TAG"
+          else
+            CURRENT=$(gh release list --limit 1 --json tagName -q '.[0].tagName')
+          fi
+
+          git rev-parse "$CURRENT" > /dev/null 2>&1 || { echo "::error::Tag $CURRENT not found in repo"; exit 1; }
+
+          PREVIOUS=$(git tag --sort=-version:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | grep -xF "$CURRENT" -A1 | tail -1)
+
+          if [ -z "$PREVIOUS" ] || [ "$PREVIOUS" = "$CURRENT" ]; then
+            echo "::error::No previous tag found before $CURRENT (is this the first release?)"
+            exit 1
+          fi
+
+          git rev-parse "$PREVIOUS" > /dev/null 2>&1 || { echo "::error::Tag $PREVIOUS not found in repo"; exit 1; }
+
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          echo "previous=$PREVIOUS" >> "$GITHUB_OUTPUT"
+          echo "Resolved: $PREVIOUS -> $CURRENT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+
+      - name: Collect diff data
+        id: diff
+        shell: bash
+        run: |
+          CURRENT="$TAG_CURRENT"
+          PREVIOUS="$TAG_PREVIOUS"
+
+          echo "## Diff Stats" > /tmp/diff_context.md
+          echo '```' >> /tmp/diff_context.md
+          git diff --stat "$PREVIOUS".."$CURRENT" >> /tmp/diff_context.md
+          echo '```' >> /tmp/diff_context.md
+
+          echo "" >> /tmp/diff_context.md
+          echo "## Changed Files" >> /tmp/diff_context.md
+          echo '```' >> /tmp/diff_context.md
+          git diff --name-only "$PREVIOUS".."$CURRENT" >> /tmp/diff_context.md
+          echo '```' >> /tmp/diff_context.md
+
+          echo "" >> /tmp/diff_context.md
+          echo "## Commit Log" >> /tmp/diff_context.md
+          echo '```' >> /tmp/diff_context.md
+          git log --oneline "$PREVIOUS".."$CURRENT" >> /tmp/diff_context.md
+          echo '```' >> /tmp/diff_context.md
+
+          echo "" >> /tmp/diff_context.md
+          echo "## Dependency Changes (pubspec.yaml)" >> /tmp/diff_context.md
+          echo '```diff' >> /tmp/diff_context.md
+          git diff "$PREVIOUS".."$CURRENT" -- pubspec.yaml >> /tmp/diff_context.md 2>/dev/null || echo "No pubspec.yaml changes"
+          echo '```' >> /tmp/diff_context.md
+
+          echo "" >> /tmp/diff_context.md
+          echo "## Key Code Diffs" >> /tmp/diff_context.md
+
+          ALL_FILES=$(git diff --name-only "$PREVIOUS".."$CURRENT" -- 'lib/core/' 'lib/features/' \
+            | grep -v '\.g\.dart$' | grep -v '\.freezed\.dart$' | grep -v '\.drift\.dart$')
+
+          if [ -z "$ALL_FILES" ]; then
+            echo "" >> /tmp/diff_context.md
+            echo "> No lib/core or lib/features changes in this release." >> /tmp/diff_context.md
+          else
+            TOTAL=$(echo "$ALL_FILES" | grep -c . || true)
+            if [ "$TOTAL" -gt 50 ]; then
+              echo "" >> /tmp/diff_context.md
+              echo "> **Note:** Showing 50 of $TOTAL changed files. Remaining files omitted." >> /tmp/diff_context.md
+            fi
+
+            echo "$ALL_FILES" | sed -n '1,50p' | while IFS= read -r f; do
+              echo "" >> /tmp/diff_context.md
+              echo "### $f" >> /tmp/diff_context.md
+              echo '```diff' >> /tmp/diff_context.md
+              DIFF=$(git diff "$PREVIOUS".."$CURRENT" -- "$f")
+              LINES=$(echo "$DIFF" | wc -l)
+              echo "$DIFF" | sed -n '1,500p' >> /tmp/diff_context.md
+              if [ "$LINES" -gt 500 ]; then
+                echo "" >> /tmp/diff_context.md
+                echo "*... truncated ($LINES total lines)*" >> /tmp/diff_context.md
+              fi
+              echo '```' >> /tmp/diff_context.md
+            done
+          fi
+
+          echo "" >> /tmp/diff_context.md
+          echo "## Platform Code Diffs" >> /tmp/diff_context.md
+
+          PLATFORM_FILES=$(git diff --name-only "$PREVIOUS".."$CURRENT" -- 'ios/' 'android/' \
+            | grep -v 'Podfile\.lock$' | grep -v 'GeneratedPluginRegistrant' \
+            | grep -v '\.symlinks/' | grep -v 'pubspec\.lock$' | sed -n '1,20p')
+
+          if [ -z "$PLATFORM_FILES" ]; then
+            echo "" >> /tmp/diff_context.md
+            echo "> No native platform code changes in this release." >> /tmp/diff_context.md
+          else
+            echo "$PLATFORM_FILES" | while IFS= read -r f; do
+              echo "" >> /tmp/diff_context.md
+              echo "### $f" >> /tmp/diff_context.md
+              echo '```diff' >> /tmp/diff_context.md
+              git diff "$PREVIOUS".."$CURRENT" -- "$f" | sed -n '1,300p' >> /tmp/diff_context.md
+              echo '```' >> /tmp/diff_context.md
+            done
+          fi
+
+          CONTEXT_LINES=$(wc -l < /tmp/diff_context.md)
+          if [ "$CONTEXT_LINES" -gt 15000 ]; then
+            head -15000 /tmp/diff_context.md > /tmp/diff_context_trimmed.md
+            echo "" >> /tmp/diff_context_trimmed.md
+            echo "> **Warning:** Diff context truncated at 15,000 lines (original: $CONTEXT_LINES lines)." >> /tmp/diff_context_trimmed.md
+            mv /tmp/diff_context_trimmed.md /tmp/diff_context.md
+          fi
+
+          echo "diff_file=/tmp/diff_context.md" >> "$GITHUB_OUTPUT"
+        env:
+          TAG_CURRENT: ${{ steps.tags.outputs.current }}
+          TAG_PREVIOUS: ${{ steps.tags.outputs.previous }}
+
+      - name: Configure Claude Code permissions
+        shell: bash
+        run: |
+          mkdir -p .claude
+          cat > .claude/settings.local.json <<'SETTINGS_EOF'
+          {
+            "permissions": {
+              "allow": [
+                "Bash(*)", "Read(*)", "Write(*)", "Edit(*)",
+                "Glob(*)", "Grep(*)", "WebFetch(*)", "Task(*)", "ToolSearch(*)"
+              ]
+            },
+            "hooks": {}
+          }
+          SETTINGS_EOF
+
+          if [ -f .claude/settings.json ]; then
+            cp .claude/settings.json .claude/settings.json.bak
+            jq '.hooks = {}' .claude/settings.json > .claude/settings.json.tmp && mv .claude/settings.json.tmp .claude/settings.json
+          fi
+
+      - name: Ensure output directory
+        run: mkdir -p docs/releases
+
+      - name: Generate QA report with Claude
+        id: claude
+        continue-on-error: true
+        uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_BASE_URL: https://api.your-llm-provider.com
+        with:
+          anthropic_api_key: ${{ secrets.LLM_API_KEY }}
+          github_token: ${{ github.token }}
+          claude_args: '--model your-model-id --max-turns 20'
+          show_full_output: true
+          prompt: |
+            You are generating a QA regression test report for the the Flutter mobile app.
+
+            ## Context
+            Read these two files first (in parallel):
+            1. `/tmp/diff_context.md` — pre-collected diff data including code diffs for all changed files
+            2. `docs/workflows/release_report/WORKFLOW.md` — report template, risk classification, and feature module mapping
+
+            Note: `CLAUDE.md` is already loaded in your context as project instructions — do not read it again.
+
+            ## Release Info
+            - Current release: ${{ steps.tags.outputs.current }}
+            - Previous release: ${{ steps.tags.outputs.previous }}
+            - Jira base URL: https://your-org.atlassian.net/browse
+
+            ## Instructions
+            1. Read the two context files above. Do NOT read other files unless needed.
+            2. Code diffs for all changed Dart files are already in `/tmp/diff_context.md`. Only run `git diff` for files where the diff was marked as truncated.
+            3. Follow the Steps in WORKFLOW.md to analyze changes, map impacts, and classify risk.
+            4. Generate the report following the Report Template in WORKFLOW.md.
+            5. Write the report to: `docs/releases/${{ steps.tags.outputs.current }}_qa_report.md`
+            6. Verify completeness against the Completion Verification table in WORKFLOW.md.
+
+            ## Key Rules
+            - Test cases must be SPECIFIC to the actual code change — read the diffs, not just file names.
+            - For `fix:` commits, verify the original bug AND related edge cases.
+            - For dependency upgrades, test the features that use the upgraded package.
+            - Every Jira key (PROJ-XXXXX) must be a clickable link: [PROJ-XXXXX](https://your-org.atlassian.net/browse/PROJ-XXXXX)
+            - The report must be self-contained — a tester with no context should be able to use it.
+            - Full Commit Log must use 4 columns: Hash, Type, Jira, Summary. If duplicate commits represent the same logical change, keep only the one with a Jira key.
+
+      - name: Verify report was generated
+        shell: bash
+        run: |
+          REPORT="docs/releases/${TAG_CURRENT}_qa_report.md"
+
+          if [ "$CLAUDE_OUTCOME" != "success" ]; then
+            echo "::warning::Claude step finished with outcome: $CLAUDE_OUTCOME"
+          fi
+
+          if [ ! -f "$REPORT" ] || [ ! -s "$REPORT" ]; then
+            echo "::error::Report was not generated: $REPORT"
+            exit 1
+          fi
+        env:
+          TAG_CURRENT: ${{ steps.tags.outputs.current }}
+          CLAUDE_OUTCOME: ${{ steps.claude.outcome }}
+
+      - name: Convert report to PDF
+        if: always()
+        shell: bash
+        run: |
+          REPORT_FILE="docs/releases/${TAG_CURRENT}_qa_report.md"
+          if [ ! -f "$REPORT_FILE" ]; then
+            echo "::warning::No report file to convert"
+            exit 0
+          fi
+
+          sudo apt-get update -qq && sudo apt-get install -y -qq pandoc wkhtmltopdf > /dev/null 2>&1
+
+          pandoc "$REPORT_FILE" \
+            --pdf-engine=wkhtmltopdf \
+            --metadata title="QA Report ${TAG_CURRENT}" \
+            --variable margin-top=12 \
+            --variable margin-bottom=12 \
+            --variable margin-left=12 \
+            --variable margin-right=12 \
+            -o "docs/releases/${TAG_CURRENT}_qa_report.pdf" || {
+            echo "::warning::PDF conversion failed, will send Markdown instead"
+          }
+        env:
+          TAG_CURRENT: ${{ steps.tags.outputs.current }}
+
+      - name: Upload QA report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report-${{ steps.tags.outputs.current }}
+          path: |
+            docs/releases/${{ steps.tags.outputs.current }}_qa_report.md
+            docs/releases/${{ steps.tags.outputs.current }}_qa_report.pdf
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload QA report to release
+        if: always()
+        shell: bash
+        run: |
+          TAG="$TAG_CURRENT"
+          MD_FILE="docs/releases/${TAG}_qa_report.md"
+          PDF_FILE="docs/releases/${TAG}_qa_report.pdf"
+
+          if ! gh release view "$TAG" --repo "$REPO" > /dev/null 2>&1; then
+            echo "::warning::Release $TAG not found, skipping upload"
+            exit 0
+          fi
+
+          for FILE in "$PDF_FILE" "$MD_FILE"; do
+            if [ -f "$FILE" ]; then
+              gh release upload "$TAG" "$FILE" --repo "$REPO" --clobber || echo "::warning::Failed to upload $(basename "$FILE")"
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_CURRENT: ${{ steps.tags.outputs.current }}
+          REPO: ${{ github.repository }}
+
+      - name: Send QA report to Discord
+        if: always()
+        shell: bash
+        run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "::warning::DISCORD_WEBHOOK_URL not configured, skipping"
+            exit 0
+          fi
+
+          PDF_FILE="docs/releases/${TAG_CURRENT}_qa_report.pdf"
+          MD_FILE="docs/releases/${TAG_CURRENT}_qa_report.md"
+
+          if [ -f "$PDF_FILE" ]; then
+            SEND_FILE="$PDF_FILE"
+            SEND_NAME="${TAG_CURRENT}_qa_report.pdf"
+          elif [ -f "$MD_FILE" ]; then
+            SEND_FILE="$MD_FILE"
+            SEND_NAME="${TAG_CURRENT}_qa_report.md"
+          else
+            echo "::warning::No report file to send"
+            exit 0
+          fi
+
+          RELEASE_URL="$RELEASE_HTML_URL"
+          if [ -z "$RELEASE_URL" ]; then
+            RELEASE_URL="https://github.com/${REPO}/releases/tag/${TAG_CURRENT}"
+          fi
+
+          MSG=$(printf '📋 **QA Regression Report: %s → %s**\n🔗 %s' "$TAG_PREVIOUS" "$TAG_CURRENT" "$RELEASE_URL")
+          PAYLOAD=$(jq -n --arg content "$MSG" '{content: $content}')
+
+          curl -f -X POST \
+            -F "payload_json=${PAYLOAD}" \
+            -F "file=@${SEND_FILE};filename=${SEND_NAME}" \
+            "$DISCORD_WEBHOOK_URL" || echo "::warning::Discord notification failed"
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          TAG_CURRENT: ${{ steps.tags.outputs.current }}
+          TAG_PREVIOUS: ${{ steps.tags.outputs.previous }}
+          RELEASE_HTML_URL: ${{ github.event.release.html_url }}
+          REPO: ${{ github.repository }}
+
+      - name: Job summary
+        if: always()
+        shell: bash
+        run: |
+          REPORT="docs/releases/${TAG_CURRENT}_qa_report.md"
+          {
+            echo "## Release QA Report: ${TAG_PREVIOUS} → ${TAG_CURRENT}"
+            echo ""
+            if [ -f "$REPORT" ] && [ -s "$REPORT" ]; then
+              echo "Report generated successfully."
+              echo ""
+              head -30 "$REPORT"
+            else
+              echo "Report was **not** generated. Check the workflow logs."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          TAG_CURRENT: ${{ steps.tags.outputs.current }}
+          TAG_PREVIOUS: ${{ steps.tags.outputs.previous }}
+
+      - name: Upload diff context on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diff-context-${{ steps.tags.outputs.current }}
+          path: /tmp/diff_context.md
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f /tmp/diff_context.md
+          rm -f .claude/settings.local.json
+          if [ -f .claude/settings.json.bak ]; then
+            mv .claude/settings.json.bak .claude/settings.json
+          fi
+````

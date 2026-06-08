@@ -139,3 +139,193 @@ Want to push a deliberate lockfile change? `git commit -m "chore: bump pods --sk
 The cheapest way to enforce a team norm isn't a doc or a nag — it's a small workflow that *reverses* the mistake and leaves a readable trail, with a named escape hatch for the times you mean it. Reversible beats blocking. Visible beats silent.
 
 Next in the series: PRs that fill in their own context and refuse to merge when the analyzer is unhappy.
+
+## The complete workflow
+
+Here is the full, genericized workflow — drop it into `.github/workflows/` and replace the placeholders (`your-org`, the `PROJ` project key, `<@DISCORD_USER_ID>`, the example team, and the secret names) with your own.
+
+### `.github/workflows/protect-master.yml`
+
+````yaml
+name: Protect Master Branch
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  check-push-permission:
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write
+    steps:
+      - name: Check pusher authorization
+        id: check-auth
+        env:
+          PUSHER: ${{ github.actor }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: |
+          ALLOWED_USERS=("your-maintainer")
+
+          # Check if it's a PR merge (allow anyone to merge approved PRs)
+          # Matches: "Merge pull request #..." (merge commit), "...(#123)" (squash/rebase merge)
+          if echo "$COMMIT_MSG" | grep -qE "^Merge pull request #|\\(#[0-9]+\\)"; then
+            echo "✅ PR merge allowed: $PUSHER"
+            echo "authorized=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Check if pusher is allowed for direct pushes
+          for user in "${ALLOWED_USERS[@]}"; do
+            if [ "$PUSHER" = "$user" ]; then
+              echo "✅ Direct push by authorized user: $PUSHER"
+              echo "authorized=true" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          done
+
+          # Check for skip flag in commit message
+          if echo "$COMMIT_MSG" | grep -q -- "--skip-protection"; then
+            echo "✅ Skipping protection: --skip-protection flag found"
+            echo "authorized=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "❌ Unauthorized direct push to master by: $PUSHER"
+          echo "Only the following users can push directly to master: ${ALLOWED_USERS[*]}"
+          echo "Or merge via pull request"
+          echo "authorized=false" >> $GITHUB_OUTPUT
+
+      - name: Checkout repository
+        if: steps.check-auth.outputs.authorized == 'false'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Revert unauthorized push
+        if: steps.check-auth.outputs.authorized == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git revert HEAD --no-edit
+          git push origin master
+
+      - name: Fail workflow for unauthorized push
+        if: steps.check-auth.outputs.authorized == 'false'
+        run: |
+          echo "🔄 Unauthorized commit has been reverted"
+          echo "Options:"
+          echo "  - Only @your-maintainer can push directly to master"
+          echo "  - Use --skip-protection flag in commit message"
+          echo "  - Merge via pull request (requires approval)"
+          exit 1
+````
+
+### `.github/workflows/protect-files.yml`
+
+````yaml
+name: Protect Files
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '.github/workflows/protect-files.yml'
+      - '.github/workflows/protect-master.yml'
+      - '.vscode/settings.json'
+      - '.vscode/launch.json'
+      - '.claude/settings.local.json'
+      - 'pubspec.lock'
+      - 'ios/Podfile.lock'
+      - 'ios/.symlinks/**'
+      - 'ios/Flutter/**'
+      - 'macos/**'
+
+jobs:
+  restore-protected-files:
+    if: github.event.pull_request.user.login != 'your-maintainer' && github.actor != 'your-maintainer'
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Check for skip flag in commit message
+        id: check-skip
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          if echo "$COMMIT_MSG" | grep -q -- "--skip-protection"; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Skipping protection: --skip-protection flag found in commit message"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Restore protected files from master
+        if: steps.check-skip.outputs.skip != 'true'
+        run: |
+          git fetch origin master
+
+          # List of protected files/folders
+          PROTECTED_FILES=(
+            ".github/workflows/protect-files.yml"
+            ".github/workflows/protect-master.yml"
+            ".vscode/settings.json"
+            ".vscode/launch.json"
+            ".claude/settings.local.json"
+            "pubspec.lock"
+            "ios/Podfile.lock"
+          )
+
+          PROTECTED_FOLDERS=(
+            "ios/.symlinks"
+            "ios/Flutter"
+            "macos"
+          )
+
+          CHANGED=false
+
+          # Restore individual files
+          for file in "${PROTECTED_FILES[@]}"; do
+            if git diff --name-only origin/master HEAD | grep -q "^${file}$"; then
+              echo "Restoring $file from master"
+              git checkout origin/master -- "$file" 2>/dev/null || true
+              CHANGED=true
+            fi
+          done
+
+          # Restore folders
+          for folder in "${PROTECTED_FOLDERS[@]}"; do
+            if git diff --name-only origin/master HEAD | grep -q "^${folder}/"; then
+              echo "Restoring $folder from master"
+              git checkout origin/master -- "$folder" 2>/dev/null || true
+              CHANGED=true
+            fi
+          done
+
+          if [ "$CHANGED" = true ]; then
+            git add -A
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: restore protected files from master
+
+              Protected files can only be modified by @your-maintainer or with --skip-protection flag"
+              git push
+            else
+              echo "No changes to commit"
+            fi
+          else
+            echo "No protected files were modified"
+          fi
+````

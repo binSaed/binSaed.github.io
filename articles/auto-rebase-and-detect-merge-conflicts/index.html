@@ -42,11 +42,11 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-Dx_iQtA4.js"></script>
+    <script type="module" crossorigin src="/assets/index-CKgArk6y.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CgLjqaFM.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-zapuWuX9.css">
   
     <meta property="article:published_time" content="2026-05-05" />
     <meta property="article:modified_time" content="2026-05-05" />
@@ -175,6 +175,189 @@ for (const pr of conflictedPRs) {
 <h2>Takeaway</h2>
 <p>A merge to <code>master</code> has a blast radius, and the cheapest time to deal with that radius is <em>immediately</em>. Refresh every PR on every merge, treat mergeability as eventually consistent (poll it, don't trust the first read), and route the result to a human in the tool they already watch. Detect fast; notify where people actually look.</p>
 <p>Next: the flagship. What if, for one common class of conflict, the repo didn't just <em>detect</em> it — it <em>fixed</em> it and pushed the resolution for you?</p>
+<h2>The complete workflow</h2>
+<p>Here is the full, genericized workflow — drop it into <code>.github/workflows/</code> and replace the placeholders (<code>your-org</code>, the <code>PROJ</code> project key, <code>&lt;@DISCORD_USER_ID&gt;</code>, the example team, and the secret names) with your own.</p>
+<h3><code>.github/workflows/update_all_prs_and_sweep.yml</code></h3>
+<pre><code class="language-yaml">name: Update PR branches and sweep conflict on master push
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  update-all-prs-and-sweep:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const base = context.ref.replace('refs/heads/', '');
+            const labelName = 'conflict';
+
+            // Ensure conflict label exists
+            try { await github.rest.issues.getLabel({ owner, repo, name: labelName }); }
+            catch (e) { if (e.status === 404) await github.rest.issues.createLabel({ owner, repo, name: labelName, color: 'd73a4a' }); else throw e; }
+
+            const prs = await github.paginate(github.rest.pulls.list, { owner, repo, state: 'open', base, per_page: 100 });
+
+            for (const p of prs) {
+              // Step 1: Try to update PR branch with latest master
+              if (!(p.head?.repo?.fork &amp;&amp; !p.maintainer_can_modify)) {
+                try {
+                  await github.rest.pulls.updateBranch({ owner, repo, pull_number: p.number });
+                  console.log(`Updated PR #${p.number}`);
+                } catch (e) {
+                  const status = e.status || e.response?.status;
+                  if (status === 422) {
+                    console.log(`Skipped updating PR #${p.number} due to conflicts or not behind`);
+                  } else if (status === 403) {
+                    console.log(`Skipped updating PR #${p.number} due to permissions`);
+                  } else {
+                    console.log(`Error updating PR #${p.number}: ${e.message}`);
+                  }
+                }
+              } else {
+                console.log(`Skipped PR #${p.number} from fork because maintainer edits are not allowed`);
+              }
+
+              // Step 2: Check for conflicts and manage label
+              let pr = await github.rest.pulls.get({ owner, repo, pull_number: p.number });
+              // If mergeable is null/unknown, wait briefly and retry
+              for (let i = 0; i &lt; 5 &amp;&amp; (pr.data.mergeable === null || (pr.data.mergeable_state||'').toLowerCase() === 'unknown'); i++) {
+                await new Promise(r =&gt; setTimeout(r, 2000));
+                pr = await github.rest.pulls.get({ owner, repo, pull_number: p.number });
+              }
+              const hasConflicts = (pr.data.mergeable === false) || ((pr.data.mergeable_state||'').toLowerCase() === 'dirty');
+
+              const { data: labels } = await github.rest.issues.listLabelsOnIssue({ owner, repo, issue_number: p.number, per_page: 100 });
+              const hasLabel = labels.some(l =&gt; l.name.toLowerCase() === labelName);
+
+              if (hasConflicts &amp;&amp; !hasLabel) {
+                await github.rest.issues.addLabels({ owner, repo, issue_number: p.number, labels: [labelName] });
+                console.log(`Added conflict label to PR #${p.number}`);
+              } else if (!hasConflicts &amp;&amp; hasLabel) {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: p.number, name: labelName });
+                console.log(`Removed conflict label from PR #${p.number}`);
+              }
+            }</code></pre>
+<h3><code>.github/workflows/conflict-notify.yml</code></h3>
+<pre><code class="language-yaml">name: List open PR authors (conflict label → map, URLs only)
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: 'Label to filter PRs by'
+        required: false
+        default: 'conflict'
+  schedule:
+    - cron: '0 0 * * *' # daily at midnight UTC (optional)
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  list-authors:
+    runs-on: ubuntu-slim
+    steps:
+      - name: List open PRs with label and build author→PR-URL map
+        id: list_prs
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const targetLabel = core.getInput('label') || 'conflict';
+            core.info(`Listing open PRs for ${owner}/${repo} and filtering by label "${targetLabel}"`);
+
+            // Fetch all open PRs (handles pagination)
+            const pulls = await github.paginate(github.rest.pulls.list, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            core.info(`Found ${pulls.length} open PR(s)`);
+
+            // Filter PRs that contain the target label (case-insensitive)
+            const filtered = pulls.filter(p =&gt; {
+              const labels = p.labels || [];
+              return labels.some(l =&gt; String(l.name).toLowerCase() === String(targetLabel).toLowerCase());
+            });
+
+            core.info(`Found ${filtered.length} open PR(s) with label "${targetLabel}"`);
+
+            // Build mapping: author -&gt; [ "https://github.com/owner/repo/pull/NNN", ... ]
+            const map = {};
+            for (const p of filtered) {
+              const author = p.user?.login || 'unknown';
+              if (!map[author]) map[author] = [];
+
+              const httpsUrl = p.html_url;
+              // Add only the full https URL, avoid alternate @owner/repo style
+              if (!map[author].includes(httpsUrl)) map[author].push(httpsUrl);
+            }
+
+            core.setOutput('mapping', JSON.stringify(map));
+            core.setOutput('filtered_pr_count', String(filtered.length));
+            core.setOutput('authors', JSON.stringify(Object.keys(map)));
+
+      - name: Print mapping to job log
+        run: |
+          echo "Mapping (author -&gt; [PR URLs]):"
+          echo '${{ steps.list_prs.outputs.mapping }}'
+
+      - name: Format Discord message
+        id: format_message
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const mapping = JSON.parse('${{ steps.list_prs.outputs.mapping }}');
+            const prCount = parseInt('${{ steps.list_prs.outputs.filtered_pr_count }}');
+            
+            // GitHub username to Discord user ID mapping
+            const discordMapping = {
+              'jpark': '&lt;@DISCORD_USER_ID&gt;',
+              'ckim': '&lt;@DISCORD_USER_ID&gt;',
+              'your-maintainer': '&lt;@DISCORD_USER_ID&gt;',
+              'rdiaz': '&lt;@DISCORD_USER_ID&gt;',
+              'schen': '&lt;@DISCORD_USER_ID&gt;'
+            };
+            
+            if (prCount === 0) {
+              core.setOutput('message', 'No open PRs with conflicts found! 🎉');
+              return;
+            }
+            
+            let message = '⚠️ **Please solve conflicts**\n\n';
+            
+            for (const [author, urls] of Object.entries(mapping)) {
+              const discordMention = discordMapping[author] || author;
+              message += `**${discordMention}**\n`;
+              for (const url of urls) {
+                message += `${url}\n`;
+              }
+              message += '\n';
+            }
+            
+            message += '----------------------------------';
+            
+            core.setOutput('message', message.trim());
+
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          content: ${{ steps.format_message.outputs.message }}</code></pre>
 
         </article>
         <p class="pr-tags">Tags: GitHub Actions · Git · CI/CD · DevOps</p>

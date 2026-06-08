@@ -42,11 +42,11 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-Dx_iQtA4.js"></script>
+    <script type="module" crossorigin src="/assets/index-CKgArk6y.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CgLjqaFM.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-zapuWuX9.css">
   
     <meta property="article:published_time" content="2026-06-02" />
     <meta property="article:modified_time" content="2026-06-02" />
@@ -171,6 +171,326 @@ gh api -X DELETE "repos/$REPO/git/refs/heads/$ENC"
 <h2>Takeaway</h2>
 <p>Any automation that deletes should be a classifier with a delete step bolted on the end — never a delete step with a filter. Order your categories so safety wins every tie, cap the blast radius per run, defer the overflow, and audit every action with a trail back to <em>why</em>. Make the destructive thing boring and reversible-in-spirit, and bulk cleanup stops being a thing you're afraid to run.</p>
 <p>Next, the finale: aggregating git and Jira into per-person weekly summaries with an LLM — and the hard conversation about doing that responsibly.</p>
+<h2>The complete workflow</h2>
+<p>Here is the full, genericized workflow — drop it into <code>.github/workflows/</code> and replace the placeholders (<code>your-org</code>, the <code>PROJ</code> project key, <code>&lt;@DISCORD_USER_ID&gt;</code>, the example team, and the secret names) with your own.</p>
+<h3><code>.github/workflows/cleanup-stale-branches.yml</code></h3>
+<pre><code class="language-yaml">name: Cleanup Stale Branches
+
+on:
+  schedule:
+    - cron: '0 4 * * 0'  # Every Sunday at 04:00 UTC
+  workflow_dispatch:
+    inputs:
+      age_days:
+        description: 'Delete branches with no commits in N days'
+        required: false
+        default: '730'
+      max_deletions:
+        description: 'Hard cap on branches deleted per run'
+        required: false
+        default: '50'
+
+concurrency:
+  group: cleanup-stale-branches
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-slim
+    timeout-minutes: 30
+    steps:
+      - name: Classify branches
+        id: classify
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          AGE_DAYS: ${{ inputs.age_days || '730' }}
+          MAX_DELETE: ${{ inputs.max_deletions || '50' }}
+        run: |
+          set -euo pipefail
+
+          CUTOFF_EPOCH=$(( $(date -u +%s) - AGE_DAYS * 86400 ))
+          echo "Cutoff: $(date -u -d "@$CUTOFF_EPOCH" +%Y-%m-%d) (age_days=$AGE_DAYS)"
+
+          SKIP_ALWAYS=$(printf '%s\n' master develop "$DEFAULT_BRANCH" | sort -u)
+
+          OPEN_PR_LIMIT=1000
+          gh pr list --repo "$REPO" --state open --limit "$OPEN_PR_LIMIT" \
+            --json headRefName,baseRefName &gt; /tmp/open_prs.json
+          OPEN_PR_COUNT=$(jq 'length' /tmp/open_prs.json)
+          if [ "$OPEN_PR_COUNT" -ge "$OPEN_PR_LIMIT" ]; then
+            echo "::error::Open PR count ($OPEN_PR_COUNT) reached limit ($OPEN_PR_LIMIT); list may be truncated and untracked open-PR refs could be deleted. Raise OPEN_PR_LIMIT and re-run."
+            exit 1
+          fi
+          jq -r '.[].headRefName, .[].baseRefName' /tmp/open_prs.json | sort -u &gt; /tmp/open_refs.txt
+          echo "Open PRs: $OPEN_PR_COUNT | unique refs: $(wc -l &lt; /tmp/open_refs.txt | tr -d ' ')"
+
+          MERGED_PR_LIMIT=5000
+          gh pr list --repo "$REPO" --state merged --limit "$MERGED_PR_LIMIT" \
+            --json headRefName,number,mergedAt,author \
+            --jq '.[] | "\(.headRefName)\t\(.number)\t\(.mergedAt)\t\(.author.login // "unknown")"' \
+            | sort -u &gt; /tmp/merged_prs.tsv
+          MERGED_PR_COUNT=$(wc -l &lt; /tmp/merged_prs.tsv | tr -d ' ')
+          if [ "$MERGED_PR_COUNT" -ge "$MERGED_PR_LIMIT" ]; then
+            echo "::warning::Merged PR list at limit ($MERGED_PR_LIMIT); some merged-via-pr deletions may be missed. Raise MERGED_PR_LIMIT if needed."
+          fi
+          echo "Merged PR head refs: $MERGED_PR_COUNT"
+
+          gh api "repos/$REPO/branches" --paginate \
+            --jq '.[] | [.name, .commit.sha, (.protected|tostring)] | @tsv' &gt; /tmp/branches.tsv
+          echo "Remote branches: $(wc -l &lt; /tmp/branches.tsv | tr -d ' ')"
+
+          : &gt; /tmp/delete.tsv
+          : &gt; /tmp/keep.tsv
+
+          while IFS=
+  </body>
+</html>
+\t' read -r NAME SHA PROTECTED; do
+            if grep -Fxq "$NAME" &lt;&lt;&lt;"$SKIP_ALWAYS"; then
+              printf '%s\tSKIP\tsacred\t-\t-\t-\n' "$NAME" &gt;&gt; /tmp/keep.tsv
+              continue
+            fi
+            if [ "$PROTECTED" = "true" ]; then
+              printf '%s\tSKIP\tprotected\t-\t-\t-\n' "$NAME" &gt;&gt; /tmp/keep.tsv
+              continue
+            fi
+            if grep -Fxq "$NAME" /tmp/open_refs.txt; then
+              printf '%s\tSKIP\topen-pr-ref\t-\t-\t-\n' "$NAME" &gt;&gt; /tmp/keep.tsv
+              continue
+            fi
+
+            MERGED_LINE=$(awk -F'\t' -v b="$NAME" '$1==b{print; exit}' /tmp/merged_prs.tsv)
+            if [ -n "$MERGED_LINE" ]; then
+              PR_NUM=$(cut -f2 &lt;&lt;&lt;"$MERGED_LINE")
+              MERGED_AT=$(cut -f3 &lt;&lt;&lt;"$MERGED_LINE")
+              PR_AUTHOR=$(cut -f4 &lt;&lt;&lt;"$MERGED_LINE")
+              printf '%s\tDELETE\tmerged-via-pr\t%s\t%s\t%s\n' "$NAME" "$PR_NUM" "$MERGED_AT" "$PR_AUTHOR" &gt;&gt; /tmp/delete.tsv
+              continue
+            fi
+
+            COMMIT_JSON=$(gh api "repos/$REPO/commits/$SHA" 2&gt;/tmp/commit_err || echo "")
+            if [ -z "$COMMIT_JSON" ]; then
+              if [ -s /tmp/commit_err ] &amp;&amp; ! grep -qiE "404|not found" /tmp/commit_err; then
+                echo "::warning::commit lookup failed for $NAME ($SHA): $(tr '\n' ' ' &lt; /tmp/commit_err)"
+              fi
+              printf '%s\tSKIP\tno-commit-data\t-\t-\t-\n' "$NAME" &gt;&gt; /tmp/keep.tsv
+              continue
+            fi
+            COMMIT_DATE=$(jq -r '.commit.committer.date // ""' &lt;&lt;&lt;"$COMMIT_JSON")
+            COMMIT_AUTHOR=$(jq -r '.author.login // .commit.author.name // "unknown"' &lt;&lt;&lt;"$COMMIT_JSON")
+            if [ -z "$COMMIT_DATE" ]; then
+              printf '%s\tSKIP\tno-commit-data\t-\t-\t%s\n' "$NAME" "$COMMIT_AUTHOR" &gt;&gt; /tmp/keep.tsv
+              continue
+            fi
+            COMMIT_EPOCH=$(date -u -d "$COMMIT_DATE" +%s)
+            if [ "$COMMIT_EPOCH" -lt "$CUTOFF_EPOCH" ]; then
+              AGE_D=$(( ( $(date -u +%s) - COMMIT_EPOCH ) / 86400 ))
+              printf '%s\tDELETE\tstale\t%sd\t%s\t%s\n' "$NAME" "$AGE_D" "$COMMIT_DATE" "$COMMIT_AUTHOR" &gt;&gt; /tmp/delete.tsv
+            else
+              printf '%s\tKEEP\tactive\t-\t%s\t%s\n' "$NAME" "$COMMIT_DATE" "$COMMIT_AUTHOR" &gt;&gt; /tmp/keep.tsv
+            fi
+          done &lt; /tmp/branches.tsv
+
+          DELETE_COUNT=$(wc -l &lt; /tmp/delete.tsv | tr -d ' ')
+          KEEP_COUNT=$(wc -l &lt; /tmp/keep.tsv | tr -d ' ')
+          echo "Classified: $DELETE_COUNT candidates, $KEEP_COUNT kept"
+
+          sort -t 
+  </body>
+</html>
+\t' -k3,3 -k5,5 /tmp/delete.tsv -o /tmp/delete.tsv
+          head -n "$MAX_DELETE" /tmp/delete.tsv &gt; /tmp/delete_batch.tsv
+          BATCH_COUNT=$(wc -l &lt; /tmp/delete_batch.tsv | tr -d ' ')
+          REMAINING=$((DELETE_COUNT - BATCH_COUNT))
+
+          if [ "$REMAINING" -gt 0 ]; then
+            echo "::warning::Batch limit: processing $BATCH_COUNT of $DELETE_COUNT candidates this run. $REMAINING will be deferred to future runs. Raise max_deletions to process more at once."
+          fi
+
+          echo "delete_count=$DELETE_COUNT" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "batch_count=$BATCH_COUNT" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "remaining_count=$REMAINING" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "keep_count=$KEEP_COUNT" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "has_candidates=$([ "$BATCH_COUNT" -gt 0 ] &amp;&amp; echo true || echo false)" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "max_delete=$MAX_DELETE" &gt;&gt; "$GITHUB_OUTPUT"
+
+      - name: Apply deletions
+        if: steps.classify.outputs.has_candidates == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          : &gt; /tmp/result.tsv
+
+          while IFS=
+  </body>
+</html>
+\t' read -r NAME _ REASON DETAIL DATE AUTHOR; do
+            ENC=$(jq -rn --arg x "$NAME" '$x|@uri')
+            if gh api -X DELETE "repos/$REPO/git/refs/heads/$ENC" 2&gt;/tmp/err; then
+              printf '%s\tDELETED\t%s\t%s\t%s\t%s\n' "$NAME" "$REASON" "$DETAIL" "$DATE" "$AUTHOR" &gt;&gt; /tmp/result.tsv
+              echo "deleted: $NAME ($REASON) by $AUTHOR"
+              if [ "$REASON" = "merged-via-pr" ]; then
+                PR_NUM="$DETAIL"
+                gh api -X POST "repos/$REPO/issues/$PR_NUM/comments" \
+                  -f body="Branch \`$NAME\` auto-deleted by cleanup-stale-branches workflow (merged branch cleanup)." \
+                  &gt;/dev/null 2&gt;&amp;1 || echo "::warning::Failed to post cleanup comment on PR #$PR_NUM"
+              fi
+            else
+              ERR_MSG=$(tr '\n' ' ' &lt; /tmp/err)
+              if grep -qi "protected" /tmp/err; then
+                printf '%s\tSKIPPED-PROTECTED\t%s\t%s\t%s\t%s\n' "$NAME" "$REASON" "$DETAIL" "$DATE" "$AUTHOR" &gt;&gt; /tmp/result.tsv
+                echo "skipped (protected): $NAME"
+              else
+                printf '%s\tERROR\t%s\t%s\t%s\t%s\n' "$NAME" "$REASON" "$DETAIL" "$ERR_MSG" "$AUTHOR" &gt;&gt; /tmp/result.tsv
+                echo "::warning::error deleting $NAME: $ERR_MSG"
+              fi
+            fi
+          done &lt; /tmp/delete_batch.tsv
+
+      - name: Format Discord message
+        id: format_message
+        if: steps.classify.outputs.has_candidates == 'true'
+        env:
+          REPO_URL: https://github.com/${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          if [ ! -s /tmp/result.tsv ]; then
+            echo "has_message=false" &gt;&gt; "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          DELETED_COUNT=$(awk -F'\t' '$2=="DELETED"' /tmp/result.tsv | wc -l | tr -d ' ')
+          if [ "$DELETED_COUNT" = "0" ]; then
+            echo "has_message=false" &gt;&gt; "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          MAX_LIST=20
+          MERGED_COUNT=$(awk -F'\t' '$2=="DELETED" &amp;&amp; $3=="merged-via-pr"' /tmp/result.tsv | wc -l | tr -d ' ')
+          STALE_COUNT=$(awk -F'\t' '$2=="DELETED" &amp;&amp; $3=="stale"' /tmp/result.tsv | wc -l | tr -d ' ')
+          ERRORS_COUNT=$(awk -F'\t' '$2=="ERROR"' /tmp/result.tsv | wc -l | tr -d ' ')
+
+          MERGED_LIST=$(awk -F'\t' -v n="$MAX_LIST" -v repo="$REPO_URL" '$2=="DELETED" &amp;&amp; $3=="merged-via-pr" { c++; if (c&lt;=n) printf "• `%s` [PR #%s](%s/pull/%s) by @%s\\n", $1, $4, repo, $4, $6 }' /tmp/result.tsv)
+          if [ "$MERGED_COUNT" -gt "$MAX_LIST" ]; then
+            MERGED_LIST="${MERGED_LIST}… and $((MERGED_COUNT - MAX_LIST)) more\\n"
+          fi
+
+          STALE_LIST=$(awk -F'\t' -v n="$MAX_LIST" '$2=="DELETED" &amp;&amp; $3=="stale" { c++; if (c&lt;=n) { d=$4; sub(/d$/, "", d); printf "• `%s` (%s days ago) by @%s\\n", $1, d, $6 } }' /tmp/result.tsv)
+          if [ "$STALE_COUNT" -gt "$MAX_LIST" ]; then
+            STALE_LIST="${STALE_LIST}… and $((STALE_COUNT - MAX_LIST)) more\\n"
+          fi
+
+          MESSAGE="🧹 **Branch Cleanup Report**\n\n"
+          if [ "$MERGED_COUNT" -gt 0 ]; then
+            MESSAGE="${MESSAGE}**Merged PR branches deleted (${MERGED_COUNT}):**\n${MERGED_LIST}\n"
+          fi
+          if [ "$STALE_COUNT" -gt 0 ]; then
+            MESSAGE="${MESSAGE}**Stale branches deleted (${STALE_COUNT}):**\n${STALE_LIST}\n"
+          fi
+          if [ "$ERRORS_COUNT" -gt 0 ]; then
+            MESSAGE="${MESSAGE}⚠️ **Errors: ${ERRORS_COUNT}**\n"
+          fi
+          MESSAGE="${MESSAGE}**Total deleted: ${DELETED_COUNT}**"
+
+          MESSAGE=$(printf '%s' "$MESSAGE" | sed \
+            -e 's/@your-maintainer/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@schen/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@jpark/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@jpark/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@ckim/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@rdiaz/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@myu/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@mghannam93/&lt;@DISCORD_USER_ID&gt;/g' \
+            -e 's/@ahmedmohamedeid98/&lt;@DISCORD_USER_ID&gt;/g')
+
+          {
+            echo "message&lt;&lt;EOF"
+            printf '%b\n' "$MESSAGE"
+            echo "EOF"
+          } &gt;&gt; "$GITHUB_OUTPUT"
+          echo "has_message=true" &gt;&gt; "$GITHUB_OUTPUT"
+
+      - name: Discord Webhook Notification
+        if: steps.format_message.outputs.has_message == 'true'
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          content: ${{ steps.format_message.outputs.message }}
+
+      - name: Write summary
+        if: always()
+        env:
+          DELETE_COUNT: ${{ steps.classify.outputs.delete_count || '0' }}
+          BATCH_COUNT: ${{ steps.classify.outputs.batch_count || '0' }}
+          REMAINING_COUNT: ${{ steps.classify.outputs.remaining_count || '0' }}
+          KEEP_COUNT: ${{ steps.classify.outputs.keep_count || '0' }}
+          MAX_DELETE: ${{ steps.classify.outputs.max_delete || '50' }}
+        run: |
+          {
+            echo "## Cleanup Summary"
+            echo ""
+            if [ "$REMAINING_COUNT" -gt 0 ]; then
+              echo "&gt; ℹ️ **Batch mode:** processed $BATCH_COUNT of $DELETE_COUNT candidates (max_deletions=$MAX_DELETE). **$REMAINING_COUNT deferred** to future runs. Raise \`max_deletions\` to process more at once."
+              echo ""
+            fi
+            echo "- Total candidates: $DELETE_COUNT"
+            echo "- Processed this run: $BATCH_COUNT"
+            echo "- Deferred: $REMAINING_COUNT"
+            echo "- Kept: $KEEP_COUNT"
+            if [ -f /tmp/result.tsv ]; then
+              DELETED=$(awk -F'\t' '$2=="DELETED"' /tmp/result.tsv | wc -l | tr -d ' ')
+              PROT=$(awk -F'\t' '$2=="SKIPPED-PROTECTED"' /tmp/result.tsv | wc -l | tr -d ' ')
+              ERRS=$(awk -F'\t' '$2=="ERROR"' /tmp/result.tsv | wc -l | tr -d ' ')
+              echo "- Deleted: $DELETED"
+              echo "- Skipped (protected): $PROT"
+              echo "- Errors: $ERRS"
+            fi
+            echo ""
+            if [ -s /tmp/result.tsv ]; then
+              echo "### Deletion Results (this run)"
+              echo ""
+              echo "| Branch | Action | Reason | Detail | Date | Author |"
+              echo "|---|---|---|---|---|---|"
+              awk -F'\t' '{printf "| `%s` | %s | %s | %s | %s | %s |\n",$1,$2,$3,$4,$5,$6}' /tmp/result.tsv
+              echo ""
+              if [ "$REMAINING_COUNT" -gt 0 ] &amp;&amp; [ -s /tmp/delete.tsv ]; then
+                echo "&lt;details&gt;&lt;summary&gt;Deferred candidates ($REMAINING_COUNT) — will be processed in future runs&lt;/summary&gt;"
+                echo ""
+                echo "| Branch | Reason | Detail | Date | Author |"
+                echo "|---|---|---|---|---|"
+                tail -n +$((BATCH_COUNT + 1)) /tmp/delete.tsv | awk -F'\t' '{printf "| `%s` | %s | %s | %s | %s |\n",$1,$3,$4,$5,$6}'
+                echo ""
+                echo "&lt;/details&gt;"
+                echo ""
+              fi
+            elif [ -s /tmp/delete.tsv ]; then
+              echo "### Deletion Candidates"
+              echo ""
+              echo "| Branch | Reason | Detail | Date | Author |"
+              echo "|---|---|---|---|---|"
+              awk -F'\t' '{printf "| `%s` | %s | %s | %s | %s |\n",$1,$3,$4,$5,$6}' /tmp/delete.tsv
+              echo ""
+            fi
+            if [ -s /tmp/keep.tsv ]; then
+              echo "&lt;details&gt;&lt;summary&gt;Kept branches ($KEEP_COUNT)&lt;/summary&gt;"
+              echo ""
+              echo "| Branch | Reason | Date | Author |"
+              echo "|---|---|---|---|"
+              awk -F'\t' '{printf "| `%s` | %s | %s | %s |\n",$1,$3,$5,$6}' /tmp/keep.tsv
+              echo ""
+              echo "&lt;/details&gt;"
+            fi
+          } &gt;&gt; "$GITHUB_STEP_SUMMARY"</code></pre>
 
         </article>
         <p class="pr-tags">Tags: GitHub Actions · Git · DevOps · Automation</p>

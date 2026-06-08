@@ -140,3 +140,375 @@ When the ticket flips back from Done (reopened, more work), the same logic remov
 You don't need a marketplace integration to make two tools agree — a branch-name regex, one REST call, and a reconciling label sync get you most of the value. And while you're bridging, look for the *flag* that exposes a hidden cost. The labels were nice. "Slow PR" — surfacing finished work that wasn't shipping — was the actual win.
 
 Next: what happens to all those open PRs the moment something lands on `master`.
+
+## The complete workflow
+
+Here is the full, genericized workflow — drop it into `.github/workflows/` and replace the placeholders (`your-org`, the `PROJ` project key, `<@DISCORD_USER_ID>`, the example team, and the secret names) with your own.
+
+### `.github/workflows/jira-status-labels.yml`
+
+````yaml
+name: PR Labels
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: '0 13 * * 0-4' # At 1 PM UTC, Sunday-Thursday
+    - cron: '0 9 * * 0-4' # At 9 AM UTC, Sunday-Thursday
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  manage-pr-labels:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Get PRs to process
+        id: get_prs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            let prs = [];
+
+            if (context.eventName === 'pull_request') {
+              // Single PR from event
+              prs = [context.payload.pull_request];
+            } else {
+              // Scheduled run or manual dispatch - get all open PRs
+              prs = await github.paginate(github.rest.pulls.list, {
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100
+              });
+            }
+
+            core.setOutput('prs', JSON.stringify(prs.map(pr => ({
+              number: pr.number,
+              branch: pr.head.ref,
+              labels: pr.labels.map(l => l.name)
+            }))));
+
+      - name: Apply PR labels
+        uses: actions/github-script@v7
+        env:
+          JIRA_BASE_URL: https://your-org.atlassian.net
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        with:
+          script: |
+            const prs = JSON.parse('${{ steps.get_prs.outputs.prs }}');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const DONE_LABEL = 'Done';
+            const SLOW_PR_LABEL = 'Slow PR';
+            const TINY_PR_LABEL = 'tiny PR';
+            const SMALL_PR_LABEL = 'small PR';
+            const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+            const TINY_FILE_THRESHOLD = 2;
+            const FILE_THRESHOLD = 10;
+
+            // Ensure labels exist
+            async function ensureLabel(name, color, description) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+              } catch (e) {
+                if (e.status === 404) {
+                  await github.rest.issues.createLabel({ owner, repo, name, color, description });
+                  console.log(`Created label: ${name}`);
+                } else {
+                  throw e;
+                }
+              }
+            }
+
+            const WIP_LABEL = 'wip';
+
+            await ensureLabel(DONE_LABEL, '0e8a16', 'Jira task is marked as Done');
+            await ensureLabel(SLOW_PR_LABEL, 'fbca04', 'Jira task was Done more than 3 days ago');
+            await ensureLabel(TINY_PR_LABEL, '00d4aa', 'PR has 1-2 changed files');
+            await ensureLabel(SMALL_PR_LABEL, '0e8a16', 'PR has fewer than 10 changed files');
+
+            for (const pr of prs) {
+              const branchName = pr.branch;
+              const prNumber = pr.number;
+              const currentLabels = pr.labels;
+
+              // --- Small PR Label Logic ---
+              // Get the list of files changed in this PR
+              const { data: files } = await github.rest.pulls.listFiles({
+                owner,
+                repo,
+                pull_number: prNumber,
+                per_page: 100
+              });
+
+              const fileCount = files.length;
+              console.log(`PR #${prNumber}: ${fileCount} file(s) changed`);
+
+              const hasTinyPRLabel = currentLabels.includes(TINY_PR_LABEL);
+              const hasSmallPRLabel = currentLabels.includes(SMALL_PR_LABEL);
+
+              const isTiny = fileCount <= TINY_FILE_THRESHOLD;
+              const isSmall = !isTiny && fileCount < FILE_THRESHOLD;
+
+              async function removeLabelSafe(label) {
+                try {
+                  await github.rest.issues.removeLabel({ owner, repo, issue_number: prNumber, name: label });
+                  console.log(`PR #${prNumber}: Removed "${label}" label`);
+                } catch (e) {
+                  if (e.status !== 404) throw e;
+                }
+              }
+
+              if (isTiny) {
+                if (!hasTinyPRLabel) {
+                  await github.rest.issues.addLabels({ owner, repo, issue_number: prNumber, labels: [TINY_PR_LABEL] });
+                  console.log(`PR #${prNumber}: Added "${TINY_PR_LABEL}" label (${fileCount} file(s))`);
+                }
+                if (hasSmallPRLabel) await removeLabelSafe(SMALL_PR_LABEL);
+              } else if (isSmall) {
+                if (!hasSmallPRLabel) {
+                  await github.rest.issues.addLabels({ owner, repo, issue_number: prNumber, labels: [SMALL_PR_LABEL] });
+                  console.log(`PR #${prNumber}: Added "${SMALL_PR_LABEL}" label (${fileCount} files)`);
+                }
+                if (hasTinyPRLabel) await removeLabelSafe(TINY_PR_LABEL);
+              } else {
+                if (hasTinyPRLabel) await removeLabelSafe(TINY_PR_LABEL);
+                if (hasSmallPRLabel) await removeLabelSafe(SMALL_PR_LABEL);
+              }
+
+              // --- Jira Status Label Logic ---
+              // Extract Jira ID from branch name (e.g., PROJ-13451)
+              const jiraIdMatch = branchName.match(/([A-Z]+-\d+)/);
+              if (!jiraIdMatch) {
+                console.log(`PR #${prNumber}: No Jira ID found in branch "${branchName}"`);
+                continue;
+              }
+
+              const jiraId = jiraIdMatch[1];
+              console.log(`PR #${prNumber}: Found Jira ID ${jiraId}`);
+
+              // Call Jira API to get issue details
+              const jiraUrl = `${process.env.JIRA_BASE_URL}/rest/api/3/issue/${jiraId}?fields=status,resolutiondate,labels,fixVersions`;
+              const auth = Buffer.from(`${process.env.JIRA_EMAIL}:${process.env.JIRA_API_TOKEN}`).toString('base64');
+
+              let jiraData;
+              try {
+                const response = await fetch(jiraUrl, {
+                  headers: {
+                    'Authorization': `Basic ${auth}`,
+                    'Accept': 'application/json'
+                  }
+                });
+
+                if (!response.ok) {
+                  console.log(`PR #${prNumber}: Failed to fetch Jira issue ${jiraId} (status ${response.status})`);
+                  continue;
+                }
+
+                jiraData = await response.json();
+              } catch (e) {
+                console.log(`PR #${prNumber}: Error fetching Jira issue ${jiraId}: ${e.message}`);
+                continue;
+              }
+
+              const status = jiraData.fields?.status?.name;
+              const resolutionDate = jiraData.fields?.resolutiondate;
+              const jiraLabels = jiraData.fields?.labels || [];
+              const fixVersions = (jiraData.fields?.fixVersions || []).map(v => v.name);
+
+              console.log(`PR #${prNumber}: Jira status = "${status}", resolutionDate = "${resolutionDate}", labels = ${JSON.stringify(jiraLabels)}, fixVersions = ${JSON.stringify(fixVersions)}`);
+
+              // Sync Jira Fix Versions to PR (prefixed with "fix:" to distinguish from other labels)
+              const FIX_VERSION_PREFIX = 'fix:';
+              for (const version of fixVersions) {
+                const ghLabelName = `${FIX_VERSION_PREFIX}${version}`;
+                
+                // Ensure the label exists in GitHub
+                await ensureLabel(ghLabelName, 'e6e6fa', `Jira Fix Version: ${version}`);
+                
+                // Add label to PR if not already present
+                if (!currentLabels.includes(ghLabelName)) {
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    labels: [ghLabelName]
+                  });
+                  console.log(`PR #${prNumber}: Added "${ghLabelName}" label from Jira Fix Version`);
+                }
+              }
+
+              // Remove fix: labels that are no longer on the Jira issue
+              const currentFixLabels = currentLabels.filter(l => l.startsWith(FIX_VERSION_PREFIX));
+              const expectedFixLabels = fixVersions.map(v => `${FIX_VERSION_PREFIX}${v}`);
+              for (const currentFixLabel of currentFixLabels) {
+                if (!expectedFixLabels.includes(currentFixLabel)) {
+                  try {
+                    await github.rest.issues.removeLabel({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      name: currentFixLabel
+                    });
+                    console.log(`PR #${prNumber}: Removed "${currentFixLabel}" label (no longer in Jira Fix Versions)`);
+                  } catch (e) {
+                    if (e.status !== 404) throw e;
+                  }
+                }
+              }
+
+              // Sync Jira labels to PR (prefixed with "jira:" to distinguish from other labels)
+              const JIRA_LABEL_PREFIX = 'jira:';
+              for (const jiraLabel of jiraLabels) {
+                const ghLabelName = `${JIRA_LABEL_PREFIX}${jiraLabel}`;
+                
+                // Ensure the label exists in GitHub
+                await ensureLabel(ghLabelName, 'c5def5', `Jira label: ${jiraLabel}`);
+                
+                // Add label to PR if not already present
+                if (!currentLabels.includes(ghLabelName)) {
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    labels: [ghLabelName]
+                  });
+                  console.log(`PR #${prNumber}: Added "${ghLabelName}" label from Jira`);
+                }
+              }
+
+              // Remove jira: labels that are no longer on the Jira issue
+              const currentJiraLabels = currentLabels.filter(l => l.startsWith(JIRA_LABEL_PREFIX));
+              const expectedJiraLabels = jiraLabels.map(l => `${JIRA_LABEL_PREFIX}${l}`);
+              for (const currentJiraLabel of currentJiraLabels) {
+                if (!expectedJiraLabels.includes(currentJiraLabel)) {
+                  try {
+                    await github.rest.issues.removeLabel({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      name: currentJiraLabel
+                    });
+                    console.log(`PR #${prNumber}: Removed "${currentJiraLabel}" label (no longer in Jira)`);
+                  } catch (e) {
+                    if (e.status !== 404) throw e;
+                  }
+                }
+              }
+
+              const isDone = status?.toLowerCase() === 'done';
+              const hasDoneLabel = currentLabels.includes(DONE_LABEL);
+              const hasSlowPRLabel = currentLabels.includes(SLOW_PR_LABEL);
+              const hasWipLabel = currentLabels.includes(WIP_LABEL);
+
+              if (isDone) {
+                // Add "Done" label if not present
+                if (!hasDoneLabel) {
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    labels: [DONE_LABEL]
+                  });
+                  console.log(`PR #${prNumber}: Added "${DONE_LABEL}" label`);
+                }
+
+                // Update PR body to check the quality team checkbox
+                const { data: fullPr } = await github.rest.pulls.get({
+                  owner,
+                  repo,
+                  pull_number: prNumber
+                });
+
+                let prBody = fullPr.body || '';
+                const qualityCheckboxUnchecked = '- [ ] The `quality` team approved at least 1 platform *`(Android, IOS)`*.';
+                const qualityCheckboxChecked = '- [x] The `quality` team approved at least 1 platform *`(Android, IOS)`*.';
+
+                if (prBody.includes(qualityCheckboxUnchecked)) {
+                  prBody = prBody.replace(qualityCheckboxUnchecked, qualityCheckboxChecked);
+                  await github.rest.pulls.update({
+                    owner,
+                    repo,
+                    pull_number: prNumber,
+                    body: prBody
+                  });
+                  console.log(`PR #${prNumber}: Checked quality team approval checkbox`);
+                }
+
+                // Remove "wip" label if present
+                if (hasWipLabel) {
+                  try {
+                    await github.rest.issues.removeLabel({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      name: WIP_LABEL
+                    });
+                    console.log(`PR #${prNumber}: Removed "${WIP_LABEL}" label (task is Done)`);
+                  } catch (e) {
+                    if (e.status !== 404) throw e;
+                  }
+                }
+
+                // Check if done for more than 3 days
+                if (resolutionDate) {
+                  const resolvedAt = new Date(resolutionDate);
+                  const now = new Date();
+                  const msSinceDone = now - resolvedAt;
+                  const daysSinceDone = msSinceDone / (24 * 60 * 60 * 1000);
+
+                  if (msSinceDone > THREE_DAYS_MS) {
+                    if (!hasSlowPRLabel) {
+                      await github.rest.issues.addLabels({
+                        owner,
+                        repo,
+                        issue_number: prNumber,
+                        labels: [SLOW_PR_LABEL]
+                      });
+                      console.log(`PR #${prNumber}: Added "${SLOW_PR_LABEL}" label (resolved ${Math.floor(daysSinceDone)} days ago)`);
+                    }
+                  }
+                }
+              } else {
+                // Remove labels if task is no longer Done
+                if (hasDoneLabel) {
+                  try {
+                    await github.rest.issues.removeLabel({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      name: DONE_LABEL
+                    });
+                    console.log(`PR #${prNumber}: Removed "${DONE_LABEL}" label (status changed)`);
+                  } catch (e) {
+                    if (e.status !== 404) throw e;
+                  }
+                }
+
+                if (hasSlowPRLabel) {
+                  try {
+                    await github.rest.issues.removeLabel({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      name: SLOW_PR_LABEL
+                    });
+                    console.log(`PR #${prNumber}: Removed "${SLOW_PR_LABEL}" label (status changed)`);
+                  } catch (e) {
+                    if (e.status !== 404) throw e;
+                  }
+                }
+              }
+            }
+
+            console.log('✅ PR labels check completed');
+````

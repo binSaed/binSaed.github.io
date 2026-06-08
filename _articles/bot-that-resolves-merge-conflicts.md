@@ -171,3 +171,182 @@ When in doubt, the bot does *nothing*. That's the entire philosophy in one catch
 The way to ship a dangerous automation safely isn't to make it clever — it's to make it *cowardly and loud*. Shrink its authority to a single case where the correct answer is mechanical and provable (`every() conflict matches one regex`), operate only in throwaway space, define your tie-breaker explicitly, announce every action, and fail closed on anything unexpected. The capability sounds reckless. The blast radius makes it boring. Boring is the goal.
 
 Next: stepping out of git plumbing and into shipping — one button that builds and distributes for Android, iOS, and the Play Store.
+
+## The complete workflow
+
+Here is the full, genericized workflow — drop it into `.github/workflows/` and replace the placeholders (`your-org`, the `PROJ` project key, `<@DISCORD_USER_ID>`, the example team, and the secret names) with your own.
+
+### `.github/workflows/auto-resolve-translation-conflicts.yml`
+
+````yaml
+name: Auto-resolve translation conflicts
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-resolve-translations:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Auto-resolve translation-only conflicts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const TRANSLATION_PATH = /^assets\/translations\/.*\.json$/;
+
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'open', per_page: 100,
+            });
+
+            core.info(`Found ${prs.length} open PRs`);
+
+            let resolved = 0;
+            let skipped = 0;
+
+            for (const pr of prs) {
+              if (pr.draft) continue;
+
+              if (pr.head.repo?.fork || pr.head.repo?.full_name !== `${owner}/${repo}`) {
+                core.info(`Skipping PR #${pr.number} (fork)`);
+                continue;
+              }
+
+              let freshPR;
+              for (let attempt = 0; attempt < 5; attempt++) {
+                const { data } = await github.rest.pulls.get({
+                  owner, repo, pull_number: pr.number,
+                });
+                if (data.mergeable !== null) {
+                  freshPR = data;
+                  break;
+                }
+                await new Promise(r => setTimeout(r, 3000));
+              }
+
+              if (!freshPR || freshPR.mergeable !== false) continue;
+
+              core.info(`\nPR #${pr.number} "${pr.title}" has conflicts`);
+
+              const branch = pr.head.ref;
+
+              try {
+                execSync('git checkout master && git reset --hard origin/master', {
+                  stdio: 'pipe',
+                });
+                execSync(`git fetch origin "${branch}"`, { stdio: 'pipe' });
+                execSync(`git checkout -B _auto_resolve "origin/${branch}"`, {
+                  stdio: 'pipe',
+                });
+
+                let hasConflicts = false;
+                try {
+                  execSync('git merge origin/master --no-edit', { stdio: 'pipe' });
+                } catch {
+                  hasConflicts = true;
+                }
+
+                if (!hasConflicts) {
+                  core.info(`  PR #${pr.number} merged cleanly, no action needed`);
+                  continue;
+                }
+
+                const conflictOutput = execSync('git diff --name-only --diff-filter=U')
+                  .toString()
+                  .trim();
+                if (!conflictOutput) {
+                  execSync('git merge --abort', { stdio: 'pipe' });
+                  continue;
+                }
+
+                const conflictFiles = conflictOutput.split('\n');
+                const allTranslation = conflictFiles.every(f => TRANSLATION_PATH.test(f));
+
+                if (!allTranslation) {
+                  const nonTranslation = conflictFiles
+                    .filter(f => !TRANSLATION_PATH.test(f))
+                    .join(', ');
+                  core.info(
+                    `  Skipping PR #${pr.number} — non-translation conflicts: ${nonTranslation}`,
+                  );
+                  execSync('git merge --abort', { stdio: 'pipe' });
+                  skipped++;
+                  continue;
+                }
+
+                core.info(`  Resolving: ${conflictFiles.join(', ')}`);
+
+                for (const file of conflictFiles) {
+                  const masterContent = execSync(`git show origin/master:"${file}"`).toString();
+                  const branchContent = execSync(
+                    `git show "origin/${branch}":"${file}"`,
+                  ).toString();
+
+                  const masterJSON = JSON.parse(masterContent);
+                  const branchJSON = JSON.parse(branchContent);
+
+                  const merged = { ...masterJSON, ...branchJSON };
+
+                  fs.writeFileSync(file, JSON.stringify(merged, null, 2) + '\n');
+                  execSync(`git add "${file}"`, { stdio: 'pipe' });
+                }
+
+                execSync('git commit --no-edit', { stdio: 'pipe' });
+                execSync(`git push origin "_auto_resolve:${branch}"`, { stdio: 'pipe' });
+
+                resolved++;
+                core.info(`  Resolved PR #${pr.number}`);
+
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  body: [
+                    '🤖 **Auto-resolved translation conflicts**',
+                    '',
+                    'Merged `master` and resolved conflicts in:',
+                    ...conflictFiles.map(f => `- \`${f}\``),
+                    '',
+                    'PR branch values were preserved where both branches modified the same key.',
+                    'Please review the merged translations.',
+                  ].join('\n'),
+                });
+
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: pr.number,
+                    name: 'conflict',
+                  });
+                } catch {}
+              } catch (error) {
+                core.warning(`Failed to resolve PR #${pr.number}: ${error.message}`);
+                try {
+                  execSync('git merge --abort', { stdio: 'pipe' });
+                } catch {}
+              }
+            }
+
+            core.info(`\nSummary: ${resolved} resolved, ${skipped} skipped`);
+````

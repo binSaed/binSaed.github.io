@@ -146,3 +146,343 @@ And when it's red, it actually blocks — the job exits non-zero so the merge is
 Separate the **chores** of review from the **judgment** of review, and automate only the chores — idempotently, with self-cleanup, so the bot's output always reflects current reality. The win isn't "look, a bot." It's that every human minute on a PR now goes to the one thing humans are uniquely good at: deciding whether the change is right.
 
 Next: making two sources of truth — Jira and GitHub — actually agree with each other.
+
+## The complete workflow
+
+Here is the full, genericized workflow — drop it into `.github/workflows/` and replace the placeholders (`your-org`, the `PROJ` project key, `<@DISCORD_USER_ID>`, the example team, and the secret names) with your own.
+
+### `.github/workflows/pr-automation.yml`
+
+````yaml
+name: PR Automation
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  automate-pr:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Add Jira Link
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branchName = context.payload.pull_request.head.ref;
+            const jiraIdMatch = branchName.match(/([A-Z]+-\d+)/);
+
+            if (!jiraIdMatch) {
+              console.log('No Jira ID found in branch name');
+              return;
+            }
+
+            const jiraId = jiraIdMatch[1];
+            const jiraUrl = `https://your-org.atlassian.net/browse/${jiraId}`;
+            let prBody = context.payload.pull_request.body || '';
+
+            console.log(`Found Jira ID: ${jiraId}`);
+
+            if (prBody.includes(jiraUrl)) {
+              console.log('Jira URL already exists in PR description');
+              return;
+            }
+
+            const placeholder = '<!---add your Jira link-->';
+            const jiraLink = `**Jira Ticket:** ${jiraUrl}`;
+
+            if (prBody.includes(placeholder)) {
+              prBody = prBody.replace(placeholder, jiraLink);
+              console.log('Replaced placeholder with Jira link');
+            } else {
+              prBody = `${jiraLink}\n\n${prBody}`;
+              console.log('Prepended Jira link to PR body');
+            }
+
+            // Check the Jira link checkbox
+            prBody = prBody.replace(
+              '- [ ] I added the Jira link',
+              '- [x] I added the Jira link'
+            );
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              body: prBody
+            });
+            console.log('✅ Added Jira link to PR');
+
+      - name: Auto-assign PR creator
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const assignees = context.payload.pull_request.assignees || [];
+
+            if (assignees.length > 0) {
+              console.log(`PR already has assignees: ${assignees.map(a => a.login).join(', ')}`);
+              return;
+            }
+
+            const creator = context.payload.pull_request.user.login;
+            const prNumber = context.payload.pull_request.number;
+
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              assignees: [creator]
+            });
+            console.log(`✅ Assigned ${creator} to PR #${prNumber}`);
+
+            // Check the assignee checkbox in PR body
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            let prBody = pr.body || '';
+            const unchecked = '- [ ] The pull request has an assignee (assign yourself)';
+            
+            if (prBody.includes(unchecked)) {
+              prBody = prBody.replace(unchecked, '- [x] The pull request has an assignee (assign yourself)');
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                body: prBody
+              });
+              console.log('Checked the assignee checkbox');
+            }
+
+      - name: Add WIP label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels || [];
+
+            if (labels.length > 0) {
+              console.log(`PR already has labels: ${labels.map(l => l.name).join(', ')}`);
+              return;
+            }
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const labelName = 'wip';
+
+            // Ensure wip label exists
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: labelName });
+            } catch (e) {
+              if (e.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: labelName,
+                  color: 'fbca04',
+                  description: 'Work in progress'
+                });
+                console.log(`Created '${labelName}' label`);
+              } else {
+                throw e;
+              }
+            }
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: context.payload.pull_request.number,
+              labels: [labelName]
+            });
+            console.log(`✅ Added '${labelName}' label`);
+````
+
+### `.github/workflows/pr-analysis-label.yml`
+
+````yaml
+name: Dart Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.dart'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+      - 'analysis_options.yaml'
+      - 'assets/translations/**.json'
+  workflow_dispatch:
+
+concurrency:
+  group: dart-analysis-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+
+jobs:
+  dart-analysis:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate translation JSON files
+        id: validate_json
+        run: |
+          echo "Validating translation files..."
+          FAILED=false
+
+          for file in assets/translations/*.json; do
+            if [ -f "$file" ]; then
+              echo -n "Checking $file... "
+              if python3 -c "import json; json.load(open('$file'))" 2>/dev/null; then
+                echo "✓ Valid"
+              else
+                echo "✗ Invalid JSON"
+                python3 -c "import json; json.load(open('$file'))" 2>&1 || true
+                FAILED=true
+              fi
+            fi
+          done
+
+          if [ "$FAILED" = true ]; then
+            echo ""
+            echo "has_errors=true" >> $GITHUB_OUTPUT
+            echo "::error::One or more translation files contain invalid JSON"
+            exit 1
+          fi
+
+          echo "has_errors=false" >> $GITHUB_OUTPUT
+          echo ""
+          echo "All translation files are valid JSON"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.44.0'
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run Dart analyze
+        id: analyze
+        run: |
+          flutter analyze > analysis-output.txt 2>&1 || true
+          if grep -q "error •" analysis-output.txt; then
+            echo "has_errors=true" >> $GITHUB_OUTPUT
+            echo "error_details<<EOF" >> $GITHUB_OUTPUT
+            grep "error •" analysis-output.txt >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "has_errors=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add failure label if analysis has errors
+        if: steps.analyze.outputs.has_errors == 'true'
+        uses: actions/github-script@v7
+        env:
+          ERROR_DETAILS: ${{ steps.analyze.outputs.error_details }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const labelName = 'analysis-failed';
+            const prNumber = context.payload.pull_request.number;
+
+            // Ensure label exists
+            async function ensureLabel(name, color, description) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+              } catch (e) {
+                if (e.status === 404) {
+                  await github.rest.issues.createLabel({ owner, repo, name, color, description });
+                  console.log(`Created label: ${name}`);
+                } else {
+                  throw e;
+                }
+              }
+            }
+
+            await ensureLabel(labelName, 'd93f0b', 'Dart analysis found issues');
+
+            // Add label
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: prNumber,
+              labels: [labelName]
+            });
+            console.log(`✅ Added '${labelName}' label to PR #${prNumber}`);
+
+            // Post comment
+            const errors = process.env.ERROR_DETAILS;
+            const body = `## ❌ Dart Analysis Failed\n\nPlease fix the analysis issues before merging.\n\n<details>\n<summary>Errors found</summary>\n\n\`\`\`\n${errors}\n\`\`\`\n\n</details>\n\n@${context.payload.pull_request.user.login} \n <img src="https://your-cdn.example.com/dart-analysis-failed.png" width="66px"/>`;
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: prNumber,
+              body: body
+            });
+            console.log('✅ Added comment to PR');
+
+      - name: Remove failure label if analysis passed
+        if: steps.analyze.outputs.has_errors == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const labelName = 'analysis-failed';
+            const prNumber = context.payload.pull_request.number;
+
+            // Remove label if it exists
+            try {
+              await github.rest.issues.removeLabel({
+                owner,
+                repo,
+                issue_number: prNumber,
+                name: labelName
+              });
+              console.log(`✅ Removed '${labelName}' label from PR #${prNumber}`);
+            } catch (e) {
+              if (e.status === 404) {
+                console.log(`Label '${labelName}' not found on PR, skipping removal`);
+              } else {
+                throw e;
+              }
+            }
+
+            // Find and remove analysis-failed comment
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: prNumber
+            });
+
+            for (const comment of comments.data) {
+              if (comment.body.includes('## ❌ Dart Analysis Failed') && comment.user.type === 'Bot') {
+                await github.rest.issues.deleteComment({
+                  owner,
+                  repo,
+                  comment_id: comment.id
+                });
+                console.log(`✅ Removed analysis-failed comment from PR #${prNumber}`);
+              }
+            }
+
+      - name: Fail job if analysis has errors
+        if: steps.analyze.outputs.has_errors == 'true'
+        run: exit 1
+````

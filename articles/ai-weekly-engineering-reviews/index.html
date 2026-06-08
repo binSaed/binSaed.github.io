@@ -42,11 +42,11 @@
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-Dx_iQtA4.js"></script>
+    <script type="module" crossorigin src="/assets/index-CKgArk6y.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-BSE85mIr.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-UrdV2bML.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-A84lCEUI.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CgLjqaFM.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-zapuWuX9.css">
   
     <meta property="article:published_time" content="2026-06-09" />
     <meta property="article:modified_time" content="2026-06-09" />
@@ -164,6 +164,400 @@
 <p>The engineering here — aggregate two sources, diff two weeks, have an LLM phrase it, route it privately — is a weekend. The judgment is the job: keep it descriptive not ranked, private not public, transparent not covert, and subordinate to a human who actually pays attention. Point AI at people and the question stops being "can I build this?" and becomes "<em>should</em> I, and under what constraints?" If you can't answer the second question crisply, the right move is to not build it. That restraint is the most senior thing in this entire series.</p>
 <hr />
 <p><em>That's the series — nine workflows that turned a production mobile repo into something that mostly runs itself. If there's a theme across all of it, it's this: good automation is cowardly, transparent, and reversible, and the best engineering judgment is often knowing where to stop. Thanks for reading along.</em></p>
+<h2>The complete workflow</h2>
+<p>Here is the full, genericized workflow — drop it into <code>.github/workflows/</code> and replace the placeholders (<code>your-org</code>, the <code>PROJ</code> project key, <code>&lt;@DISCORD_USER_ID&gt;</code>, the example team, and the secret names) with your own.</p>
+<h3><code>.github/workflows/update-team-stats.yml</code></h3>
+<pre><code class="language-yaml">name: Update Team Stats
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Number of days for README stats'
+        required: false
+        default: '7'
+
+concurrency:
+  group: update-team-stats
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: read
+  id-token: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-slim
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect team stats for README
+        run: chmod +x tools/update_readme_team.sh &amp;&amp; ./tools/update_readme_team.sh ${{ inputs.days || '7' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Collect Jira stats
+        continue-on-error: true
+        run: |
+          JIRA_BASE="https://your-org.atlassian.net"
+          AUTH=$(printf '%s:%s' "$JIRA_EMAIL" "$JIRA_API_TOKEN" | base64 -w 0)
+
+          jira_search() {
+            local jql="$1"
+            local encoded
+            encoded=$(jq -rn --arg q "$jql" '$q|@uri')
+            local result
+            result=$(curl -sf \
+              -H "Authorization: Basic ${AUTH}" \
+              -H "Accept: application/json" \
+              "${JIRA_BASE}/rest/api/3/search/jql?jql=${encoded}&amp;fields=assignee,summary,issuetype,status,resolutiondate,priority,updated&amp;maxResults=100" 2&gt;/dev/null) || result='{"issues":[]}'
+            echo "$result"
+          }
+
+          jira_search "project = PROJ AND resolutiondate &gt;= -7d ORDER BY resolutiondate DESC" &gt; .tmp_jira_r.json
+          jira_search "project = PROJ AND statusCategory = 'In Progress' ORDER BY assignee" &gt; .tmp_jira_p.json
+          jira_search "project = PROJ AND updated &gt;= -7d ORDER BY updated DESC" &gt; .tmp_jira_u.json
+
+          jq -s '{
+            resolved: {
+              total: ((.[0].issues // []) | length),
+              by_person: [(.[0].issues // []) | group_by(.fields.assignee.displayName // "Unassigned")[] | {
+                assignee: (.[0].fields.assignee.displayName // "Unassigned"),
+                count: length,
+                tickets: [.[] | {key: .key, summary: .fields.summary, type: .fields.issuetype.name, priority: (.fields.priority.name // "None")}]
+              }] | sort_by(-.count)
+            },
+            in_progress: {
+              total: ((.[1].issues // []) | length),
+              by_person: [(.[1].issues // []) | group_by(.fields.assignee.displayName // "Unassigned")[] | {
+                assignee: (.[0].fields.assignee.displayName // "Unassigned"),
+                count: length,
+                tickets: [.[] | {key: .key, summary: .fields.summary, type: .fields.issuetype.name}]
+              }] | sort_by(-.count)
+            },
+            updated: {
+              total: ((.[2].issues // []) | length),
+              by_person: [(.[2].issues // []) | group_by(.fields.assignee.displayName // "Unassigned")[] | {
+                assignee: (.[0].fields.assignee.displayName // "Unassigned"),
+                count: length,
+                tickets: [.[] | {key: .key, summary: .fields.summary, type: .fields.issuetype.name, status: .fields.status.name}]
+              }] | sort_by(-.count)
+            }
+          }' .tmp_jira_r.json .tmp_jira_p.json .tmp_jira_u.json &gt; .tmp_jira_stats.json
+
+          rm -f .tmp_jira_r.json .tmp_jira_p.json .tmp_jira_u.json
+          echo "Jira: $(jq '.resolved.total' .tmp_jira_stats.json) resolved, $(jq '.in_progress.total' .tmp_jira_stats.json) in progress, $(jq '.updated.total' .tmp_jira_stats.json) updated"
+        env:
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+      - name: Collect git comparison stats
+        run: |
+          set -euo pipefail
+
+          TODAY=$(date -u +%Y-%m-%d)
+          WEEK_AGO=$(date -u -d '-7 days' +%Y-%m-%d 2&gt;/dev/null || date -u -v-7d +%Y-%m-%d)
+          TWO_WEEKS_AGO=$(date -u -d '-14 days' +%Y-%m-%d 2&gt;/dev/null || date -u -v-14d +%Y-%m-%d)
+
+          declare -a MEMBERS=(
+            "Alex Rivera|your-maintainer,Alex Rivera,your-maintainer"
+            "Sam Chen|schen,Sam Chen,schen"
+            "Jordan Park|jpark,Jordan Park,Jordan"
+            "Casey Kim|ckim,Casey Kim"
+            "Riley Diaz|rdiaz,Riley Diaz,Riley Diaz"
+          )
+
+          collect_week() {
+            local since="$1" until="$2" aliases="$3"
+            local commits=0 files=0 adds=0 dels=0 merges=0
+            local fix=0 feat=0 chore=0 refactor=0 other_cat=0
+            local seen_file=$(mktemp)
+            local subjects_file=$(mktemp)
+            local raw_file=$(mktemp)
+
+            IFS=',' read -ra alias_arr &lt;&lt;&lt; "$aliases"
+            for alias in "${alias_arr[@]}"; do
+              git log --exclude='refs/heads/entire/*' --exclude='refs/remotes/*/entire/*' \
+                --all --no-merges --author="$alias" --since="$since" --until="$until" \
+                --format="%H|%s" 2&gt;/dev/null | grep -vi "checkpoint" | grep -vi "update team stats" &gt;&gt; "$raw_file" || true
+            done
+
+            while IFS='|' read -r hash subject; do
+              [[ -z "$hash" ]] &amp;&amp; continue
+              if ! grep -qx "$hash" "$seen_file" 2&gt;/dev/null; then
+                echo "$hash" &gt;&gt; "$seen_file"
+                commits=$((commits + 1))
+                echo "$subject" &gt;&gt; "$subjects_file"
+              fi
+            done &lt; "$raw_file"
+
+            if [ "$commits" -gt 0 ]; then
+              local hashes
+              hashes=$(cat "$seen_file")
+              while IFS= read -r h; do
+                local stat
+                stat=$(git show --shortstat --format="" "$h" 2&gt;/dev/null || true)
+                if [ -n "$stat" ]; then
+                  local f=$(echo "$stat" | sed -n 's/^ *\([0-9]*\) file.*/\1/p')
+                  local a=$(echo "$stat" | sed -n 's/.* \([0-9]*\) insertion.*/\1/p')
+                  local d=$(echo "$stat" | sed -n 's/.* \([0-9]*\) deletion.*/\1/p')
+                  files=$((files + ${f:-0}))
+                  adds=$((adds + ${a:-0}))
+                  dels=$((dels + ${d:-0}))
+                fi
+              done &lt;&lt;&lt; "$hashes"
+            fi
+
+            for alias in "${alias_arr[@]}"; do
+              local m
+              m=$(git log --exclude='refs/heads/entire/*' --exclude='refs/remotes/*/entire/*' \
+                --all --author="$alias" --since="$since" --until="$until" \
+                --merges --pretty=format:"%H" 2&gt;/dev/null | wc -l | tr -d ' ')
+              merges=$((merges + ${m:-0}))
+            done
+
+            if [ -s "$subjects_file" ]; then
+              fix=$(grep -ci "^fix" "$subjects_file" 2&gt;/dev/null) || true
+              fix=${fix:-0}
+              feat=$(grep -ci "^feat" "$subjects_file" 2&gt;/dev/null) || true
+              feat=${feat:-0}
+              chore=$(grep -ci "^chore" "$subjects_file" 2&gt;/dev/null) || true
+              chore=${chore:-0}
+              refactor=$(grep -ci "^refactor" "$subjects_file" 2&gt;/dev/null) || true
+              refactor=${refactor:-0}
+              other_cat=$((commits - fix - feat - chore - refactor))
+              [ "$other_cat" -lt 0 ] &amp;&amp; other_cat=0
+            fi
+
+            rm -f "$seen_file" "$subjects_file" "$raw_file"
+            printf '{"commits":%d,"files":%d,"insertions":%d,"deletions":%d,"merges":%d,"categories":{"fix":%d,"feat":%d,"chore":%d,"refactor":%d,"other":%d}}' \
+              "$commits" "$files" "$adds" "$dels" "$merges" "$fix" "$feat" "$chore" "$refactor" "$other_cat"
+          }
+
+          AUTHORS_JSON="[]"
+          for member in "${MEMBERS[@]}"; do
+            IFS='|' read -r name aliases &lt;&lt;&lt; "$member"
+
+            cw=$(collect_week "$WEEK_AGO" "$TODAY" "$aliases")
+            pw=$(collect_week "$TWO_WEEKS_AGO" "$WEEK_AGO" "$aliases")
+
+            cw_commits=$(echo "$cw" | jq '.commits')
+            pw_commits=$(echo "$pw" | jq '.commits')
+            if [ "$cw_commits" -eq 0 ] &amp;&amp; [ "$pw_commits" -eq 0 ]; then
+              continue
+            fi
+
+            AUTHORS_JSON=$(echo "$AUTHORS_JSON" | jq \
+              --arg name "$name" --argjson cw "$cw" --argjson pw "$pw" \
+              '. + [{name: $name, current_week: $cw, previous_week: $pw}]')
+          done
+
+          AUTHORS_JSON=$(echo "$AUTHORS_JSON" | jq 'sort_by(-.current_week.commits)')
+
+          jq -n \
+            --arg cw_from "$WEEK_AGO" --arg cw_to "$TODAY" \
+            --arg pw_from "$TWO_WEEKS_AGO" --arg pw_to "$WEEK_AGO" \
+            --argjson authors "$AUTHORS_JSON" \
+            '{
+              date_ranges: {
+                current_week: {from: $cw_from, to: $cw_to},
+                previous_week: {from: $pw_from, to: $pw_to}
+              },
+              authors: $authors
+            }' &gt; .tmp_git_stats.json
+
+          echo "Git stats collected for $(echo "$AUTHORS_JSON" | jq 'length') authors"
+          cat .tmp_git_stats.json
+
+      - name: Configure Claude Code permissions
+        shell: bash
+        run: |
+          mkdir -p .claude
+          cat &gt; .claude/settings.local.json &lt;&lt;'SETTINGS_EOF'
+          {
+            "permissions": {
+              "allow": [
+                "Read(*)", "Write(*)", "Bash(*)", "Glob(*)", "Grep(*)"
+              ]
+            },
+            "hooks": {}
+          }
+          SETTINGS_EOF
+          if [ -f .claude/settings.json ]; then
+            cp .claude/settings.json .claude/settings.json.bak
+            jq '.hooks = {}' .claude/settings.json &gt; .claude/settings.json.tmp &amp;&amp; mv .claude/settings.json.tmp .claude/settings.json
+          fi
+
+      - name: Generate personalized team messages
+        id: claude
+        continue-on-error: true
+        uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_BASE_URL: https://api.your-llm-provider.com
+        with:
+          anthropic_api_key: ${{ secrets.LLM_API_KEY }}
+          claude_args: '--model your-model-id --max-turns 10'
+          show_full_output: true
+          prompt: |
+            You are a tech lead generating personalized weekly review messages for each team member.
+
+            ## Input Data
+
+            Read these two files:
+            1. `.tmp_git_stats.json` — Pre-collected git stats for current and previous week per author, including:
+               - `date_ranges`: current_week and previous_week date ranges
+               - `authors[]`: each with `name`, `current_week` and `previous_week` stats:
+                 - `commits`, `files`, `insertions`, `deletions`, `merges`
+                 - `categories`: `fix`, `feat`, `chore`, `refactor`, `other` (commit type breakdown)
+            2. `.tmp_jira_stats.json` — Jira ticket data (may be missing/empty — skip Jira if so):
+               - `resolved`: tickets resolved in the last week, grouped by assignee
+               - `in_progress`: tickets currently in progress, grouped by assignee
+               - `updated`: tickets updated in the last week, grouped by assignee
+
+            ## Team Mapping (Name → Role + Discord)
+            CRITICAL: Each person has a unique Discord ID. Do NOT mix them up.
+
+            | Name                | Role                        | Discord mention        |
+            |---------------------|-----------------------------|------------------------|
+            | Alex Rivera    | Mobile TL / Release Captain | &lt;@DISCORD_USER_ID&gt; |
+            | Sam Chen       | CTO                         | &lt;@DISCORD_USER_ID&gt; |
+            | Jordan Park   | Sr. Flutter Dev             | &lt;@DISCORD_USER_ID&gt; |
+            | Casey Kim | Mid Flutter Dev             | &lt;@DISCORD_USER_ID&gt;  |
+            | Riley Diaz       | Mid Flutter Dev             | &lt;@DISCORD_USER_ID&gt;  |
+            | Morgan Yu      | Sr. QA Engineer             | &lt;@DISCORD_USER_ID&gt; |
+            | Taylor Cruz     | QA Engineer                 | &lt;@DISCORD_USER_ID&gt; |
+            | Jamie Okafor           | Sr. Backend Dev             | &lt;@DISCORD_USER_ID&gt; |
+
+            Match Jira `assignee` display names to the Name column above. Never use the same Discord mention for two people.
+
+            ## Message Rules
+
+            ### Language:
+            1. Language: English — warm, natural, and conversational.
+            2. Use plain technical terms as-is (commit, bug, crash, feature, merge, ticket, repository).
+            3. Keep proper nouns as-is.
+
+            ### ⚠️ DO NOT mention:
+            - Jira ticket IDs (e.g. PROJ-XXXXX)
+            - Commit hashes or PR numbers
+            - Exact commit messages
+            - Do NOT list examples of commits or tickets
+            - Do NOT go into low-level technical details
+
+            ### What to include in each message:
+            - High-level summary of this week's contribution using the `categories` breakdown (bugs, features, chores, refactoring)
+            - Week-over-week comparison with concrete numbers (e.g. "you made X commits this week vs Y last week" or a percentage change)
+            - General impact (performance, stability, user experience)
+            - Work quality assessment
+            - One or two key strengths
+            - One clear improvement point
+
+            ### Writing Style:
+            - One single natural paragraph (NO sections, NO bullet points)
+            - SHORT: 4–6 lines max per person
+            - No repetition, no over-explaining
+
+            ### Evaluation — must include the assessment INSIDE the sentence:
+            - "Honestly, my read on where you're at is... because..."
+            - "I think you're in great shape because..."
+            - "The closest call is you need to push a bit more because..."
+
+            ### Week-over-Week Comparison:
+            - Compare: commit count, files changed, lines added/deleted
+            - Use natural phrasing:
+              - "This week was better than last — your commits went up from X to Y"
+              - "A slight dip this week compared to last"
+              - "Steady and consistent — about the same level"
+            - 0 commits last week → active this week: highlight return
+            - Active last week → 0 this week: note the drop
+
+            ### Special Rules:
+            - Alex Rivera → strong praise + still add one improvement point
+
+            ## Output
+
+            Write `.tmp_discord_messages.json` as a JSON array. Each element:
+            ```json
+            {
+              "mention": "&lt;@discord_id&gt;",
+              "name": "Person Name",
+              "stats": "X commits | Y files changed | +Z / -W lines | vs last week: ↑/↓/→",
+              "body": "message paragraph here without wrapping quotes"
+            }
+            ```
+
+            IMPORTANT format notes:
+            - Do NOT include the person's name in stats or body (the Discord mention already shows it)
+            - `stats` is just the numbers line — no bold, no parentheses, no name
+            - `body` is the evaluation paragraph — no quotes wrapping it
+            - stats and body are SEPARATE fields, not combined
+
+            Order by current week commit volume (highest first).
+            Only include team members who had activity in at least one of the two weeks (git OR Jira).
+            Write ONLY `.tmp_discord_messages.json`. No other output files.
+
+      - name: Send individual messages to Discord
+        shell: bash
+        run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "::warning::DISCORD_WEBHOOK_URL not configured, skipping"
+            exit 0
+          fi
+
+          if [ ! -f .tmp_discord_messages.json ] || [ ! -s .tmp_discord_messages.json ]; then
+            echo "::warning::No messages generated, sending fallback"
+            MSG=$(printf '📊 **Team Stats Updated**\nCheck the latest stats: https://github.com/%s#team-members' "${{ github.repository }}")
+            PAYLOAD=$(jq -n --arg content "$MSG" '{content: $content}')
+            curl -f -X POST -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK_URL" || echo "::warning::Discord notification failed"
+            exit 0
+          fi
+
+          COUNT=$(jq 'length' .tmp_discord_messages.json)
+          echo "Sending $COUNT individual messages to Discord..."
+
+          for i in $(seq 0 $((COUNT - 1))); do
+            MENTION=$(jq -r ".[$i].mention" .tmp_discord_messages.json)
+            NAME=$(jq -r ".[$i].name" .tmp_discord_messages.json)
+            STATS=$(jq -r ".[$i].stats" .tmp_discord_messages.json)
+            BODY=$(jq -r ".[$i].body" .tmp_discord_messages.json)
+
+            FULL_MSG=$(printf '%s\n%s\n\n%s' "$MENTION" "$STATS" "$BODY")
+
+            PAYLOAD=$(jq -n --arg content "$FULL_MSG" '{content: $content}')
+            if curl -f -X POST -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK_URL"; then
+              echo "Sent message for $NAME"
+            else
+              echo "::warning::Failed to send message for $NAME"
+            fi
+
+            if [ $i -lt $((COUNT - 1)) ]; then
+              sleep 2
+            fi
+          done
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Cleanup temp files
+        run: git checkout -- .claude/ 2&gt;/dev/null || true &amp;&amp; rm -f .tmp_jira_stats.json .tmp_discord_messages.json .tmp_git_stats.json
+
+      - name: Commit README changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "Alex Rivera"
+          git config user.email "bot@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git add README.md
+          git diff --staged --quiet &amp;&amp; echo "No changes" &amp;&amp; exit 0
+          git commit -m "chore: update team stats --skip-protection"
+          git pull --rebase origin master
+          git push</code></pre>
 
         </article>
         <p class="pr-tags">Tags: AI in Development · Engineering Leadership · Team Management · Automation</p>
