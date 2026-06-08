@@ -10,6 +10,8 @@ url: https://bnsaed.com/articles/flutter-cached-pdfview-guide
 
 # Building a Cached PDF Viewer in Flutter
 
+![flutter_cached_pdfview — native cached PDF viewing on iOS and Android](/article-images/flutter-cached-pdfview-guide-hero.png)
+
 PDF viewing is a common requirement in mobile applications. Whether you're building a document reader, an e-book app, or just need to display PDFs from URLs, having an efficient solution is crucial.
 
 ## Why Caching Matters
