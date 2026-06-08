@@ -13,12 +13,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/clean-architecture-flutter</loc>
-    <lastmod>2024-02-20</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://bnsaed.com/articles/github-actions-branch-protection-guardrails</loc>
     <lastmod>2026-04-14</lastmod>
     <changefreq>yearly</changefreq>

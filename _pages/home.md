@@ -27,7 +27,6 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a software engineer who
 Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`.
 
 - [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide)
-- [Clean Architecture in Flutter Apps](https://bnsaed.com/articles/clean-architecture-flutter)
 
 ## Discovery for agents
 

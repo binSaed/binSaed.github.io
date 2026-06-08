@@ -66,12 +66,6 @@
           "href": "https://bnsaed.com/articles/flutter-cached-pdfview-guide",
           "type": "text/html",
           "title": "Building a Cached PDF Viewer in Flutter"
-        },
-        {
-          "rel": "service-doc",
-          "href": "https://bnsaed.com/articles/clean-architecture-flutter",
-          "type": "text/html",
-          "title": "Clean Architecture in Flutter Apps"
         }
       ]
     }

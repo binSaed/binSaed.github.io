@@ -40,7 +40,6 @@ Without the `Accept: text/markdown` header, you receive the normal HTML page. Th
 | Slug | Title |
 |------|-------|
 | `flutter-cached-pdfview-guide` | Building a Cached PDF Viewer in Flutter |
-| `clean-architecture-flutter` | Clean Architecture in Flutter Apps |
 
 Always re-check `/sitemap.xml` for the current list — new articles are added without updating this skill.
 

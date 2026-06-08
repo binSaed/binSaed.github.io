@@ -63,7 +63,6 @@ When an agent sends `Accept: text/markdown` to any HTML page on the site, the re
 Long-form posts are published under `/articles/:slug`. Current posts:
 
 - `/articles/flutter-cached-pdfview-guide` — Building a Cached PDF Viewer in Flutter
-- `/articles/clean-architecture-flutter` — Clean Architecture in Flutter Apps
 
 **The Self-Driving Repo** — a CI/CD automation series:
 
