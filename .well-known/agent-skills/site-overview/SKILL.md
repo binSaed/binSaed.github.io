@@ -71,7 +71,6 @@ Long-form posts are published under `/articles/:slug`. Current posts:
 - `/articles/sync-jira-with-github-prs` — Making Jira and GitHub agree without anyone updating both
 - `/articles/auto-rebase-and-detect-merge-conflicts` — Every merge to master quietly breaks other PRs
 - `/articles/bot-that-resolves-merge-conflicts` — I let a bot resolve merge conflicts and push the fix
-- `/articles/flutter-release-builds-from-ci` — One button, three stores: shipping a Flutter app from CI
 - `/articles/ai-generated-qa-reports-from-a-release-diff` — The release writes its own QA test plan now
 - `/articles/automated-stale-branch-cleanup` — A repo that cleans up after itself
 - `/articles/ai-weekly-engineering-reviews` — I built an AI that writes weekly engineering summaries
