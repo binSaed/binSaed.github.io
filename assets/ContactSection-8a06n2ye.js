@@ -1,4 +1,4 @@
-import{j as v}from"./ui-vendor-5oxkQ2Jf.js";import{c as ie,j as Te,d as Re,a as Ie,B as Ee,k as $e,m as oe}from"./index-Gs2FSfDF.js";import{r as U}from"./react-vendor-GBp8saLZ.js";import{M as ce}from"./mail-TCvWxeQr.js";import"./radix-DOafHixa.js";/**
+import{j as v}from"./ui-vendor-5oxkQ2Jf.js";import{c as ie,j as Te,d as Re,a as Ie,B as Ee,k as $e,m as oe}from"./index-DG24rIr_.js";import{r as U}from"./react-vendor-GBp8saLZ.js";import{M as ce}from"./mail-BPFlkh3C.js";import"./radix-DOafHixa.js";/**
  * @license lucide-react v0.462.0 - ISC
  *
  * This source code is licensed under the ISC license.
