@@ -1,6 +1,6 @@
-# Abdelrahman Saed (binSaed) — Software Engineer
+# Abdelrahman Saed (binSaed) — Senior / Lead Mobile Engineer
 
-> Personal portfolio of Abdelrahman Saed, a software engineer who builds with Flutter, React, Android, and modern web technologies. This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
+> Personal portfolio of Abdelrahman Saed, a Senior / Lead Mobile Engineer with 7 years shipping production Flutter apps for iOS and Android to 5M+ users (Flutter, Dart, BLoC/Cubit, Clean Architecture). This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
 
 ## Core content
 
