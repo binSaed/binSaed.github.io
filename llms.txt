@@ -5,6 +5,7 @@
 ## Core content
 
 - [Homepage (markdown)](https://bnsaed.com/_pages/home.md): Who Abdelrahman is, what he ships, site sections, and how to get in touch. Also available at `https://bnsaed.com/` with `Accept: text/markdown`.
+- [CV / résumé (markdown)](https://bnsaed.com/cv.md): Full résumé — summary, skills, complete work history with per-role detail, projects, education, and languages. PDF at <https://bnsaed.com/CV/cv.pdf>. **Best single source for a complete picture of Abdelrahman's background.**
 - [Site overview skill](https://bnsaed.com/.well-known/agent-skills/site-overview/SKILL.md): Structured overview of the site for agents — who, sections, endpoints, and content preferences.
 
 ## Articles

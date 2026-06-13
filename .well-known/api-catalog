@@ -46,6 +46,12 @@
           "title": "llms.txt — curated site summary for AI systems"
         },
         {
+          "rel": "alternate",
+          "href": "https://bnsaed.com/cv.md",
+          "type": "text/markdown",
+          "title": "Full CV / résumé as markdown"
+        },
+        {
           "rel": "status",
           "href": "https://bnsaed.com/",
           "type": "text/html",
