@@ -46,16 +46,24 @@
     <link rel="preconnect" href="https://api.github.com" crossorigin />
     <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin />
 
-    <!-- Preload LCP image for faster discovery -->
-    <link rel="preload" as="image" href="https://avatars.githubusercontent.com/u/33700292?v=4&s=256" fetchpriority="high" type="image/jpeg" />
+    <!-- Preload LCP image for faster discovery. Single fixed size (no srcset) so
+         it matches the <img> in HeroSection byte-for-byte; no `type` attribute
+         because GitHub serves this avatar as image/png, and a mismatched type
+         makes the browser discard the preload ("preloaded but not used"). -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://avatars.githubusercontent.com/u/33700292?v=4&s=256"
+      fetchpriority="high"
+    />
 
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-DTi6LLxe.js"></script>
+    <script type="module" crossorigin src="/assets/index-D0Fa-MKk.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-GBp8saLZ.js">
     <link rel="modulepreload" crossorigin href="/assets/ui-vendor-5oxkQ2Jf.js">
-    <link rel="modulepreload" crossorigin href="/assets/radix-DOafHixa.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CroFUsZb.css">
+    <link rel="modulepreload" crossorigin href="/assets/radix-CaAkrpky.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-CUssqL7w.css">
   
     <meta property="article:published_time" content="2026-06-02T00:00:00+00:00" />
     <meta property="article:modified_time" content="2026-06-02T00:00:00+00:00" />
