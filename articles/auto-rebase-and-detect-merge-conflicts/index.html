@@ -32,9 +32,11 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Every merge to master quietly breaks other PRs. So I built a radar for it.","description":"A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person.","image":"https://bnsaed.com/article-images/auto-rebase-and-detect-merge-conflicts-hero.png","datePublished":"2026-05-05T00:00:00+00:00","dateModified":"2026-05-05T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/"},"url":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/","keywords":"GitHub Actions, Git, CI/CD, DevOps"}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
-         discovers them immediately instead of after the CSS bundle downloads -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+         discovers them immediately instead of after the CSS bundle downloads.
+         No preconnect to fonts.googleapis.com / fonts.gstatic.com: Cloudflare's
+         font optimization rewrites the stylesheet to same-origin /cf-fonts/*
+         before it reaches the browser, so those origins receive zero requests and
+         a preconnect to them would only open connections that are never used. -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"

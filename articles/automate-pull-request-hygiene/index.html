@@ -32,9 +32,11 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PRs that fill in their own paperwork (and a gate that won't let bad code merge)","description":"Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself.","image":"https://bnsaed.com/article-images/automate-pull-request-hygiene-hero.png","datePublished":"2026-04-21T00:00:00+00:00","dateModified":"2026-04-21T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/automate-pull-request-hygiene/"},"url":"https://bnsaed.com/articles/automate-pull-request-hygiene/","keywords":"GitHub Actions, Developer Experience, CI/CD, Code Review"}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
-         discovers them immediately instead of after the CSS bundle downloads -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+         discovers them immediately instead of after the CSS bundle downloads.
+         No preconnect to fonts.googleapis.com / fonts.gstatic.com: Cloudflare's
+         font optimization rewrites the stylesheet to same-origin /cf-fonts/*
+         before it reaches the browser, so those origins receive zero requests and
+         a preconnect to them would only open connections that are never used. -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"

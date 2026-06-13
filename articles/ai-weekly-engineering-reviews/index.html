@@ -32,9 +32,11 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.","description":"Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Doing it responsibly — private, descriptive, transparent — is the actual work.","image":"https://bnsaed.com/article-images/ai-weekly-engineering-reviews-hero.png","datePublished":"2026-06-09T00:00:00+00:00","dateModified":"2026-06-09T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/"},"url":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/","keywords":"AI in Development, Engineering Leadership, Team Management, Automation"}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
-         discovers them immediately instead of after the CSS bundle downloads -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+         discovers them immediately instead of after the CSS bundle downloads.
+         No preconnect to fonts.googleapis.com / fonts.gstatic.com: Cloudflare's
+         font optimization rewrites the stylesheet to same-origin /cf-fonts/*
+         before it reaches the browser, so those origins receive zero requests and
+         a preconnect to them would only open connections that are never used. -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"

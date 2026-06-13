@@ -32,9 +32,11 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Building a Cached PDF Viewer in Flutter","description":"Learn how to implement an efficient PDF viewer with caching support for iOS and Android using flutter_cached_pdfview.","image":"https://bnsaed.com/article-images/flutter-cached-pdfview-guide-hero.png","datePublished":"2024-01-15T00:00:00+00:00","dateModified":"2024-01-15T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/flutter-cached-pdfview-guide/"},"url":"https://bnsaed.com/articles/flutter-cached-pdfview-guide/","keywords":"Flutter, Dart, PDF, Mobile"}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
-         discovers them immediately instead of after the CSS bundle downloads -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+         discovers them immediately instead of after the CSS bundle downloads.
+         No preconnect to fonts.googleapis.com / fonts.gstatic.com: Cloudflare's
+         font optimization rewrites the stylesheet to same-origin /cf-fonts/*
+         before it reaches the browser, so those origins receive zero requests and
+         a preconnect to them would only open connections that are never used. -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
