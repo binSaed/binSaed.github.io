@@ -51,7 +51,7 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile 
 
 Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`.
 
-- [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide)
+- [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide/)
 
 ## Discovery for agents
 

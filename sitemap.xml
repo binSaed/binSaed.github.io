@@ -2,54 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bnsaed.com/</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/flutter-cached-pdfview-guide</loc>
+    <loc>https://bnsaed.com/articles/flutter-cached-pdfview-guide/</loc>
     <lastmod>2024-01-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/github-actions-branch-protection-guardrails</loc>
+    <loc>https://bnsaed.com/articles/github-actions-branch-protection-guardrails/</loc>
     <lastmod>2026-04-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/automate-pull-request-hygiene</loc>
+    <loc>https://bnsaed.com/articles/automate-pull-request-hygiene/</loc>
     <lastmod>2026-04-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/sync-jira-with-github-prs</loc>
+    <loc>https://bnsaed.com/articles/sync-jira-with-github-prs/</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts</loc>
+    <loc>https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/bot-that-resolves-merge-conflicts</loc>
+    <loc>https://bnsaed.com/articles/bot-that-resolves-merge-conflicts/</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/automated-stale-branch-cleanup</loc>
+    <loc>https://bnsaed.com/articles/automated-stale-branch-cleanup/</loc>
     <lastmod>2026-06-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bnsaed.com/articles/ai-weekly-engineering-reviews</loc>
+    <loc>https://bnsaed.com/articles/ai-weekly-engineering-reviews/</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
