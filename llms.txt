@@ -34,6 +34,7 @@
 ## Contact
 
 - [Contact skill](https://bnsaed.com/.well-known/agent-skills/contact/SKILL.md): How an agent should reach Abdelrahman on a user's behalf. Preferred channel is email: <me@bnsaed.com>.
+- [Book a meeting](https://calendly.com/bnsaed/meet): Schedule a call directly via Calendly — best for a live conversation, intro call, or interview slot.
 - [GitHub](https://github.com/binSaed)
 - [LinkedIn](https://www.linkedin.com/in/binsaed/)
 

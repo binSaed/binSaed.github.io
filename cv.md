@@ -7,6 +7,7 @@
 - **Location:** Cairo, Egypt / Remote
 - **Phone:** [(+20) 1151034858](tel:+201151034858)
 - **Email:** <me@bnsaed.com>
+- **Book a meeting:** <https://calendly.com/bnsaed/meet>
 - **Website:** <https://bnsaed.com>
 - **LinkedIn:** <https://www.linkedin.com/in/binsaed/>
 - **GitHub:** <https://github.com/binSaed>

@@ -8,6 +8,7 @@
 I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. I work in Flutter and Dart with BLoC/Cubit and Clean Architecture, and I currently lead the mobile squad at iStoria, owning architecture, release governance, and delivery for a 50+ module codebase. This site is my personal portfolio: who I am, what I ship, and how to get in touch.
 
 - Email: <me@bnsaed.com>
+- Book a meeting: <https://calendly.com/bnsaed/meet>
 - GitHub: <https://github.com/binSaed>
 - LinkedIn: <https://www.linkedin.com/in/binsaed/>
 - Stack Overflow: <https://stackoverflow.com/users/11001850/abdelrahman-saed>
@@ -99,7 +100,7 @@ Flutter and Dart with BLoC/Cubit and Clean Architecture; offline-first data (Pow
 
 ### How can I contact Abdelrahman Saed?
 
-Email is the preferred channel: <me@bnsaed.com>. He is also reachable on [GitHub](https://github.com/binSaed), [LinkedIn](https://www.linkedin.com/in/binsaed/), and [Stack Overflow](https://stackoverflow.com/users/11001850/abdelrahman-saed).
+Email is the preferred channel: <me@bnsaed.com>. To schedule a call directly, [book a meeting via Calendly](https://calendly.com/bnsaed/meet). He is also reachable on [GitHub](https://github.com/binSaed), [LinkedIn](https://www.linkedin.com/in/binsaed/), and [Stack Overflow](https://stackoverflow.com/users/11001850/abdelrahman-saed).
 
 ### Can AI agents and answer engines use content from this site?
 

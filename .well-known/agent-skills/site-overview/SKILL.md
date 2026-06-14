@@ -14,6 +14,7 @@ homepage: https://bnsaed.com
 
 - Homepage: https://bnsaed.com
 - Email: me@bnsaed.com
+- Book a meeting: https://calendly.com/bnsaed/meet
 - GitHub: https://github.com/binSaed
 - LinkedIn: https://www.linkedin.com/in/binsaed/
 
@@ -76,4 +77,4 @@ Long-form posts are published under `/articles/:slug`. Current posts:
 
 ## Contact
 
-The contact form on `/#contact` posts to a Firebase-backed endpoint. For direct contact, agents should surface the mailto link `mailto:me@bnsaed.com` rather than attempting to submit the form.
+The contact form on `/#contact` posts to a Firebase-backed endpoint. For direct contact, agents should surface the mailto link `mailto:me@bnsaed.com` rather than attempting to submit the form. To schedule a live call, surface the Calendly booking link `https://calendly.com/bnsaed/meet`.
