@@ -1,6 +1,6 @@
 # Abdelrahman Saed (binSaed) — full text for LLMs
 
-> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-06-16.
+> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-06-17.
 > Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
 
 ---
@@ -35,6 +35,7 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile 
 | Projects | `https://bnsaed.com/#projects` |
 | Articles | `https://bnsaed.com/#articles` |
 | Skills | `https://bnsaed.com/#skills` |
+| Recommendations | `https://bnsaed.com/#recommendations` |
 | Contact | `https://bnsaed.com/#contact` |
 
 ## Experience
@@ -60,6 +61,22 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile 
 Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`.
 
 - [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide/)
+
+## Recommendations
+
+LinkedIn recommendations received (verbatim), newest first — see the full list at <https://www.linkedin.com/in/binsaed/details/recommendations/>:
+
+- **[Saber Son](https://www.linkedin.com/in/saber-son-b100b4177/)** — Flutter Developer · YouTuber (reported directly to Abdelrahman): "One of the things I admire most about Abdelrahman is how supportive he is. Whenever I face a challenge, he never hesitates to put aside what he's doing and help me figure it out. What sets him apart is that he doesn't just solve the problem and move on — he takes the time to explain the solution, the reasoning behind it, and how to approach similar situations in the future. Thanks to his guidance, I've become much more confident and independent when tackling technical challenges."
+- **[AlHassan Balousha](https://www.linkedin.com/in/alhassan-balousha-9b7bb8114/)** — Senior Software Engineer · 9+ yrs scaling apps (same team): "Abdelrahman is a highly accomplished Software Engineer and Tech Lead with strong executive-level technical leadership. He brings a strategic vision to building large-scale mobile applications, with deep expertise in designing scalable architectures capable of serving millions of users with stability and high performance. He combines strong engineering depth with disciplined execution, ensuring long-term product sustainability and technical excellence. What sets him apart: influential technical leadership and sound architectural decision-making; proven ability to build scalable, high-performance systems; effective team leadership and strong engineering culture; high productivity without compromising code quality or performance; and exceptional ability to solve complex problems under pressure. Abdelrahman is a strategic technical asset to any organization seeking strong leadership and long-term product impact."
+- **[Fady Mondy](https://www.linkedin.com/in/fadymondy/)** — Engineering Manager at ID8 Media · Creator of TomatoPHP (same team): "Abdelrahman played a pivotal role in the success of the iStoria mobile platform. His leadership of the mobile team was defined by technical excellence and a relentless focus on user experience. He successfully navigated complex integrations and maintained a high velocity of feature releases without compromising on code quality. He is a proactive leader who anticipates challenges before they arise, making him an invaluable asset to any engineering department."
+- **[Mohammed Helaiwa](https://www.linkedin.com/in/me-helaiwa/)** — Full Stack Engineer at iStoria (same team): "I've had the pleasure of working with Abdelrahman Saed, and I can confidently say he is one of the most reliable and skilled software engineers I've collaborated with. He combines deep technical expertise in Flutter with a strong understanding of building scalable, high-quality applications, especially in the EdTech domain. What truly sets him apart is his ability to think beyond just code — a product mindset, performance balanced with maintainability, and clean, well-architected solutions. As a Lead Software Engineer he mentors teammates, sets high engineering standards, and drives projects with clarity and ownership. Any organization would be fortunate to have him."
+- **[Maher Al-Ghannam](https://www.linkedin.com/in/maher-alghannam/)** — Senior QA Engineer · ISTQB-CTFL (different teams): "I highly recommend Abdelrahman as a Flutter Developer Team Lead. He has strong expertise in Flutter development and consistently delivers high-quality, well-structured mobile applications. Beyond his technical skills, he is a supportive and effective leader who encourages collaboration, guides the team through challenges, and ensures projects are delivered on time with excellent quality."
+- **[Omar Sulieman](https://www.linkedin.com/in/omar-sulieman-3b7861217/)** — Growth & Performance Marketer (different teams): "He is genuinely one of the strongest software engineers I've collaborated with — deep hands-on Flutter expertise, plus an understanding of architecture, performance trade-offs, and long-term maintainability. In the EdTech space he shows strong product awareness. Reliable, detail-oriented, professional, and communicates clearly across technical and non-technical teams. Highly recommended."
+- **[Abdelrahman Shehata](https://www.linkedin.com/in/abdelrahman-shehata-9a20b41b1/)** — Lead Software Engineer · Mobile & AI (same team): "As a Lead Software Engineer, one of his main strengths is problem solving in daily bugs. Highly recommended for lead tech companies, and you can rely on him for the highly advanced technologies."
+- **[Haitham Essam](https://www.linkedin.com/in/haitham-essam-b69b15332/)** — Senior Flutter Developer (reported directly to Abdelrahman): "From day one, Abdelrahman impressed everyone with his professionalism, creativity, and problem-solving mindset. He was always the one who could turn a complex challenge into a smooth, well-structured solution — with a positive attitude that made working together genuinely enjoyable. A great teammate who supports others and spreads positive energy. I highly recommend him for any future opportunity."
+- **[Islam Khalil](https://www.linkedin.com/in/islam-khalil-919278b2/)** — Software Engineer · Flutter Developer (Abdelrahman was senior, didn't manage directly): "I highly recommend Abdelrahman for his exceptional creativity, passion for assisting others, and remarkable proficiency in providing quick programming solutions, specifically in Dart and both Android and iOS app development. His expertise has been invaluable."
+- **[Abdullah Ehab](https://www.linkedin.com/in/abdullah-ehab/)** — Senior Flutter Developer at Sigma EMEA (same team): "Abdelrahman is an added value to any development team. He is a good team player, very dedicated, high ownership, motivated and focused on the target. Also a quick learner and fast troubleshooter."
+- **[Mohamed Reda](https://www.linkedin.com/in/mohamed-r-870271bb/)** — AI Engineer in Healthcare (same team): "Abdelrahman is one of the fastest learners I've worked with, and I'm absolutely confident that he would be a great fit for any company."
 
 ## Discovery for agents
 
