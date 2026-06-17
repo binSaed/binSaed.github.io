@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Articles | Abdelrahman Saed</title>
+    <meta name="description" content="Write-ups on mobile engineering, Flutter, and the CI/CD automation that keeps releases boring — including the Self-Driving Repo series." />
+    <meta name="author" content="Abdelrahman Saed" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Flutter Developer, Mobile Engineer, Lead Mobile Engineer, Flutter Architect, Dart, iOS, Android, BLoC, Cubit, Clean Architecture, Abdelrahman Saed, binSaed" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0e13" media="(prefers-color-scheme: dark)" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://bnsaed.com/articles/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bnsaed.com/articles/" />
+    <meta property="og:title" content="Articles | Abdelrahman Saed" />
+    <meta property="og:description" content="Write-ups on mobile engineering, Flutter, and the CI/CD automation that keeps releases boring — including the Self-Driving Repo series." />
+    <meta property="og:image" content="https://bnsaed.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter). 7+ years, 5M+ users, 99.9% crash-free." />
+    <meta property="og:site_name" content="Abdelrahman Saed Portfolio" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://bnsaed.com/articles/" />
+    <meta name="twitter:title" content="Articles | Abdelrahman Saed" />
+    <meta name="twitter:description" content="Write-ups on mobile engineering, Flutter, and the CI/CD automation that keeps releases boring — including the Self-Driving Repo series." />
+    <meta name="twitter:image" content="https://bnsaed.com/og.png" />
+    <meta name="twitter:image:alt" content="Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter). 7+ years, 5M+ users, 99.9% crash-free." />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Articles — Abdelrahman Saed","description":"Write-ups on mobile engineering, Flutter, and the CI/CD automation that keeps releases boring — including the Self-Driving Repo series.","url":"https://bnsaed.com/articles/","mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"url":"https://bnsaed.com/articles/github-actions-branch-protection-guardrails/","name":"The repo that rejects my own pushes to master"},{"@type":"ListItem","position":2,"url":"https://bnsaed.com/articles/automate-pull-request-hygiene/","name":"PRs that fill in their own paperwork (and a gate that won't let bad code merge)"},{"@type":"ListItem","position":3,"url":"https://bnsaed.com/articles/sync-jira-with-github-prs/","name":"Making Jira and GitHub agree without anyone updating both"},{"@type":"ListItem","position":4,"url":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/","name":"Every merge to master quietly breaks other PRs. So I built a radar for it."},{"@type":"ListItem","position":5,"url":"https://bnsaed.com/articles/bot-that-resolves-merge-conflicts/","name":"I let a bot resolve merge conflicts and push the fix. Here's how I made that safe."},{"@type":"ListItem","position":6,"url":"https://bnsaed.com/articles/automated-stale-branch-cleanup/","name":"A repo that cleans up after itself — without deleting the wrong branch"},{"@type":"ListItem","position":7,"url":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/","name":"I built an AI that writes weekly engineering summaries. Then I had to decide whether I should."},{"@type":"ListItem","position":8,"url":"https://bnsaed.com/articles/flutter-cached-pdfview-guide/","name":"Building a Cached PDF Viewer in Flutter"}]}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bnsaed.com"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://bnsaed.com/articles/"}]}</script>
+
+    <!-- Fonts: loaded from the document head (not CSS @import) so the browser
+         discovers them immediately instead of after the CSS bundle downloads.
+         No preconnect to fonts.googleapis.com / fonts.gstatic.com: Cloudflare's
+         font optimization rewrites the stylesheet to same-origin /cf-fonts/*
+         before it reaches the browser, so those origins receive zero requests and
+         a preconnect to them would only open connections that are never used. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    />
+
+    <!-- DNS prefetch and preconnect to critical origins for LCP optimization -->
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="dns-prefetch" href="https://avatars.githubusercontent.com" />
+    <link rel="preconnect" href="https://api.github.com" crossorigin />
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin />
+
+    <!-- Preload LCP image for faster discovery. Single fixed size (no srcset) so
+         it matches the <img> in HeroSection byte-for-byte; no `type` attribute
+         because GitHub serves this avatar as image/png, and a mismatched type
+         makes the browser discard the preload ("preloaded but not used"). -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://avatars.githubusercontent.com/u/33700292?v=4&s=256"
+      fetchpriority="high"
+    />
+
+    <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <script type="module" crossorigin src="/assets/index-DJSbb6D0.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-GBp8saLZ.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-vendor-5oxkQ2Jf.js">
+    <link rel="modulepreload" crossorigin href="/assets/radix-CaAkrpky.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BvaPUU1h.css">
+      <style id="prerender-fallback">
+#root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
+#root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+#root .prerender-content a{color:#c43a18;text-decoration:none}
+#root .prerender-content a:hover{text-decoration:underline}
+#root .prerender-content h1{font-size:2.5rem;line-height:1.1;margin:0 0 .5rem}
+#root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
+#root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
+#root .prerender-content p{margin:0 0 1rem}
+#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content li{margin:.25rem 0}
+#root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
+#root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
+#root .prerender-content pre code{background:none;padding:0}
+#root .prerender-content blockquote{margin:0 0 1rem;padding-left:1rem;border-left:3px solid #c43a18;color:#6b6155}
+#root .prerender-content .pr-avatar{width:120px;height:120px;border-radius:4px;object-fit:cover;border:1px solid #d8ccb4;margin-bottom:1rem}
+#root .prerender-content .pr-muted{color:#6b6155}
+#root .prerender-content .pr-tags{font-size:.85rem;color:#8a8074;font-family:ui-monospace,'SFMono-Regular',Menlo,monospace}
+#root .prerender-content .pr-thumb{max-width:100%;height:auto;border-radius:.25rem;margin:.5rem 0;border:1px solid #d8ccb4}
+</style>
+  </head>
+  <body>
+    <!-- GitHub Pages SPA redirect handling script -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/' ) {
+            const decoded = l.search.slice(1).split('&').map(function (s) {
+                return s.replace(/~and~/g, '&')
+            }).join('?');
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <div id="root"><div class="prerender-content" data-prerender="articles">
+      <div class="pr-wrap">
+        <p><a href="/">← Abdelrahman Saed</a></p>
+        <h1>Articles</h1>
+        <p class="pr-muted">Tutorials and field notes on mobile engineering, Flutter, and the CI/CD automation that keeps releases boring. 8 articles and counting.</p>
+        <h2>The Self-Driving Repo</h2>
+        <p class="pr-muted">A CI/CD automation series: small GitHub Actions that run the boring, error-prone parts of engineering — guardrails, PR hygiene, a merge-conflict radar, safe cleanup — so releases stay calm.</p>
+        <ul>
+          <li>Part 1: <a href="/articles/github-actions-branch-protection-guardrails/">The repo that rejects my own pushes to master</a> — Two small GitHub Actions that stop accidental direct pushes to master and auto-restore build-breaking files — reversible by design, with an explicit escape hatch.</li>
+          <li>Part 2: <a href="/articles/automate-pull-request-hygiene/">PRs that fill in their own paperwork (and a gate that won't let bad code merge)</a> — Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself.</li>
+          <li>Part 3: <a href="/articles/sync-jira-with-github-prs/">Making Jira and GitHub agree without anyone updating both</a> — A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping.</li>
+          <li>Part 4: <a href="/articles/auto-rebase-and-detect-merge-conflicts/">Every merge to master quietly breaks other PRs. So I built a radar for it.</a> — A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person.</li>
+          <li>Part 5: <a href="/articles/bot-that-resolves-merge-conflicts/">I let a bot resolve merge conflicts and push the fix. Here's how I made that safe.</a> — How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected.</li>
+          <li>Part 6: <a href="/articles/automated-stale-branch-cleanup/">A repo that cleans up after itself — without deleting the wrong branch</a> — Bulk branch deletion done safely, as a careful classification with a per-run cap, deferral, and a full audit trail — never a blunt age filter.</li>
+          <li>Part 7: <a href="/articles/ai-weekly-engineering-reviews/">I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.</a> — Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Doing it responsibly — private, descriptive, transparent — is the actual work.</li>
+        </ul>
+        <h2>More writing</h2>
+        <ul>
+          <li><a href="/articles/flutter-cached-pdfview-guide/">Building a Cached PDF Viewer in Flutter</a> — Learn how to implement an efficient PDF viewer with caching support for iOS and Android using flutter_cached_pdfview.</li>
+        </ul>
+      </div>
+    </div></div>
+  </body>
+</html>

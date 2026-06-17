@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/github-actions-branch-protection-guardrails
 
 *The Self-Driving Repo · Part 1 — Governance*
 
-![Guardrails — a neon shield protecting the master branch](/article-images/github-actions-branch-protection-guardrails-hero.png)
+![Guardrails — a neon shield protecting the master branch](/article-images/github-actions-branch-protection-guardrails-hero.webp)
 
 ---
 
@@ -46,7 +46,7 @@ Both share one principle: **reversible enforcement.** Nothing is blocked with a 
 
 ## How it works
 
-![Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized](/article-images/github-actions-branch-protection-guardrails-diagram.png)
+![Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized](/article-images/github-actions-branch-protection-guardrails-diagram.webp)
 
 ### Guarding the branch
 

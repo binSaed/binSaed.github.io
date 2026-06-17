@@ -252,7 +252,7 @@ url: https://bnsaed.com/articles/flutter-cached-pdfview-guide
 
 # Building a Cached PDF Viewer in Flutter
 
-![flutter_cached_pdfview — native cached PDF viewing on iOS and Android](/article-images/flutter-cached-pdfview-guide-hero.png)
+![flutter_cached_pdfview — native cached PDF viewing on iOS and Android](/article-images/flutter-cached-pdfview-guide-hero.webp)
 
 PDF viewing is a common requirement in mobile applications. Whether you're building a document reader, an e-book app, or just need to display PDFs from URLs, having an efficient solution is crucial.
 
@@ -376,7 +376,7 @@ url: https://bnsaed.com/articles/github-actions-branch-protection-guardrails
 
 *The Self-Driving Repo · Part 1 — Governance*
 
-![Guardrails — a neon shield protecting the master branch](/article-images/github-actions-branch-protection-guardrails-hero.png)
+![Guardrails — a neon shield protecting the master branch](/article-images/github-actions-branch-protection-guardrails-hero.webp)
 
 ---
 
@@ -407,7 +407,7 @@ Both share one principle: **reversible enforcement.** Nothing is blocked with a 
 
 ## How it works
 
-![Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized](/article-images/github-actions-branch-protection-guardrails-diagram.png)
+![Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized](/article-images/github-actions-branch-protection-guardrails-diagram.webp)
 
 ### Guarding the branch
 
@@ -710,7 +710,7 @@ url: https://bnsaed.com/articles/automate-pull-request-hygiene
 
 *The Self-Driving Repo · Part 2 — Developer Experience*
 
-![A pull request auto-filling its own context beside a quality gate](/article-images/automate-pull-request-hygiene-hero.png)
+![A pull request auto-filling its own context beside a quality gate](/article-images/automate-pull-request-hygiene-hero.webp)
 
 ---
 
@@ -740,7 +740,7 @@ The theme that makes them feel good to use: **idempotency and self-cleanup.** Th
 
 ## How it works
 
-![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](/article-images/automate-pull-request-hygiene-diagram.png)
+![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](/article-images/automate-pull-request-hygiene-diagram.webp)
 
 ### Auto-context on open
 
@@ -1201,7 +1201,7 @@ url: https://bnsaed.com/articles/sync-jira-with-github-prs
 
 *The Self-Driving Repo · Part 3 — Integration*
 
-![A glowing bridge syncing an issue board and a pull request](/article-images/sync-jira-with-github-prs-hero.png)
+![A glowing bridge syncing an issue board and a pull request](/article-images/sync-jira-with-github-prs-hero.webp)
 
 ---
 
@@ -1240,7 +1240,7 @@ on:
 
 ## How it works
 
-![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](/article-images/sync-jira-with-github-prs-diagram.png)
+![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](/article-images/sync-jira-with-github-prs-diagram.webp)
 
 ### Branch name → Jira issue
 
@@ -1718,7 +1718,7 @@ url: https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts
 
 *The Self-Driving Repo · Part 4 — Conflict Management*
 
-![A radar sweep over branch lines with conflicts pulsing red](/article-images/auto-rebase-and-detect-merge-conflicts-hero.png)
+![A radar sweep over branch lines with conflicts pulsing red](/article-images/auto-rebase-and-detect-merge-conflicts-hero.webp)
 
 ---
 
@@ -1747,7 +1747,7 @@ Detection and notification are deliberately separate. The sweep maintains accura
 
 ## How it works
 
-![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](/article-images/auto-rebase-and-detect-merge-conflicts-diagram.png)
+![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](/article-images/auto-rebase-and-detect-merge-conflicts-diagram.webp)
 
 ### Refresh everything on every merge
 
@@ -2053,7 +2053,7 @@ url: https://bnsaed.com/articles/bot-that-resolves-merge-conflicts
 
 *The Self-Driving Repo · Part 5 — Conflict Management (flagship)*
 
-![A robot arm carefully braiding two translation streams back into one](/article-images/bot-that-resolves-merge-conflicts-hero.png)
+![A robot arm carefully braiding two translation streams back into one](/article-images/bot-that-resolves-merge-conflicts-hero.webp)
 
 ---
 
@@ -2083,7 +2083,7 @@ The safety isn't in the merge logic. It's in the **refusal logic**. Let me walk 
 
 ## How it works (a fortress of guard clauses)
 
-![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](/article-images/bot-that-resolves-merge-conflicts-diagram.png)
+![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](/article-images/bot-that-resolves-merge-conflicts-diagram.webp)
 
 ### Guard 0: only conflicted, real, ready PRs
 
@@ -2408,7 +2408,7 @@ url: https://bnsaed.com/articles/automated-stale-branch-cleanup
 
 *The Self-Driving Repo · Part 8 — Housekeeping*
 
-![A robot broom sweeping dead branches from a healthy git tree](/article-images/automated-stale-branch-cleanup-hero.png)
+![A robot broom sweeping dead branches from a healthy git tree](/article-images/automated-stale-branch-cleanup-hero.webp)
 
 ---
 
@@ -2451,7 +2451,7 @@ on:
 
 ## How it works
 
-![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](/article-images/automated-stale-branch-cleanup-diagram.png)
+![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](/article-images/automated-stale-branch-cleanup-diagram.webp)
 
 ### Build the world before you judge it
 
@@ -2858,7 +2858,7 @@ url: https://bnsaed.com/articles/ai-weekly-engineering-reviews
 
 *The Self-Driving Repo · Part 9 — AI & People (flagship)*
 
-![Private, per-engineer weekly summary cards routed individually](/article-images/ai-weekly-engineering-reviews-hero.png)
+![Private, per-engineer weekly summary cards routed individually](/article-images/ai-weekly-engineering-reviews-hero.webp)
 
 ---
 
@@ -2896,7 +2896,7 @@ on:
 
 ## How it works (the easy part)
 
-![Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately](/article-images/ai-weekly-engineering-reviews-diagram.png)
+![Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately](/article-images/ai-weekly-engineering-reviews-diagram.webp)
 
 ### Aggregate two noisy sources into clean per-person stats
 

@@ -15,7 +15,7 @@ url: https://bnsaed.com/articles/automate-pull-request-hygiene
 
 *The Self-Driving Repo · Part 2 — Developer Experience*
 
-![A pull request auto-filling its own context beside a quality gate](/article-images/automate-pull-request-hygiene-hero.png)
+![A pull request auto-filling its own context beside a quality gate](/article-images/automate-pull-request-hygiene-hero.webp)
 
 ---
 
@@ -45,7 +45,7 @@ The theme that makes them feel good to use: **idempotency and self-cleanup.** Th
 
 ## How it works
 
-![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](/article-images/automate-pull-request-hygiene-diagram.png)
+![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](/article-images/automate-pull-request-hygiene-diagram.webp)
 
 ### Auto-context on open
 
