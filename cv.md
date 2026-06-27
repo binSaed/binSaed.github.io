@@ -16,7 +16,7 @@
 
 ## Summary
 
-Senior / Lead Mobile Engineer with **7 years** shipping production iOS and Android apps to **5M+ users** — Flutter, Dart, BLoC / Cubit, Clean Architecture. Lead a 4-engineer squad at [iStoria](https://istoria.app/en/) (EdTech · English language learning), owning architecture, release governance, and delivery for a **50+ module** codebase. Shipped **250+ production releases**, reviewed **600+ PRs**, sustained a **99.9% crash-free rate**, and cut the release cycle from **4 weeks to 1**.
+Senior / Lead Mobile Engineer with **7 years** shipping production iOS and Android apps to **5M+ users** — Flutter, Dart, BLoC / Cubit, Clean Architecture. Lead a 4-engineer squad at [iStoria](https://istoria.app/en/) (EdTech · English language learning), owning architecture, release governance, and delivery for a **50+ module** codebase. Shipped **350+ production releases**, reviewed **600+ PRs**, sustained a **99.9% crash-free rate**, and cut the release cycle from **4 weeks to 1**.
 
 ## Skills
 

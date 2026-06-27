@@ -16,7 +16,7 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile 
 
 ## By the numbers
 
-7+ years shipping mobile · 5M+ users reached · 99.9% crash-free rate · 250+ production releases · 600+ PRs reviewed · 30K+ abuse accounts blocked.
+7+ years shipping mobile · 5M+ users reached · 99.9% crash-free rate · 350+ production releases · 900+ PRs reviewed · 40K+ abuse accounts blocked.
 
 ## Sections (deep links)
 
