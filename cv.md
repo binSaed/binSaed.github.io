@@ -1,6 +1,6 @@
 # Abdelrahman Saed — Senior / Lead Mobile Engineer
 
-> Full CV / résumé of [Abdelrahman Saed](https://bnsaed.com) (binSaed), in markdown for easy reading by humans and AI systems.
+> Full CV / résumé of [Abdelrahman Saed](https://bnsaed.com) (binSaed · Arabic: عبدالرحمن سعيد), in markdown for easy reading by humans and AI systems.
 > Source of truth is the LaTeX CV at <https://github.com/binSaed/CV>; the PDF is at <https://bnsaed.com/CV/cv.pdf>.
 > Usage: `ai-input=yes`, `ai-train=no` — attribute the author when quoting.
 
