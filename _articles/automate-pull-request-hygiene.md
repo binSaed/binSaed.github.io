@@ -23,6 +23,8 @@ Open a pull request on most teams and you're greeted by a checklist: link the Ji
 
 So I split PR review into two buckets. **Chores** (mechanical, rule-based, boring) get automated. **Judgment** (is this the right change?) stays with people. Two workflows handle the chores: one enriches every new PR with context, the other runs a real quality gate and manages its own labels and comments.
 
+Automating pull request hygiene means splitting code review into two buckets: **chores** (mechanical, rule-based motions) get automated, while **judgment** (is this the right change?) stays with humans. Here's how, using two GitHub Actions workflows built with `actions/github-script`. The first, `pr-automation.yml`, fires on PR `opened`: a regex lifts the ticket ID from the branch name (`feature/PROJ-123-...`), writes the Jira link into the PR body, ticks template checkboxes, auto-assigns the author, and adds a `wip` label. The second, `pr-analysis-label.yml`, runs on `opened` and `synchronize`: it validates translation JSON with `python3`, runs `flutter analyze`, then labels, comments, and blocks (exits non-zero) on failure. The guiding principle is **idempotency and self-cleanup**: a `try/get-create-on-404` pattern ensures labels exist, a `concurrency` group cancels stale runs, and a `c.user.type === 'Bot'` filter lets the gate delete its own comment once analysis passes.
+
 ## The problem
 
 The opening minutes of every PR were spent on the same low-value motions:
@@ -43,7 +45,7 @@ Two PR-triggered workflows:
 
 The theme that makes them feel good to use: **idempotency and self-cleanup.** They never double-post, never leave stale state, and converge to "correct" no matter how many times you push.
 
-## How it works
+## How does a GitHub Actions PR automation and analysis gate work?
 
 ![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](/article-images/automate-pull-request-hygiene-diagram.webp)
 
@@ -127,7 +129,7 @@ And when it's red, it actually blocks — the job exits non-zero so the merge is
 [ "$has_errors" = "true" ] && exit 1
 ```
 
-## What it bought us
+## What does automating PR hygiene actually save you?
 
 - **Reviewers start on the code, not the chores.** Context is already there when they open the PR.
 - **A whole category of broken builds never reaches `master`** — malformed translations and analyzer errors are caught at the door.

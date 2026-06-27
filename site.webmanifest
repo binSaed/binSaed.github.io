@@ -1,0 +1,30 @@
+{
+  "name": "Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter)",
+  "short_name": "Abdelrahman Saed",
+  "description": "Portfolio of Abdelrahman Saed (binSaed): Senior / Lead Mobile Engineer shipping production Flutter apps for iOS and Android to 5M+ users.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#0b0e13",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -25,7 +25,9 @@ You can write that rule in the README. You can put it in the onboarding doc. Peo
 
 So I stopped relying on discipline and made the repo enforce itself. Two small workflows, under 200 lines combined. One guards the branch. One guards the files that quietly break everyone's build.
 
-## The problem
+Two small GitHub Actions can enforce branch hygiene that documentation alone never will: a `protect-master` workflow that auto-reverts any unauthorized direct push to `master`, and a `protect-files` workflow that restores protected paths — lockfiles, generated native folders, CI config — when a pull request changes them. Both follow one principle, reversible enforcement: instead of blocking a change behind an admin-only red X, they undo the mistake in the open with a readable commit, and both honor an explicit `--skip-protection` escape hatch for the times you genuinely mean it. The branch guard recognizes legitimate merges with a regex over commit subjects and prefers `git revert` over `git reset` so public history is never rewritten. Together, under 200 lines of YAML, they make `master` trustworthy for releases and rollbacks, eliminate a whole class of 'why is CI red?' mysteries, and remove the need to nag teammates about process.
+
+## Why do accidental pushes to `master` happen — and how do you prevent them?
 
 Two recurring failures, both cheap individually and expensive in aggregate:
 
@@ -121,7 +123,7 @@ fi
 
 Want to push a deliberate lockfile change? `git commit -m "chore: bump pods --skip-protection"`. The intent is explicit, it's in the history, and it's greppable later when you're auditing who bypassed what. The guardrail has a gate, and the gate has a name.
 
-## What it bought us
+## What do these GitHub Actions guardrails prevent?
 
 - **`master` is trustworthy again.** Every commit on it is either a reviewed merge or an explicitly-flagged exception. Releases and rollbacks rest on that.
 - **A class of "why is CI red?" mysteries disappeared.** Protected files can't drift in through a feature PR by accident.

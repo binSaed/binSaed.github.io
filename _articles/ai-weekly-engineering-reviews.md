@@ -25,7 +25,9 @@ Every Sunday, a job aggregates the week's git activity and issue-tracker tickets
 
 Read that back and you can hear two very different reactions. One: "great, automated visibility into team contributions." The other: "that's surveillance with a friendly font." Both are correct, and which one it actually becomes depends entirely on choices that have nothing to do with code. So this post is half engineering, half the harder thing: how to build something this powerful *responsibly* — or whether to point it at people at all.
 
-## The problem
+An AI weekly engineering review is a scheduled job that every Sunday aggregates each engineer's git activity (commits, files, insertions/deletions, change types, deduped by commit hash across name aliases) and issue-tracker tickets pulled via REST API, computes a **week-over-week comparison** into a structured JSON blob, then has an LLM translate those numbers into a short, warm, localized paragraph routed *privately* to that person. Here's how to do it responsibly: the prompt enforces strict guardrails — **no raw identifiers** (ticket IDs, commit hashes, PR numbers), a few singular sentences instead of a bulleted scorecard, strengths plus one supportive growth point, and the team's own language. Each summary goes individually, never to a public channel that becomes a leaderboard; a non-ranking contributions table updates the `README`. The principle: metrics describe, they never rank; private by default; transparent, not surveillance; and the tool stays subordinate to a human lead who already pays attention.
+
+## What problem do AI weekly engineering summaries solve?
 
 On a busy team, two real needs go chronically unmet:
 
@@ -90,7 +92,7 @@ The engineering delivered exactly what I described: regular, specific, localized
 
 But "what it bought us" is the wrong frame for this one, so let me switch to the frame that matters.
 
-## Doing this responsibly (the actual hard part)
+## How do you build AI engineering reviews responsibly?
 
 If you build this, you are now holding a tool that can quietly corrode trust. Here's the discipline I hold myself to. Take it as the real content of this post.
 

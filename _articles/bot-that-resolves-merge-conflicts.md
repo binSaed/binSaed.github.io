@@ -29,7 +29,9 @@ And yet it runs on every push to `master`, it resolves real conflicts, and I tru
 
 This post is about how to take a scary capability and make it safe by aggressively shrinking its blast radius.
 
-## The problem: translation conflicts are constant and brain-dead
+A **GitHub Action that auto-resolves merge conflicts** is made safe by shrinking its blast radius to one provably-safe case. This bot runs `actions/github-script` on every push to `master`, and only resolves conflicts when *every* unmerged file matches the regex `/^assets\/translations\/.*\.json$/`. If even one `.dart` or `pubspec.yaml` file conflicts, it calls `git merge --abort` and hands the PR to a human. It also skips drafts and forks, and waits out GitHub's eventually-consistent `mergeable` field before touching anything. Here's how it works: it merges in a throwaway `_auto_resolve` branch, parses each translation file's clean versions from both sides with `git show`, and unions the JSON key sets (`{ ...masterJSON, ...branchJSON }`)—branch wins on true collisions. It then pushes the fix, comments listing the files touched, and says "please review." Any unexpected error fails closed via `git merge --abort`. The safety lives in the refusal logic, not the merge algorithm: dumb-and-provable beats smart-and-probabilistic.
+
+## Why do translation JSON files conflict on every PR?
 
 We ship in multiple languages. Translations live in per-locale JSON files — `assets/translations/en.json`, `ar.json`, and so on. Add a feature and you add keys to all of them. Which means **every feature branch touches the same translation files**, and they conflict constantly.
 
@@ -43,7 +45,7 @@ The workflow runs on every push to `master`. For each open PR, it tries to merge
 
 The safety isn't in the merge logic. It's in the **refusal logic**. Let me walk the guards in the order they execute, because the order *is* the design.
 
-## How it works (a fortress of guard clauses)
+## How does the bot safely auto-resolve translation conflicts?
 
 ![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](/article-images/bot-that-resolves-merge-conflicts-diagram.webp)
 

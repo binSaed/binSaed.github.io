@@ -25,6 +25,8 @@ The naive fix — a script that deletes anything old — is how you delete a rel
 
 So I built branch cleanup as a **classification problem first and a deletion problem second.** The deleting is three lines. The safety is everything before it.
 
+Automated stale-branch cleanup treats branch deletion as a **classification problem first and a deletion problem second**. A scheduled GitHub Actions workflow (`cleanup-stale-branches.yml`) runs Sunday at 04:00 UTC, fetches every branch plus the full open and merged PR history, then sorts each branch through a strict safety precedence: **sacred** (`master`, `develop`, the default branch) beats **protected** beats **open-PR** beats **merged** beats **stale** beats **active**. Only *merged* and *stale* branches are deleted, and safety always wins ties. Three guards make bulk deletion routine: a per-run cap (`max_deletions`, default 50) that defers overflow to next week, branch-name URL-encoding before each `gh api -X DELETE` call, and a full audit trail — merged branches get a comment linking back to their PR, plus a Discord digest and a job-summary table of what was deleted, deferred, and kept. Staleness is epoch math: a tip commit older than `age_days` (default 730, ~2 years).
+
 ## The problem
 
 Unmanaged branches cause slow, compounding pain:
@@ -56,7 +58,7 @@ on:
       max_deletions: { default: '50' }    # hard cap per run
 ```
 
-## How it works
+## How does the stale-branch cleanup workflow classify branches?
 
 ![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](/article-images/automated-stale-branch-cleanup-diagram.webp)
 
@@ -108,7 +110,7 @@ gh api -X DELETE "repos/$REPO/git/refs/heads/$ENC"
 
 Every action lands in two places: a digest posted to team chat (counts, grouped by reason, with author attribution) and a full job summary with tables of what was deleted, what was deferred, and what was kept. Bulk deletion without an audit trail is how you lose the ability to answer "what happened to my branch?" — so the trail is non-negotiable.
 
-## What it bought us
+## What does safe automated branch cleanup get you?
 
 - **The junk drawer stays empty** without anyone doing scary manual cleanup.
 - **Zero accidents**, because deletion is the last step of a conservative classification, not a blunt age filter.

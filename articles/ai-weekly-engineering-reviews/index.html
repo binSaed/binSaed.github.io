@@ -34,7 +34,7 @@
     <meta name="twitter:image:alt" content="Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter). 7+ years, 5M+ users, 99.9% crash-free." />
 
     <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.","description":"Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Doing it responsibly — private, descriptive, transparent — is the actual work.","image":"https://bnsaed.com/article-images/ai-weekly-engineering-reviews-hero.webp","datePublished":"2026-06-09T00:00:00+00:00","dateModified":"2026-06-09T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/"},"url":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/","keywords":"AI in Development, Engineering Leadership, Team Management, Automation"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.","description":"Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Doing it responsibly — private, descriptive, transparent — is the actual work.","image":"https://bnsaed.com/article-images/ai-weekly-engineering-reviews-hero.webp","datePublished":"2026-06-09T00:00:00+00:00","dateModified":"2026-06-09T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"publisher":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"about":[{"@type":"Thing","name":"AI in Development","sameAs":"https://www.wikidata.org/wiki/Q11660"},{"@type":"Thing","name":"Automation","sameAs":"https://www.wikidata.org/wiki/Q184199"}],"mentions":[{"@type":"Thing","name":"Automation","sameAs":"https://www.wikidata.org/wiki/Q184199"}],"wordCount":1761,"articleBody":"This is the workflow I hesitated to write about, because it's the one most likely to be misunderstood — and the one where the engineering was genuinely the easy part.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/"},"url":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/","keywords":"AI in Development, Engineering Leadership, Team Management, Automation"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bnsaed.com"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://bnsaed.com/articles/"},{"@type":"ListItem","position":3,"name":"I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.","item":"https://bnsaed.com/articles/ai-weekly-engineering-reviews/"}]}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
@@ -74,12 +74,15 @@
       fetchpriority="high"
     />
 
-    <link rel="icon" type="image/png" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-qO9s75Fk.js"></script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="module" crossorigin src="/assets/index-CIYfiVNo.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-GBp8saLZ.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-C0ZQseSV.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-aXMwqjIu.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B3ipHTXN.css">
   
     <meta property="article:published_time" content="2026-06-09T00:00:00+00:00" />
     <meta property="article:modified_time" content="2026-06-09T00:00:00+00:00" />
@@ -135,7 +138,8 @@
 <p>This is the workflow I hesitated to write about, because it's the one most likely to be misunderstood — and the one where the engineering was genuinely the easy part.</p>
 <p>Every Sunday, a job aggregates the week's git activity and issue-tracker tickets for each engineer, compares it to the previous week, and uses an LLM to write a short, personalized summary that gets delivered privately to each person — in their own language. It also updates a stats table in the repo's README.</p>
 <p>Read that back and you can hear two very different reactions. One: "great, automated visibility into team contributions." The other: "that's surveillance with a friendly font." Both are correct, and which one it actually becomes depends entirely on choices that have nothing to do with code. So this post is half engineering, half the harder thing: how to build something this powerful <em>responsibly</em> — or whether to point it at people at all.</p>
-<h2>The problem</h2>
+<p>An AI weekly engineering review is a scheduled job that every Sunday aggregates each engineer's git activity (commits, files, insertions/deletions, change types, deduped by commit hash across name aliases) and issue-tracker tickets pulled via REST API, computes a <strong>week-over-week comparison</strong> into a structured JSON blob, then has an LLM translate those numbers into a short, warm, localized paragraph routed <em>privately</em> to that person. Here's how to do it responsibly: the prompt enforces strict guardrails — <strong>no raw identifiers</strong> (ticket IDs, commit hashes, PR numbers), a few singular sentences instead of a bulleted scorecard, strengths plus one supportive growth point, and the team's own language. Each summary goes individually, never to a public channel that becomes a leaderboard; a non-ranking contributions table updates the <code>README</code>. The principle: metrics describe, they never rank; private by default; transparent, not surveillance; and the tool stays subordinate to a human lead who already pays attention.</p>
+<h2>What problem do AI weekly engineering summaries solve?</h2>
 <p>On a busy team, two real needs go chronically unmet:</p>
 <p>1. <strong>Contribution is invisible.</strong> Quiet, high-impact work goes unseen; loud, low-impact work gets noticed. A lead working from vibes will misjudge both. 2. <strong>Feedback is sporadic.</strong> Most engineers get meaningful individual feedback a couple of times a year, in review season, about a period nobody remembers clearly.</p>
 <p>The honest goal was a gentle, regular signal — a "here's what your week looked like, nice work on X, maybe watch Y" — at a cadence no human lead can sustain across a whole team by hand.</p>
@@ -174,7 +178,7 @@
 <h2>What it bought us — and the part that isn't about code</h2>
 <p>The engineering delivered exactly what I described: regular, specific, localized summaries at a cadence no human could match. 8 summaries a week, zero manual effort.</p>
 <p>But "what it bought us" is the wrong frame for this one, so let me switch to the frame that matters.</p>
-<h2>Doing this responsibly (the actual hard part)</h2>
+<h2>How do you build AI engineering reviews responsibly?</h2>
 <p>If you build this, you are now holding a tool that can quietly corrode trust. Here's the discipline I hold myself to. Take it as the real content of this post.</p>
 <p><strong>1. Metrics describe; they never rank.</strong> The moment per-person commit counts become a scoreboard, you've taught your team that the goal is commits — and you'll get more, smaller, emptier commits. That's Goodhart's Law, not a hypothesis. These numbers are a conversation starter for a human lead, never an input to compensation, stack-ranking, or who's "underperforming." If you can't commit to that, don't build it.</p>
 <p><strong>2. Private by default.</strong> A summary delivered to <em>you</em> about <em>your</em> week is supportive. The same summary in a public channel is a comparison nobody consented to. Route individually. Never broadcast individual stats.</p>

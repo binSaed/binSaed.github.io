@@ -34,7 +34,7 @@
     <meta name="twitter:image:alt" content="Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter). 7+ years, 5M+ users, 99.9% crash-free." />
 
     <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Every merge to master quietly breaks other PRs. So I built a radar for it.","description":"A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person.","image":"https://bnsaed.com/article-images/auto-rebase-and-detect-merge-conflicts-hero.webp","datePublished":"2026-05-05T00:00:00+00:00","dateModified":"2026-05-05T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/"},"url":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/","keywords":"GitHub Actions, Git, CI/CD, DevOps"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Every merge to master quietly breaks other PRs. So I built a radar for it.","description":"A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person.","image":"https://bnsaed.com/article-images/auto-rebase-and-detect-merge-conflicts-hero.webp","datePublished":"2026-05-05T00:00:00+00:00","dateModified":"2026-05-05T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"publisher":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"about":[{"@type":"Thing","name":"GitHub Actions","sameAs":"https://www.wikidata.org/wiki/Q97185096"},{"@type":"Thing","name":"Git","sameAs":"https://www.wikidata.org/wiki/Q186055"},{"@type":"Thing","name":"CI/CD","sameAs":"https://www.wikidata.org/wiki/Q28136854"},{"@type":"Thing","name":"DevOps","sameAs":"https://www.wikidata.org/wiki/Q3025536"}],"mentions":[{"@type":"Thing","name":"GitHub Actions","sameAs":"https://www.wikidata.org/wiki/Q97185096"},{"@type":"Thing","name":"Git","sameAs":"https://www.wikidata.org/wiki/Q186055"}],"wordCount":1216,"articleBody":"Here's a failure mode so normal you've stopped noticing it: you merge a PR to master, and in that instant some number of other open PRs become un-mergeable.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/"},"url":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/","keywords":"GitHub Actions, Git, CI/CD, DevOps"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bnsaed.com"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://bnsaed.com/articles/"},{"@type":"ListItem","position":3,"name":"Every merge to master quietly breaks other PRs. So I built a radar for it.","item":"https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/"}]}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
@@ -74,12 +74,15 @@
       fetchpriority="high"
     />
 
-    <link rel="icon" type="image/png" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-qO9s75Fk.js"></script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="module" crossorigin src="/assets/index-CIYfiVNo.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-GBp8saLZ.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-C0ZQseSV.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-aXMwqjIu.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B3ipHTXN.css">
   
     <meta property="article:published_time" content="2026-05-05T00:00:00+00:00" />
     <meta property="article:modified_time" content="2026-05-05T00:00:00+00:00" />
@@ -135,6 +138,7 @@
 <p>Here's a failure mode so normal you've stopped noticing it: you merge a PR to <code>master</code>, and in that instant some number of <em>other</em> open PRs become un-mergeable. They were fine a second ago. Now they conflict. But nobody knows yet — the authors are working on something else, and they'll find out hours or days later when they try to merge and GitHub says no.</p>
 <p>Multiply that by a busy <code>master</code> and a dozen open PRs and you get a slow, invisible tax: branches drifting out of sync, conflicts discovered at the worst possible moment (merge time), and a steady drip of "can you rebase?" comments.</p>
 <p>I wanted the opposite: the <em>moment</em> <code>master</code> moves, every open PR gets refreshed against it, and anything that conflicts gets flagged and announced — immediately, while the change is still fresh in everyone's head.</p>
+<p>Auto-detecting merge conflicts across open PRs is a two-workflow GitHub Actions system: a <strong>sweep</strong> and a <strong>broadcast</strong>. The sweep triggers on every push to <code>master</code>, paginates through all open PRs with <code>github.rest.pulls.list</code>, and calls <code>github.rest.pulls.updateBranch</code> on each (the API equivalent of GitHub's "Update branch" button), skipping forks and treating a <code>422</code> as "nothing to do" rather than a failure. Because GitHub computes mergeability asynchronously, you must treat <code>mergeable</code> as <strong>eventually consistent</strong>: poll <code>pulls.get</code> with backoff (up to 5 retries, 2s apart) until it stops returning <code>null</code>, then reconcile a <code>conflict</code> label based on <code>mergeable === false</code> or <code>mergeable_state === 'dirty'</code>. The broadcast workflow reads <code>conflict</code>-labeled PRs, builds an author→PRs map, translates each GitHub login to a chat handle, and posts one grouped Discord digest—push-based, grouped, and routed—so each conflict reaches the right author within seconds, not days after it has already broken their branch.</p>
 <h2>The problem</h2>
 <p>Three things were going wrong, all downstream of the same root cause (master moves, PRs don't):</p>
 <p>1. <strong>Stale branches.</strong> PRs fall behind <code>master</code> and their CI results stop meaning anything — they passed against an old base. 2. <strong>Late conflict discovery.</strong> Authors learn about conflicts when they try to merge, which is the most disruptive possible time. 3. <strong>Notification fatigue.</strong> GitHub <em>can</em> tell you a PR is conflicted, but it's buried in a UI nobody watches. The signal never reaches the person who needs it.</p>
@@ -145,7 +149,7 @@
 <li><strong>The broadcast</strong> — takes the conflicted PRs and posts a digest to team chat, grouped by author, so each person sees exactly their PRs that need attention.</li>
 </ul>
 <p>Detection and notification are deliberately separate. The sweep maintains accurate <em>state</em> (labels on PRs). The broadcast turns that state into a <em>message</em>. Splitting them means I can re-run or reschedule the announcement without re-running the (heavier) sweep.</p>
-<h2>How it works</h2>
+<h2>How do you auto-detect merge conflicts on every push to master?</h2>
 <p><img class="pr-thumb" src="/article-images/auto-rebase-and-detect-merge-conflicts-diagram.webp" alt="Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest" loading="lazy" width="1672" height="941" /></p>
 <h3>Refresh everything on every merge</h3>
 <p>The sweep triggers on push to <code>master</code> and pages through all open PRs against it:</p>
@@ -187,7 +191,7 @@ for (const pr of conflictedPRs) {
 }</code></pre>
 <p>Each GitHub author is translated to their chat handle so the message actually pings the right human, and a clean run gets a cheerful "no conflicts 🎉" instead of awkward silence. It also runs on a daily schedule, not just on demand — so even conflicts that appear through other paths get a regular nudge.</p>
 <p>The reason this lands where GitHub's own notifications don't: it's <strong>push-based, grouped, and routed.</strong> It arrives in the tool the team already lives in, addressed to the person who can fix it, listing exactly their PRs. No dashboard to remember to check.</p>
-<h2>What it bought us</h2>
+<h2>What does automatic conflict detection actually improve?</h2>
 <ul>
 <li><strong>Conflicts surface in seconds, not days</strong> — right after the merge that caused them, while context is fresh.</li>
 <li><strong>PR branches stay current</strong>, so green CI actually means "green against today's <code>master</code>."</li>

@@ -23,6 +23,8 @@ Every team that uses Jira and GitHub pays the same small, constant tax: **keepin
 
 I didn't want a heavyweight integration or a paid app. I wanted the PR to *know things about its ticket* automatically: what release it's targeting, what labels it carries, whether it's been marked Done — and, the part that turned out most useful, whether it's been Done for *too long* without merging.
 
+Syncing Jira and GitHub doesn't need a paid app or marketplace integration. Abdelrahman Saed built a single **GitHub Actions** workflow (using `actions/github-script@v7`) that mirrors Jira metadata onto every pull request. Here's how it works: a branch-name regex `/([A-Z]+-\d+)/` extracts the ticket ID, then one authenticated **Jira REST API** call (`/rest/api/3/issue/{id}?fields=status,resolutiondate,labels,fixVersions`, using Basic auth with an email and API token) fetches the issue. The workflow mirrors fix versions as `fix:` labels and Jira labels as `jira:` labels, reconciling on every run — adding and removing so stale labels never linger. It also adds a `tiny PR` (≤2 files) or `small PR` (<10 files) size label from the changed-file count. The sleeper feature is a `Slow PR` flag: when a ticket is Done but its resolution date is over three days old and the PR is still open, it surfaces finished work that isn't shipping. A twice-daily weekday cron catches async Jira status changes.
+
 ## The problem
 
 The mismatch between issue tracker and code host shows up as three distinct annoyances:
@@ -52,7 +54,7 @@ on:
     - cron: '0 13 * * 0-4'   # 13:00 — weekdays
 ```
 
-## How it works
+## How does syncing Jira status onto GitHub PRs work?
 
 ![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](/article-images/sync-jira-with-github-prs-diagram.webp)
 
@@ -120,7 +122,7 @@ A "Slow PR" label is a tiny thing that surfaces a real, expensive problem: **wor
 
 When the ticket flips back from Done (reopened, more work), the same logic removes the `Done` and `Slow PR` labels. Reconcile, don't accumulate.
 
-## What it bought us
+## What do you gain from syncing Jira with GitHub PRs?
 
 - **Release scope is visible on every PR.** `fix:1.42.0` right on the card — no Jira spelunking to answer "what's in the next build?"
 - **Reviewers triage by size at a glance.** "tiny PR" gets a quick pass; a 40-file change gets scheduled.

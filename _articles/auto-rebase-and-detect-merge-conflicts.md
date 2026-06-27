@@ -25,6 +25,8 @@ Multiply that by a busy `master` and a dozen open PRs and you get a slow, invisi
 
 I wanted the opposite: the *moment* `master` moves, every open PR gets refreshed against it, and anything that conflicts gets flagged and announced — immediately, while the change is still fresh in everyone's head.
 
+Auto-detecting merge conflicts across open PRs is a two-workflow GitHub Actions system: a **sweep** and a **broadcast**. The sweep triggers on every push to `master`, paginates through all open PRs with `github.rest.pulls.list`, and calls `github.rest.pulls.updateBranch` on each (the API equivalent of GitHub's "Update branch" button), skipping forks and treating a `422` as "nothing to do" rather than a failure. Because GitHub computes mergeability asynchronously, you must treat `mergeable` as **eventually consistent**: poll `pulls.get` with backoff (up to 5 retries, 2s apart) until it stops returning `null`, then reconcile a `conflict` label based on `mergeable === false` or `mergeable_state === 'dirty'`. The broadcast workflow reads `conflict`-labeled PRs, builds an author→PRs map, translates each GitHub login to a chat handle, and posts one grouped Discord digest—push-based, grouped, and routed—so each conflict reaches the right author within seconds, not days after it has already broken their branch.
+
 ## The problem
 
 Three things were going wrong, all downstream of the same root cause (master moves, PRs don't):
@@ -42,7 +44,7 @@ Two workflows working as a pair:
 
 Detection and notification are deliberately separate. The sweep maintains accurate *state* (labels on PRs). The broadcast turns that state into a *message*. Splitting them means I can re-run or reschedule the announcement without re-running the (heavier) sweep.
 
-## How it works
+## How do you auto-detect merge conflicts on every push to master?
 
 ![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](/article-images/auto-rebase-and-detect-merge-conflicts-diagram.webp)
 
@@ -117,7 +119,7 @@ Each GitHub author is translated to their chat handle so the message actually pi
 
 The reason this lands where GitHub's own notifications don't: it's **push-based, grouped, and routed.** It arrives in the tool the team already lives in, addressed to the person who can fix it, listing exactly their PRs. No dashboard to remember to check.
 
-## What it bought us
+## What does automatic conflict detection actually improve?
 
 - **Conflicts surface in seconds, not days** — right after the merge that caused them, while context is fresh.
 - **PR branches stay current**, so green CI actually means "green against today's `master`."

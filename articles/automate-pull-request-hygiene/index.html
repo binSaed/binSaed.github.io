@@ -34,7 +34,7 @@
     <meta name="twitter:image:alt" content="Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter). 7+ years, 5M+ users, 99.9% crash-free." />
 
     <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PRs that fill in their own paperwork (and a gate that won't let bad code merge)","description":"Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself.","image":"https://bnsaed.com/article-images/automate-pull-request-hygiene-hero.webp","datePublished":"2026-04-21T00:00:00+00:00","dateModified":"2026-04-21T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/automate-pull-request-hygiene/"},"url":"https://bnsaed.com/articles/automate-pull-request-hygiene/","keywords":"GitHub Actions, Developer Experience, CI/CD, Code Review"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"PRs that fill in their own paperwork (and a gate that won't let bad code merge)","description":"Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself.","image":"https://bnsaed.com/article-images/automate-pull-request-hygiene-hero.webp","datePublished":"2026-04-21T00:00:00+00:00","dateModified":"2026-04-21T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"publisher":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"about":[{"@type":"Thing","name":"GitHub Actions","sameAs":"https://www.wikidata.org/wiki/Q97185096"},{"@type":"Thing","name":"CI/CD","sameAs":"https://www.wikidata.org/wiki/Q28136854"},{"@type":"Thing","name":"Code Review","sameAs":"https://www.wikidata.org/wiki/Q1342704"}],"mentions":[{"@type":"Thing","name":"GitHub Actions","sameAs":"https://www.wikidata.org/wiki/Q97185096"},{"@type":"Thing","name":"Code Review","sameAs":"https://www.wikidata.org/wiki/Q1342704"}],"wordCount":1167,"articleBody":"Open a pull request on most teams and you're greeted by a checklist: link the Jira ticket, assign yourself, confirm the analyzer passes, tick the boxes.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/automate-pull-request-hygiene/"},"url":"https://bnsaed.com/articles/automate-pull-request-hygiene/","keywords":"GitHub Actions, Developer Experience, CI/CD, Code Review"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bnsaed.com"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://bnsaed.com/articles/"},{"@type":"ListItem","position":3,"name":"PRs that fill in their own paperwork (and a gate that won't let bad code merge)","item":"https://bnsaed.com/articles/automate-pull-request-hygiene/"}]}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
@@ -74,12 +74,15 @@
       fetchpriority="high"
     />
 
-    <link rel="icon" type="image/png" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-qO9s75Fk.js"></script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="module" crossorigin src="/assets/index-CIYfiVNo.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-GBp8saLZ.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-C0ZQseSV.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-aXMwqjIu.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B3ipHTXN.css">
   
     <meta property="article:published_time" content="2026-04-21T00:00:00+00:00" />
     <meta property="article:modified_time" content="2026-04-21T00:00:00+00:00" />
@@ -134,6 +137,7 @@
 <hr />
 <p>Open a pull request on most teams and you're greeted by a checklist: link the Jira ticket, assign yourself, confirm the analyzer passes, tick the boxes. None of it is hard. All of it is friction. And friction at the <em>start</em> of review is the worst kind, because it delays the part that actually matters — a human reading your code.</p>
 <p>So I split PR review into two buckets. <strong>Chores</strong> (mechanical, rule-based, boring) get automated. <strong>Judgment</strong> (is this the right change?) stays with people. Two workflows handle the chores: one enriches every new PR with context, the other runs a real quality gate and manages its own labels and comments.</p>
+<p>Automating pull request hygiene means splitting code review into two buckets: <strong>chores</strong> (mechanical, rule-based motions) get automated, while <strong>judgment</strong> (is this the right change?) stays with humans. Here's how, using two GitHub Actions workflows built with <code>actions/github-script</code>. The first, <code>pr-automation.yml</code>, fires on PR <code>opened</code>: a regex lifts the ticket ID from the branch name (<code>feature/PROJ-123-...</code>), writes the Jira link into the PR body, ticks template checkboxes, auto-assigns the author, and adds a <code>wip</code> label. The second, <code>pr-analysis-label.yml</code>, runs on <code>opened</code> and <code>synchronize</code>: it validates translation JSON with <code>python3</code>, runs <code>flutter analyze</code>, then labels, comments, and blocks (exits non-zero) on failure. The guiding principle is <strong>idempotency and self-cleanup</strong>: a <code>try/get-create-on-404</code> pattern ensures labels exist, a <code>concurrency</code> group cancels stale runs, and a <code>c.user.type === 'Bot'</code> filter lets the gate delete its own comment once analysis passes.</p>
 <h2>The problem</h2>
 <p>The opening minutes of every PR were spent on the same low-value motions:</p>
 <ul>
@@ -147,7 +151,7 @@
 <p>Two PR-triggered workflows:</p>
 <p>1. <strong>PR automation</strong> — on <code>opened</code>, derive context from the branch and write it into the PR: the ticket link, the assignee, a <code>wip</code> label. 2. <strong>The analysis gate</strong> — on <code>opened</code> and every push, validate translation JSON, run the analyzer, then <strong>label, comment, and block</strong> on failure — and <em>remove</em> the label and comment when the next push fixes it.</p>
 <p>The theme that makes them feel good to use: <strong>idempotency and self-cleanup.</strong> They never double-post, never leave stale state, and converge to "correct" no matter how many times you push.</p>
-<h2>How it works</h2>
+<h2>How does a GitHub Actions PR automation and analysis gate work?</h2>
 <p><img class="pr-thumb" src="/article-images/automate-pull-request-hygiene-diagram.webp" alt="Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment" loading="lazy" width="1672" height="941" /></p>
 <h3>Auto-context on open</h3>
 <p>The ticket ID already lives in the branch name — <code>feature/PROJ-123-add-audio-seek</code>. A regex lifts it out, no external lookup needed:</p>
@@ -195,7 +199,7 @@ if (stale) await github.rest.issues.deleteComment({ owner, repo, comment_id: sta
 <p>The <code>c.user.type === 'Bot'</code> filter is the safety latch: the workflow only ever deletes comments <em>it</em> wrote, never a human's. The result is a PR timeline that reflects the <em>current</em> state, not a graveyard of "❌ failed / ✅ fixed / ❌ failed again" noise. When the gate is green, it's silent.</p>
 <p>And when it's red, it actually blocks — the job exits non-zero so the merge is gated, not just decorated:</p>
 <pre><code class="language-bash">[ "$has_errors" = "true" ] &amp;&amp; exit 1</code></pre>
-<h2>What it bought us</h2>
+<h2>What does automating PR hygiene actually save you?</h2>
 <ul>
 <li><strong>Reviewers start on the code, not the chores.</strong> Context is already there when they open the PR.</li>
 <li><strong>A whole category of broken builds never reaches <code>master</code></strong> — malformed translations and analyzer errors are caught at the door.</li>

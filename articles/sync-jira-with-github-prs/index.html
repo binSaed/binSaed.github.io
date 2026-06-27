@@ -34,7 +34,7 @@
     <meta name="twitter:image:alt" content="Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter). 7+ years, 5M+ users, 99.9% crash-free." />
 
     <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Making Jira and GitHub agree without anyone updating both","description":"A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping.","image":"https://bnsaed.com/article-images/sync-jira-with-github-prs-hero.webp","datePublished":"2026-04-28T00:00:00+00:00","dateModified":"2026-04-28T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com"},"publisher":{"@type":"Person","name":"Abdelrahman Saed"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/sync-jira-with-github-prs/"},"url":"https://bnsaed.com/articles/sync-jira-with-github-prs/","keywords":"GitHub Actions, Jira, CI/CD, Developer Experience"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Making Jira and GitHub agree without anyone updating both","description":"A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping.","image":"https://bnsaed.com/article-images/sync-jira-with-github-prs-hero.webp","datePublished":"2026-04-28T00:00:00+00:00","dateModified":"2026-04-28T00:00:00+00:00","author":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"publisher":{"@type":"Person","name":"Abdelrahman Saed","url":"https://bnsaed.com","image":"https://avatars.githubusercontent.com/u/33700292?v=4&s=512","jobTitle":"Senior / Lead Mobile Engineer","worksFor":{"@type":"Organization","name":"iStoria","url":"https://istoria.app/en"},"sameAs":["https://github.com/binSaed","https://www.linkedin.com/in/binsaed/","https://stackoverflow.com/users/11001850/abdelrahman-saed","https://pub.dev/publishers/bnsaed.com/packages"]},"about":[{"@type":"Thing","name":"GitHub Actions","sameAs":"https://www.wikidata.org/wiki/Q97185096"},{"@type":"Thing","name":"Jira","sameAs":"https://www.wikidata.org/wiki/Q1359246"},{"@type":"Thing","name":"CI/CD","sameAs":"https://www.wikidata.org/wiki/Q28136854"}],"mentions":[{"@type":"Thing","name":"GitHub Actions","sameAs":"https://www.wikidata.org/wiki/Q97185096"},{"@type":"Thing","name":"Jira","sameAs":"https://www.wikidata.org/wiki/Q1359246"}],"wordCount":1259,"articleBody":"Every team that uses Jira and GitHub pays the same small, constant tax: keeping the two of them telling the same story.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bnsaed.com/articles/sync-jira-with-github-prs/"},"url":"https://bnsaed.com/articles/sync-jira-with-github-prs/","keywords":"GitHub Actions, Jira, CI/CD, Developer Experience"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bnsaed.com"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://bnsaed.com/articles/"},{"@type":"ListItem","position":3,"name":"Making Jira and GitHub agree without anyone updating both","item":"https://bnsaed.com/articles/sync-jira-with-github-prs/"}]}</script>
 
     <!-- Fonts: loaded from the document head (not CSS @import) so the browser
@@ -74,12 +74,15 @@
       fetchpriority="high"
     />
 
-    <link rel="icon" type="image/png" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/favicon.ico" />
-    <script type="module" crossorigin src="/assets/index-qO9s75Fk.js"></script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="module" crossorigin src="/assets/index-CIYfiVNo.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-GBp8saLZ.js">
     <link rel="modulepreload" crossorigin href="/assets/radix-C0ZQseSV.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-aXMwqjIu.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B3ipHTXN.css">
   
     <meta property="article:published_time" content="2026-04-28T00:00:00+00:00" />
     <meta property="article:modified_time" content="2026-04-28T00:00:00+00:00" />
@@ -134,6 +137,7 @@
 <hr />
 <p>Every team that uses Jira and GitHub pays the same small, constant tax: <strong>keeping the two of them telling the same story.</strong> The ticket is "In Review" but the PR is merged. The PR is open but the ticket is "Done." Which one do you believe? Usually neither, so you go ask the person — and now three people are doing status archaeology instead of building.</p>
 <p>I didn't want a heavyweight integration or a paid app. I wanted the PR to <em>know things about its ticket</em> automatically: what release it's targeting, what labels it carries, whether it's been marked Done — and, the part that turned out most useful, whether it's been Done for <em>too long</em> without merging.</p>
+<p>Syncing Jira and GitHub doesn't need a paid app or marketplace integration. Abdelrahman Saed built a single <strong>GitHub Actions</strong> workflow (using <code>actions/github-script@v7</code>) that mirrors Jira metadata onto every pull request. Here's how it works: a branch-name regex <code>/([A-Z]+-\d+)/</code> extracts the ticket ID, then one authenticated <strong>Jira REST API</strong> call (<code>/rest/api/3/issue/{id}?fields=status,resolutiondate,labels,fixVersions</code>, using Basic auth with an email and API token) fetches the issue. The workflow mirrors fix versions as <code>fix:</code> labels and Jira labels as <code>jira:</code> labels, reconciling on every run — adding and removing so stale labels never linger. It also adds a <code>tiny PR</code> (≤2 files) or <code>small PR</code> (&lt;10 files) size label from the changed-file count. The sleeper feature is a <code>Slow PR</code> flag: when a ticket is Done but its resolution date is over three days old and the PR is still open, it surfaces finished work that isn't shipping. A twice-daily weekday cron catches async Jira status changes.</p>
 <h2>The problem</h2>
 <p>The mismatch between issue tracker and code host shows up as three distinct annoyances:</p>
 <p>1. <strong>No release visibility on the PR.</strong> Which version is this fix shipping in? That lives in Jira's "Fix Version" field, invisible from GitHub. Reviewers and release managers had to cross-reference. 2. <strong>No size signal.</strong> Is this a two-line fix or a 40-file refactor? You can't triage review effort from the PR list. 3. <strong>The "Done but not merged" black hole.</strong> A ticket gets marked Done in Jira, but the PR sits unmerged for days — blocked on QA, on a dependency, on someone's attention. Nobody notices until the release manager goes looking.</p>
@@ -153,7 +157,7 @@
   schedule:
     - cron: '0 9 * * 0-4'    # 9:00 — weekdays
     - cron: '0 13 * * 0-4'   # 13:00 — weekdays</code></pre>
-<h2>How it works</h2>
+<h2>How does syncing Jira status onto GitHub PRs work?</h2>
 <p><img class="pr-thumb" src="/article-images/sync-jira-with-github-prs-diagram.webp" alt="Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels" loading="lazy" width="1672" height="941" /></p>
 <h3>Branch name → Jira issue</h3>
 <p>Same trick as the rest of the system: the ticket ID is encoded in the branch, so a regex is all the "integration" you need to start.</p>
@@ -191,7 +195,7 @@ if (status === 'done') {
 }</code></pre>
 <p>A "Slow PR" label is a tiny thing that surfaces a real, expensive problem: <strong>work that's finished but not shipping.</strong> That's value sitting on the shelf — the most wasteful state in the whole pipeline, and the easiest to miss because everyone <em>thinks</em> it's done. Now it's visible on the board without anyone running a report.</p>
 <p>When the ticket flips back from Done (reopened, more work), the same logic removes the <code>Done</code> and <code>Slow PR</code> labels. Reconcile, don't accumulate.</p>
-<h2>What it bought us</h2>
+<h2>What do you gain from syncing Jira with GitHub PRs?</h2>
 <ul>
 <li><strong>Release scope is visible on every PR.</strong> <code>fix:1.42.0</code> right on the card — no Jira spelunking to answer "what's in the next build?"</li>
 <li><strong>Reviewers triage by size at a glance.</strong> "tiny PR" gets a quick pass; a 40-file change gets scheduled.</li>

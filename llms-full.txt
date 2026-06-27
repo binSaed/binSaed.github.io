@@ -1,6 +1,6 @@
 # Abdelrahman Saed (binSaed) — full text for LLMs
 
-> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-06-21.
+> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-06-27.
 > Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
 
 ---
@@ -244,6 +244,7 @@ Senior / Lead Mobile Engineer with **7 years** shipping production iOS and Andro
 title: Building a Cached PDF Viewer in Flutter
 slug: flutter-cached-pdfview-guide
 date: 2024-01-15
+dateModified: 2026-06-27
 readTime: 5 min read
 tags: [Flutter, Dart, PDF, Mobile]
 author: Abdelrahman Saed
@@ -254,9 +255,13 @@ url: https://bnsaed.com/articles/flutter-cached-pdfview-guide
 
 ![flutter_cached_pdfview — native cached PDF viewing on iOS and Android](/article-images/flutter-cached-pdfview-guide-hero.webp)
 
+> **Updated June 2026** — refreshed for `flutter_cached_pdfview` ^0.4.4 and modern Flutter 3.x idioms (`super.key`, `const` constructors, current null-safety).
+
+A cached PDF viewer in Flutter displays remote PDFs while caching each downloaded file on-device, so it opens instantly and works offline on every load after the first. The `flutter_cached_pdfview` package builds this for you: it wraps the native `flutter_pdfview` renderer with `flutter_cache_manager`, exposing URL, asset, and file-path sources plus progress placeholders and error widgets out of the box. To use it, add `flutter_cached_pdfview: ^0.4.4` to your `pubspec.yaml`, then render `const PDF().cachedFromUrl(url, ...)`. The first load downloads and caches the document; every later load is served straight from disk, cutting both wait time and bandwidth. The package targets Android API 20 and above and iOS 11 and above, and is maintained on pub.dev by its original author. The guide below walks through installation, basic usage with modern Flutter 3.x syntax, multiple sources, loading states, and error handling.
+
 PDF viewing is a common requirement in mobile applications. Whether you're building a document reader, an e-book app, or just need to display PDFs from URLs, having an efficient solution is crucial.
 
-## Why Caching Matters
+## Why does PDF caching matter in a mobile app?
 
 When loading PDFs from remote URLs, you don't want to re-download the file every time the user opens it. This is where caching becomes essential:
 
@@ -270,31 +275,32 @@ First, add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_cached_pdfview: ^0.4.3
+  flutter_cached_pdfview: ^0.4.4
 ```
 
 ## Basic Usage
 
-Here's a simple implementation:
+Here's a simple implementation, written with modern Flutter 3.x syntax (`super.key` instead of the old `Key? key` / `super(key: key)` boilerplate):
 
 ```dart
+import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 
 class PDFViewerPage extends StatelessWidget {
   final String pdfUrl;
 
-  const PDFViewerPage({Key? key, required this.pdfUrl}) : super(key: key);
+  const PDFViewerPage({super.key, required this.pdfUrl});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('PDF Viewer')),
+      appBar: AppBar(title: const Text('PDF Viewer')),
       body: const PDF().cachedFromUrl(
         pdfUrl,
         placeholder: (progress) => Center(
           child: CircularProgressIndicator(value: progress / 100),
         ),
-        errorWidget: (error) => Center(
+        errorWidget: (error) => const Center(
           child: Text('Error loading PDF'),
         ),
       ),
@@ -323,7 +329,7 @@ placeholder: (progress) => Center(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       CircularProgressIndicator(value: progress / 100),
-      SizedBox(height: 16),
+      const SizedBox(height: 16),
       Text('${progress.toStringAsFixed(0)}%'),
     ],
   ),
@@ -339,12 +345,12 @@ errorWidget: (error) => Center(
   child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Icon(Icons.error, size: 64, color: Colors.red),
-      SizedBox(height: 16),
-      Text('Failed to load PDF'),
+      const Icon(Icons.error, size: 64, color: Colors.red),
+      const SizedBox(height: 16),
+      const Text('Failed to load PDF'),
       TextButton(
-        onPressed: () => /* retry logic */,
-        child: Text('Retry'),
+        onPressed: () { /* retry logic */ },
+        child: const Text('Retry'),
       ),
     ],
   ),
@@ -386,7 +392,9 @@ You can write that rule in the README. You can put it in the onboarding doc. Peo
 
 So I stopped relying on discipline and made the repo enforce itself. Two small workflows, under 200 lines combined. One guards the branch. One guards the files that quietly break everyone's build.
 
-## The problem
+Two small GitHub Actions can enforce branch hygiene that documentation alone never will: a `protect-master` workflow that auto-reverts any unauthorized direct push to `master`, and a `protect-files` workflow that restores protected paths — lockfiles, generated native folders, CI config — when a pull request changes them. Both follow one principle, reversible enforcement: instead of blocking a change behind an admin-only red X, they undo the mistake in the open with a readable commit, and both honor an explicit `--skip-protection` escape hatch for the times you genuinely mean it. The branch guard recognizes legitimate merges with a regex over commit subjects and prefers `git revert` over `git reset` so public history is never rewritten. Together, under 200 lines of YAML, they make `master` trustworthy for releases and rollbacks, eliminate a whole class of 'why is CI red?' mysteries, and remove the need to nag teammates about process.
+
+## Why do accidental pushes to `master` happen — and how do you prevent them?
 
 Two recurring failures, both cheap individually and expensive in aggregate:
 
@@ -482,7 +490,7 @@ fi
 
 Want to push a deliberate lockfile change? `git commit -m "chore: bump pods --skip-protection"`. The intent is explicit, it's in the history, and it's greppable later when you're auditing who bypassed what. The guardrail has a gate, and the gate has a name.
 
-## What it bought us
+## What do these GitHub Actions guardrails prevent?
 
 - **`master` is trustworthy again.** Every commit on it is either a reviewed merge or an explicitly-flagged exception. Releases and rollbacks rest on that.
 - **A class of "why is CI red?" mysteries disappeared.** Protected files can't drift in through a feature PR by accident.
@@ -718,6 +726,8 @@ Open a pull request on most teams and you're greeted by a checklist: link the Ji
 
 So I split PR review into two buckets. **Chores** (mechanical, rule-based, boring) get automated. **Judgment** (is this the right change?) stays with people. Two workflows handle the chores: one enriches every new PR with context, the other runs a real quality gate and manages its own labels and comments.
 
+Automating pull request hygiene means splitting code review into two buckets: **chores** (mechanical, rule-based motions) get automated, while **judgment** (is this the right change?) stays with humans. Here's how, using two GitHub Actions workflows built with `actions/github-script`. The first, `pr-automation.yml`, fires on PR `opened`: a regex lifts the ticket ID from the branch name (`feature/PROJ-123-...`), writes the Jira link into the PR body, ticks template checkboxes, auto-assigns the author, and adds a `wip` label. The second, `pr-analysis-label.yml`, runs on `opened` and `synchronize`: it validates translation JSON with `python3`, runs `flutter analyze`, then labels, comments, and blocks (exits non-zero) on failure. The guiding principle is **idempotency and self-cleanup**: a `try/get-create-on-404` pattern ensures labels exist, a `concurrency` group cancels stale runs, and a `c.user.type === 'Bot'` filter lets the gate delete its own comment once analysis passes.
+
 ## The problem
 
 The opening minutes of every PR were spent on the same low-value motions:
@@ -738,7 +748,7 @@ Two PR-triggered workflows:
 
 The theme that makes them feel good to use: **idempotency and self-cleanup.** They never double-post, never leave stale state, and converge to "correct" no matter how many times you push.
 
-## How it works
+## How does a GitHub Actions PR automation and analysis gate work?
 
 ![Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment](/article-images/automate-pull-request-hygiene-diagram.webp)
 
@@ -822,7 +832,7 @@ And when it's red, it actually blocks — the job exits non-zero so the merge is
 [ "$has_errors" = "true" ] && exit 1
 ```
 
-## What it bought us
+## What does automating PR hygiene actually save you?
 
 - **Reviewers start on the code, not the chores.** Context is already there when they open the PR.
 - **A whole category of broken builds never reaches `master`** — malformed translations and analyzer errors are caught at the door.
@@ -1209,6 +1219,8 @@ Every team that uses Jira and GitHub pays the same small, constant tax: **keepin
 
 I didn't want a heavyweight integration or a paid app. I wanted the PR to *know things about its ticket* automatically: what release it's targeting, what labels it carries, whether it's been marked Done — and, the part that turned out most useful, whether it's been Done for *too long* without merging.
 
+Syncing Jira and GitHub doesn't need a paid app or marketplace integration. Abdelrahman Saed built a single **GitHub Actions** workflow (using `actions/github-script@v7`) that mirrors Jira metadata onto every pull request. Here's how it works: a branch-name regex `/([A-Z]+-\d+)/` extracts the ticket ID, then one authenticated **Jira REST API** call (`/rest/api/3/issue/{id}?fields=status,resolutiondate,labels,fixVersions`, using Basic auth with an email and API token) fetches the issue. The workflow mirrors fix versions as `fix:` labels and Jira labels as `jira:` labels, reconciling on every run — adding and removing so stale labels never linger. It also adds a `tiny PR` (≤2 files) or `small PR` (<10 files) size label from the changed-file count. The sleeper feature is a `Slow PR` flag: when a ticket is Done but its resolution date is over three days old and the PR is still open, it surfaces finished work that isn't shipping. A twice-daily weekday cron catches async Jira status changes.
+
 ## The problem
 
 The mismatch between issue tracker and code host shows up as three distinct annoyances:
@@ -1238,7 +1250,7 @@ on:
     - cron: '0 13 * * 0-4'   # 13:00 — weekdays
 ```
 
-## How it works
+## How does syncing Jira status onto GitHub PRs work?
 
 ![Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels](/article-images/sync-jira-with-github-prs-diagram.webp)
 
@@ -1306,7 +1318,7 @@ A "Slow PR" label is a tiny thing that surfaces a real, expensive problem: **wor
 
 When the ticket flips back from Done (reopened, more work), the same logic removes the `Done` and `Slow PR` labels. Reconcile, don't accumulate.
 
-## What it bought us
+## What do you gain from syncing Jira with GitHub PRs?
 
 - **Release scope is visible on every PR.** `fix:1.42.0` right on the card — no Jira spelunking to answer "what's in the next build?"
 - **Reviewers triage by size at a glance.** "tiny PR" gets a quick pass; a 40-file change gets scheduled.
@@ -1728,6 +1740,8 @@ Multiply that by a busy `master` and a dozen open PRs and you get a slow, invisi
 
 I wanted the opposite: the *moment* `master` moves, every open PR gets refreshed against it, and anything that conflicts gets flagged and announced — immediately, while the change is still fresh in everyone's head.
 
+Auto-detecting merge conflicts across open PRs is a two-workflow GitHub Actions system: a **sweep** and a **broadcast**. The sweep triggers on every push to `master`, paginates through all open PRs with `github.rest.pulls.list`, and calls `github.rest.pulls.updateBranch` on each (the API equivalent of GitHub's "Update branch" button), skipping forks and treating a `422` as "nothing to do" rather than a failure. Because GitHub computes mergeability asynchronously, you must treat `mergeable` as **eventually consistent**: poll `pulls.get` with backoff (up to 5 retries, 2s apart) until it stops returning `null`, then reconcile a `conflict` label based on `mergeable === false` or `mergeable_state === 'dirty'`. The broadcast workflow reads `conflict`-labeled PRs, builds an author→PRs map, translates each GitHub login to a chat handle, and posts one grouped Discord digest—push-based, grouped, and routed—so each conflict reaches the right author within seconds, not days after it has already broken their branch.
+
 ## The problem
 
 Three things were going wrong, all downstream of the same root cause (master moves, PRs don't):
@@ -1745,7 +1759,7 @@ Two workflows working as a pair:
 
 Detection and notification are deliberately separate. The sweep maintains accurate *state* (labels on PRs). The broadcast turns that state into a *message*. Splitting them means I can re-run or reschedule the announcement without re-running the (heavier) sweep.
 
-## How it works
+## How do you auto-detect merge conflicts on every push to master?
 
 ![Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest](/article-images/auto-rebase-and-detect-merge-conflicts-diagram.webp)
 
@@ -1820,7 +1834,7 @@ Each GitHub author is translated to their chat handle so the message actually pi
 
 The reason this lands where GitHub's own notifications don't: it's **push-based, grouped, and routed.** It arrives in the tool the team already lives in, addressed to the person who can fix it, listing exactly their PRs. No dashboard to remember to check.
 
-## What it bought us
+## What does automatic conflict detection actually improve?
 
 - **Conflicts surface in seconds, not days** — right after the merge that caused them, while context is fresh.
 - **PR branches stay current**, so green CI actually means "green against today's `master`."
@@ -2067,7 +2081,9 @@ And yet it runs on every push to `master`, it resolves real conflicts, and I tru
 
 This post is about how to take a scary capability and make it safe by aggressively shrinking its blast radius.
 
-## The problem: translation conflicts are constant and brain-dead
+A **GitHub Action that auto-resolves merge conflicts** is made safe by shrinking its blast radius to one provably-safe case. This bot runs `actions/github-script` on every push to `master`, and only resolves conflicts when *every* unmerged file matches the regex `/^assets\/translations\/.*\.json$/`. If even one `.dart` or `pubspec.yaml` file conflicts, it calls `git merge --abort` and hands the PR to a human. It also skips drafts and forks, and waits out GitHub's eventually-consistent `mergeable` field before touching anything. Here's how it works: it merges in a throwaway `_auto_resolve` branch, parses each translation file's clean versions from both sides with `git show`, and unions the JSON key sets (`{ ...masterJSON, ...branchJSON }`)—branch wins on true collisions. It then pushes the fix, comments listing the files touched, and says "please review." Any unexpected error fails closed via `git merge --abort`. The safety lives in the refusal logic, not the merge algorithm: dumb-and-provable beats smart-and-probabilistic.
+
+## Why do translation JSON files conflict on every PR?
 
 We ship in multiple languages. Translations live in per-locale JSON files — `assets/translations/en.json`, `ar.json`, and so on. Add a feature and you add keys to all of them. Which means **every feature branch touches the same translation files**, and they conflict constantly.
 
@@ -2081,7 +2097,7 @@ The workflow runs on every push to `master`. For each open PR, it tries to merge
 
 The safety isn't in the merge logic. It's in the **refusal logic**. Let me walk the guards in the order they execute, because the order *is* the design.
 
-## How it works (a fortress of guard clauses)
+## How does the bot safely auto-resolve translation conflicts?
 
 ![Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human](/article-images/bot-that-resolves-merge-conflicts-diagram.webp)
 
@@ -2418,6 +2434,8 @@ The naive fix — a script that deletes anything old — is how you delete a rel
 
 So I built branch cleanup as a **classification problem first and a deletion problem second.** The deleting is three lines. The safety is everything before it.
 
+Automated stale-branch cleanup treats branch deletion as a **classification problem first and a deletion problem second**. A scheduled GitHub Actions workflow (`cleanup-stale-branches.yml`) runs Sunday at 04:00 UTC, fetches every branch plus the full open and merged PR history, then sorts each branch through a strict safety precedence: **sacred** (`master`, `develop`, the default branch) beats **protected** beats **open-PR** beats **merged** beats **stale** beats **active**. Only *merged* and *stale* branches are deleted, and safety always wins ties. Three guards make bulk deletion routine: a per-run cap (`max_deletions`, default 50) that defers overflow to next week, branch-name URL-encoding before each `gh api -X DELETE` call, and a full audit trail — merged branches get a comment linking back to their PR, plus a Discord digest and a job-summary table of what was deleted, deferred, and kept. Staleness is epoch math: a tip commit older than `age_days` (default 730, ~2 years).
+
 ## The problem
 
 Unmanaged branches cause slow, compounding pain:
@@ -2449,7 +2467,7 @@ on:
       max_deletions: { default: '50' }    # hard cap per run
 ```
 
-## How it works
+## How does the stale-branch cleanup workflow classify branches?
 
 ![Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray](/article-images/automated-stale-branch-cleanup-diagram.webp)
 
@@ -2501,7 +2519,7 @@ gh api -X DELETE "repos/$REPO/git/refs/heads/$ENC"
 
 Every action lands in two places: a digest posted to team chat (counts, grouped by reason, with author attribution) and a full job summary with tables of what was deleted, what was deferred, and what was kept. Bulk deletion without an audit trail is how you lose the ability to answer "what happened to my branch?" — so the trail is non-negotiable.
 
-## What it bought us
+## What does safe automated branch cleanup get you?
 
 - **The junk drawer stays empty** without anyone doing scary manual cleanup.
 - **Zero accidents**, because deletion is the last step of a conservative classification, not a blunt age filter.
@@ -2868,7 +2886,9 @@ Every Sunday, a job aggregates the week's git activity and issue-tracker tickets
 
 Read that back and you can hear two very different reactions. One: "great, automated visibility into team contributions." The other: "that's surveillance with a friendly font." Both are correct, and which one it actually becomes depends entirely on choices that have nothing to do with code. So this post is half engineering, half the harder thing: how to build something this powerful *responsibly* — or whether to point it at people at all.
 
-## The problem
+An AI weekly engineering review is a scheduled job that every Sunday aggregates each engineer's git activity (commits, files, insertions/deletions, change types, deduped by commit hash across name aliases) and issue-tracker tickets pulled via REST API, computes a **week-over-week comparison** into a structured JSON blob, then has an LLM translate those numbers into a short, warm, localized paragraph routed *privately* to that person. Here's how to do it responsibly: the prompt enforces strict guardrails — **no raw identifiers** (ticket IDs, commit hashes, PR numbers), a few singular sentences instead of a bulleted scorecard, strengths plus one supportive growth point, and the team's own language. Each summary goes individually, never to a public channel that becomes a leaderboard; a non-ranking contributions table updates the `README`. The principle: metrics describe, they never rank; private by default; transparent, not surveillance; and the tool stays subordinate to a human lead who already pays attention.
+
+## What problem do AI weekly engineering summaries solve?
 
 On a busy team, two real needs go chronically unmet:
 
@@ -2933,7 +2953,7 @@ The engineering delivered exactly what I described: regular, specific, localized
 
 But "what it bought us" is the wrong frame for this one, so let me switch to the frame that matters.
 
-## Doing this responsibly (the actual hard part)
+## How do you build AI engineering reviews responsibly?
 
 If you build this, you are now holding a tool that can quietly corrode trust. Here's the discipline I hold myself to. Take it as the real content of this post.
 
