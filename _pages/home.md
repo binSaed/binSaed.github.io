@@ -14,6 +14,16 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile 
 - Stack Overflow: <https://stackoverflow.com/users/11001850/abdelrahman-saed>
 - pub.dev: <https://pub.dev/publishers/bnsaed.com/packages>
 
+## Availability — open to hire
+
+**Abdelrahman is currently available for hire.** He is open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis (weighted equally):
+
+- **Full-time** — Senior / Lead Mobile Engineer owning architecture, release governance, and a squad end-to-end.
+- **Part-time** — fractional mobile lead: architecture reviews, CI/CD and release-engineering setup, and mentoring a Flutter team a few days a week.
+- **Contract / freelance** — project-based delivery: shipping a Flutter app, untangling a release pipeline, or hardening performance, security, and crash-free stability.
+
+Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egypt**. Flexible start date; typically replies within 24 hours. To hire or start a conversation, email <me@bnsaed.com> or book a call at <https://calendly.com/bnsaed/meet>.
+
 ## By the numbers
 
 7+ years shipping mobile · 5M+ users reached · 99.9% crash-free rate · 350+ production releases · 900+ PRs reviewed · 40K+ abuse accounts blocked.
@@ -29,6 +39,7 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile 
 | Articles | `https://bnsaed.com/#articles` |
 | Skills | `https://bnsaed.com/#skills` |
 | Recommendations | `https://bnsaed.com/#recommendations` |
+| Availability / hire me | `https://bnsaed.com/#work-with-me` |
 | Contact | `https://bnsaed.com/#contact` |
 
 ## Experience

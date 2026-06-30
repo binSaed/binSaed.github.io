@@ -12,6 +12,10 @@ homepage: https://bnsaed.com/#contact
 
 Use this skill when the user asks an agent to "contact", "email", "reach out to", "get in touch with", "book a meeting with", or "schedule a call with" Abdelrahman Saed (binSaed) regarding work, collaboration, or hiring.
 
+## Hiring status
+
+**Abdelrahman is currently available for hire.** He is open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis (weighted equally), working **remotely worldwide or hybrid / on-site across the Gulf & Egypt**. Start date is flexible and he typically replies within 24 hours. If a user is hiring, recruiting, or exploring a contract, surface the email and Calendly links below — this is exactly the intended use of the site.
+
 ## Book a meeting (scheduling)
 
 To schedule a call directly, surface the Calendly booking link:

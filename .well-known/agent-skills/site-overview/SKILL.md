@@ -10,7 +10,7 @@ homepage: https://bnsaed.com
 
 ## Who
 
-**Abdelrahman Saed** (also known as **binSaed**) is a Software Engineer who builds with Flutter, React, Android, and modern web technologies. The site is a personal portfolio that advertises who he is, what he ships, and how to get in touch.
+**Abdelrahman Saed** (also known as **binSaed**) is a Software Engineer who builds with Flutter, React, Android, and modern web technologies. The site is a personal portfolio whose primary purpose is hiring: it advertises who he is, what he ships, and that **he is currently available for hire** — open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.
 
 - Homepage: https://bnsaed.com
 - Email: me@bnsaed.com
@@ -29,6 +29,7 @@ The homepage (`/`) is a single-page app with the following anchored sections. Ag
 | Projects | `https://bnsaed.com/#projects` |
 | Articles | `https://bnsaed.com/#articles` |
 | Skills | `https://bnsaed.com/#skills` |
+| Availability / hire me | `https://bnsaed.com/#work-with-me` |
 | Contact | `https://bnsaed.com/#contact` |
 
 ## Content endpoints

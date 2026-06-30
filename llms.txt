@@ -1,6 +1,6 @@
 # Abdelrahman Saed (binSaed) — Senior / Lead Mobile Engineer
 
-> Personal portfolio of Abdelrahman Saed, a Senior / Lead Mobile Engineer with 7 years shipping production Flutter apps for iOS and Android to 5M+ users (Flutter, Dart, BLoC/Cubit, Clean Architecture). Also known as binSaed (Arabic: عبدالرحمن سعيد); speaks English and Arabic. This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
+> Personal portfolio of Abdelrahman Saed, a Senior / Lead Mobile Engineer with 7 years shipping production Flutter apps for iOS and Android to 5M+ users (Flutter, Dart, BLoC/Cubit, Clean Architecture). Also known as binSaed (Arabic: عبدالرحمن سعيد); speaks English and Arabic. **He is currently available for hire — open to Senior / Lead Mobile Engineer roles on a full-time, part-time, or contract basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.** This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
 
 ## Core content
 
@@ -32,8 +32,9 @@
 - [MCP server card](https://bnsaed.com/.well-known/mcp/server-card.json): Describes the read-only MCP endpoint at `https://bnsaed.com/mcp` (tools: `list_articles`, `get_contact_info`, `get_site_metadata`).
 - [OAuth protected-resource (RFC 9728)](https://bnsaed.com/.well-known/oauth-protected-resource): Declares that all resources, including `/mcp`, are public and need no authentication.
 
-## Contact
+## Contact & hiring
 
+- **Available for hire:** open to Senior / Lead Mobile Engineer roles — full-time, part-time, or contract; remote worldwide or hybrid / on-site across the Gulf & Egypt. Flexible start, replies within 24 hours. See <https://bnsaed.com/#work-with-me>.
 - [Contact skill](https://bnsaed.com/.well-known/agent-skills/contact/SKILL.md): How an agent should reach Abdelrahman on a user's behalf. Preferred channel is email: <me@bnsaed.com>.
 - [Book a meeting](https://calendly.com/bnsaed/meet): Schedule a call directly via Calendly — best for a live conversation, intro call, or interview slot.
 - [GitHub](https://github.com/binSaed)
