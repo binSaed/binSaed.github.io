@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abdelrahman Saed — Articles &amp; Case Studies</title>
+    <link>https://bnsaed.com/</link>
+    <description>Writing and case studies by Abdelrahman Saed — Flutter, mobile architecture, release engineering, and CI/CD automation.</description>
+    <language>en</language>
+    <lastBuildDate>Sat, 04 Jul 2026 19:44:58 GMT</lastBuildDate>
+    <atom:link href="https://bnsaed.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Case study: flutter_cached_pdfview — An open-source cached PDF viewer for Flutter, adopted across thousands of apps</title>
+      <link>https://bnsaed.com/case-studies/flutter-cached-pdfview/</link>
+      <guid isPermaLink="true">https://bnsaed.com/case-studies/flutter-cached-pdfview/</guid>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
+      <description>An open-source Flutter package for native, cached PDF viewing on iOS and Android — wrapping the platform renderers with on-device caching so documents open instantly and work offline. 130+ stars, 500+ pub.dev likes, 43K+ downloads.</description>
+      <category>Flutter</category>
+      <category>Dart</category>
+      <category>Open Source</category>
+      <category>PDF</category>
+      <category>Plugin</category>
+    </item>
+    <item>
+      <title>Case study: iStoria — Scaling story-based English learning to 5M+ learners</title>
+      <link>https://bnsaed.com/case-studies/istoria/</link>
+      <guid isPermaLink="true">https://bnsaed.com/case-studies/istoria/</guid>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
+      <description>How I helped take iStoria from founding to 5M+ learners — an offline-first Flutter architecture across a 50+ module codebase, growth features from streaks and a social leaderboard to the iStro AI companion, and a release cycle cut from four weeks to one across 800+ merged PRs.</description>
+      <category>Flutter</category>
+      <category>EdTech</category>
+      <category>Offline-first</category>
+      <category>Architecture</category>
+      <category>Scale</category>
+    </item>
+    <item>
+      <title>I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.</title>
+      <link>https://bnsaed.com/articles/ai-weekly-engineering-reviews/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/ai-weekly-engineering-reviews/</guid>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 GMT</pubDate>
+      <description>Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Doing it responsibly — private, descriptive, transparent — is the actual work.</description>
+      <category>AI in Development</category>
+      <category>Engineering Leadership</category>
+      <category>Team Management</category>
+      <category>Automation</category>
+    </item>
+    <item>
+      <title>A repo that cleans up after itself — without deleting the wrong branch</title>
+      <link>https://bnsaed.com/articles/automated-stale-branch-cleanup/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/automated-stale-branch-cleanup/</guid>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate>
+      <description>Bulk branch deletion done safely, as a careful classification with a per-run cap, deferral, and a full audit trail — never a blunt age filter.</description>
+      <category>GitHub Actions</category>
+      <category>Git</category>
+      <category>DevOps</category>
+      <category>Automation</category>
+    </item>
+    <item>
+      <title>I let a bot resolve merge conflicts and push the fix. Here&apos;s how I made that safe.</title>
+      <link>https://bnsaed.com/articles/bot-that-resolves-merge-conflicts/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/bot-that-resolves-merge-conflicts/</guid>
+      <pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate>
+      <description>How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected.</description>
+      <category>GitHub Actions</category>
+      <category>Git</category>
+      <category>Automation</category>
+      <category>CI/CD</category>
+    </item>
+    <item>
+      <title>Every merge to master quietly breaks other PRs. So I built a radar for it.</title>
+      <link>https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/</guid>
+      <pubDate>Tue, 05 May 2026 00:00:00 GMT</pubDate>
+      <description>A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person.</description>
+      <category>GitHub Actions</category>
+      <category>Git</category>
+      <category>CI/CD</category>
+      <category>DevOps</category>
+    </item>
+    <item>
+      <title>Making Jira and GitHub agree without anyone updating both</title>
+      <link>https://bnsaed.com/articles/sync-jira-with-github-prs/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/sync-jira-with-github-prs/</guid>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 GMT</pubDate>
+      <description>A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping.</description>
+      <category>GitHub Actions</category>
+      <category>Jira</category>
+      <category>CI/CD</category>
+      <category>Developer Experience</category>
+    </item>
+    <item>
+      <title>PRs that fill in their own paperwork (and a gate that won&apos;t let bad code merge)</title>
+      <link>https://bnsaed.com/articles/automate-pull-request-hygiene/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/automate-pull-request-hygiene/</guid>
+      <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself.</description>
+      <category>GitHub Actions</category>
+      <category>Developer Experience</category>
+      <category>CI/CD</category>
+      <category>Code Review</category>
+    </item>
+    <item>
+      <title>The repo that rejects my own pushes to master</title>
+      <link>https://bnsaed.com/articles/github-actions-branch-protection-guardrails/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/github-actions-branch-protection-guardrails/</guid>
+      <pubDate>Tue, 14 Apr 2026 00:00:00 GMT</pubDate>
+      <description>Two small GitHub Actions that stop accidental direct pushes to master and auto-restore build-breaking files — reversible by design, with an explicit escape hatch.</description>
+      <category>GitHub Actions</category>
+      <category>DevOps</category>
+      <category>CI/CD</category>
+      <category>Flutter</category>
+    </item>
+    <item>
+      <title>Building a Cached PDF Viewer in Flutter</title>
+      <link>https://bnsaed.com/articles/flutter-cached-pdfview-guide/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/flutter-cached-pdfview-guide/</guid>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 GMT</pubDate>
+      <description>Learn how to implement an efficient PDF viewer with caching support for iOS and Android using flutter_cached_pdfview.</description>
+      <category>Flutter</category>
+      <category>Dart</category>
+      <category>PDF</category>
+      <category>Mobile</category>
+    </item>
+  </channel>
+</rss>

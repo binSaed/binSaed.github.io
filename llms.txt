@@ -26,6 +26,7 @@
 ## Discovery & APIs
 
 - [Sitemap](https://bnsaed.com/sitemap.xml): Canonical list of indexable URLs.
+- [RSS feed](https://bnsaed.com/feed.xml): Articles and case studies, newest first.
 - [robots.txt](https://bnsaed.com/robots.txt): Crawl rules and per-bot `Content-Signal` preferences (`search=yes, ai-input=yes, ai-train=no`).
 - [API catalog (RFC 9727)](https://bnsaed.com/.well-known/api-catalog): Linkset of every machine-readable resource on the site.
 - [Agent skills index](https://bnsaed.com/.well-known/agent-skills/index.json): Discovery index for the site's agent skills (site-overview, article-reader, contact).
@@ -35,6 +36,7 @@
 ## Contact & hiring
 
 - **Available for hire:** open to Senior / Lead Mobile Engineer roles — full-time, part-time, or contract; remote worldwide or hybrid / on-site across the Gulf & Egypt. Flexible start, replies within 24 hours. See <https://bnsaed.com/#work-with-me>.
+- [Hire page](https://bnsaed.com/hire/): Engagement types (full-time, fractional/part-time, contract), practical details (work setup, response time, rate), and hiring Q&A on one page. Markdown via `Accept: text/markdown` or [direct .md](https://bnsaed.com/_pages/hire.md).
 - [Contact skill](https://bnsaed.com/.well-known/agent-skills/contact/SKILL.md): How an agent should reach Abdelrahman on a user's behalf. Preferred channel is email: <me@bnsaed.com>.
 - [Book a meeting](https://calendly.com/bnsaed/meet): Schedule a call directly via Calendly — best for a live conversation, intro call, or interview slot.
 - [GitHub](https://github.com/binSaed)
