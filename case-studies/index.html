@@ -83,10 +83,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-DdVbDeVz.js"></script>
+    <script type="module" crossorigin src="/assets/index-tiH4pInj.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-iqlcZCOr.js">
-    <link rel="modulepreload" crossorigin href="/assets/radix-CmSsoVAS.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DaTuNV1d.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-oA8oGvLI.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -109,6 +108,23 @@
 #root .prerender-content .pr-summary{font-size:1.15rem;color:#3a342c}
 #root .prerender-content .pr-keyfacts{list-style:none;padding-left:0}
 #root .prerender-content .pr-keyfacts li{margin:.4rem 0}
+/* Scheme-aware variant: main.tsx guarantees this document gets one painted
+   frame before React replaces it (that frame is what anchors LCP), and
+   dark-mode visitors must not get a parchment flash for it. Same reader-doc
+   layout, dark terminal palette. */
+@media (prefers-color-scheme: dark){
+#root .prerender-content{background:#0b0e13;color:#d7dbe2}
+#root .prerender-content a{color:#67e8f9}
+#root .prerender-content h2{border-bottom-color:#232936}
+#root .prerender-content code{background:#151a23}
+#root .prerender-content pre{background:#151a23}
+#root .prerender-content blockquote{border-left-color:#22d3ee;color:#99a1ad}
+#root .prerender-content .pr-avatar{border-color:#232936}
+#root .prerender-content .pr-muted{color:#99a1ad}
+#root .prerender-content .pr-tags{color:#7c8594}
+#root .prerender-content .pr-thumb{border-color:#232936}
+#root .prerender-content .pr-summary{color:#c3c9d4}
+}
 </style>
   </head>
   <body>
@@ -119,14 +135,14 @@
         <p class="pr-muted">In-depth write-ups of the engineering behind shipped products — the problem, the solution, the architecture, the performance work, and the results. 2 case studies and counting.</p>
         <article>
           <h2><a href="/case-studies/istoria/">iStoria</a></h2>
-          <img class="pr-thumb" src="https://play-lh.googleusercontent.com/nO5vER33waTf8T7vKPo-HYHflKVldZna_yQnqeB3Hqv9smjPiP-xGBTCGXWLFNIPn00" alt="iStoria case study" loading="lazy" width="640" height="360" />
+          <img class="pr-thumb" src="/project-images/istoria.webp" alt="iStoria case study" loading="lazy" width="640" height="360" />
           <p>Scaling story-based English learning to 5M+ learners</p>
           <p>How I helped take iStoria from founding to 5M+ learners — an offline-first Flutter architecture across a 50+ module codebase, growth features from streaks and a social leaderboard to the iStro AI companion, and a release cycle cut from four weeks to one across 800+ merged PRs.</p>
           <p class="pr-tags">Flutter · EdTech · Offline-first · Architecture · Scale</p>
         </article>
         <article>
           <h2><a href="/case-studies/flutter-cached-pdfview/">flutter_cached_pdfview</a></h2>
-          <img class="pr-thumb" src="https://github.com/user-attachments/assets/77ccded4-5c51-4583-9830-0f1c66e627c4" alt="flutter_cached_pdfview case study" loading="lazy" width="640" height="360" />
+          <img class="pr-thumb" src="/project-images/flutter-cached-pdfview.webp" alt="flutter_cached_pdfview case study" loading="lazy" width="640" height="360" />
           <p>An open-source cached PDF viewer for Flutter, adopted across thousands of apps</p>
           <p>An open-source Flutter package for native, cached PDF viewing on iOS and Android — wrapping the platform renderers with on-device caching so documents open instantly and work offline. 130+ stars, 500+ pub.dev likes, 43K+ downloads.</p>
           <p class="pr-tags">Flutter · Dart · Open Source · PDF · Plugin</p>
