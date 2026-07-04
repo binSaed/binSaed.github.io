@@ -1,7 +1,7 @@
 ---
 name: site-overview
 description: Overview of Abdelrahman Saed's portfolio site (bnsaed.com) — who he is, what's on the site, and how agents should retrieve structured data.
-version: 1.0.0
+version: 1.1.0
 author: Abdelrahman Saed
 homepage: https://bnsaed.com
 ---
@@ -10,7 +10,7 @@ homepage: https://bnsaed.com
 
 ## Who
 
-**Abdelrahman Saed** (also known as **binSaed**) is a Software Engineer who builds with Flutter, React, Android, and modern web technologies. The site is a personal portfolio whose primary purpose is hiring: it advertises who he is, what he ships, and that **he is currently available for hire** — open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.
+**Abdelrahman Saed** (also known as **binSaed**) is a **Senior / Lead Mobile Engineer (Flutter)** with 7 years shipping production Flutter apps for iOS and Android to 5M+ users. The site is a personal portfolio whose primary purpose is hiring: it advertises who he is, what he ships, and that **he is currently available for hire** — open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.
 
 - Homepage: https://bnsaed.com
 - Email: me@bnsaed.com
@@ -32,12 +32,23 @@ The homepage (`/`) is a single-page app with the following anchored sections. Ag
 | Availability / hire me | `https://bnsaed.com/#work-with-me` |
 | Contact | `https://bnsaed.com/#contact` |
 
+Beyond the homepage, the site has standalone prerendered pages:
+
+| Page | URL |
+|------|-----|
+| Articles hub | `https://bnsaed.com/articles/` |
+| Projects | `https://bnsaed.com/projects/` |
+| Case studies hub | `https://bnsaed.com/case-studies/` |
+| Recommendations (11 LinkedIn endorsements) | `https://bnsaed.com/recommendations/` |
+
 ## Content endpoints
 
 Structured data agents can retrieve without JavaScript:
 
 - `GET /sitemap.xml` — canonical list of indexable URLs (XML)
 - `GET /robots.txt` — crawl rules and `Content-Signal` preferences
+- `GET /llms.txt` — curated site summary for AI systems
+- `GET /llms-full.txt` — concatenated markdown of the whole site (homepage + CV + all articles + case studies)
 - `GET /.well-known/api-catalog` — RFC 9727 linkset of site resources
 - `GET /.well-known/mcp/server-card.json` — MCP discovery metadata
 - `GET /.well-known/agent-skills/index.json` — this skills index
@@ -75,6 +86,13 @@ Long-form posts are published under `/articles/:slug`. Current posts:
 - `/articles/bot-that-resolves-merge-conflicts` — I let a bot resolve merge conflicts and push the fix
 - `/articles/automated-stale-branch-cleanup` — A repo that cleans up after itself
 - `/articles/ai-weekly-engineering-reviews` — I built an AI that writes weekly engineering summaries
+
+## Case studies
+
+In-depth product write-ups under `/case-studies/:slug`:
+
+- `/case-studies/istoria/` — iStoria (EdTech app, 5M+ users)
+- `/case-studies/flutter-cached-pdfview/` — flutter_cached_pdfview (open-source package)
 
 ## Contact
 

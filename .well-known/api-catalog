@@ -7,7 +7,7 @@
           "rel": "service-doc",
           "href": "https://bnsaed.com/",
           "type": "text/html",
-          "title": "Abdelrahman Saed — Software Engineer Portfolio"
+          "title": "Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter) Portfolio"
         },
         {
           "rel": "service-desc",
@@ -72,6 +72,48 @@
           "href": "https://bnsaed.com/articles/flutter-cached-pdfview-guide/",
           "type": "text/html",
           "title": "Building a Cached PDF Viewer in Flutter"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/github-actions-branch-protection-guardrails/",
+          "type": "text/html",
+          "title": "The repo that rejects my own pushes to master"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/automate-pull-request-hygiene/",
+          "type": "text/html",
+          "title": "PRs that fill in their own paperwork (and a gate that won't let bad code merge)"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/sync-jira-with-github-prs/",
+          "type": "text/html",
+          "title": "Making Jira and GitHub agree without anyone updating both"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/",
+          "type": "text/html",
+          "title": "Every merge to master quietly breaks other PRs. So I built a radar for it."
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/bot-that-resolves-merge-conflicts/",
+          "type": "text/html",
+          "title": "I let a bot resolve merge conflicts and push the fix. Here's how I made that safe."
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/automated-stale-branch-cleanup/",
+          "type": "text/html",
+          "title": "A repo that cleans up after itself — without deleting the wrong branch"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/ai-weekly-engineering-reviews/",
+          "type": "text/html",
+          "title": "I built an AI that writes weekly engineering summaries. Then I had to decide whether I should."
         }
       ]
     }
