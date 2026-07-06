@@ -2,6 +2,8 @@
 
 > Personal portfolio of Abdelrahman Saed, a Senior / Lead Mobile Engineer with 7 years shipping production Flutter apps for iOS and Android to 5M+ users (Flutter, Dart, BLoC/Cubit, Clean Architecture). Also known as binSaed (Arabic: عبدالرحمن سعيد); speaks English and Arabic. **He is currently available for hire — open to Senior / Lead Mobile Engineer roles on a full-time, part-time, or contract basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.** This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
 
+> بالعربية: عبدالرحمن سعيد (بن سعيد) مهندس تطبيقات موبايل أول / قائد فريق بخبرة 7 سنوات في بناء تطبيقات Flutter الإنتاجية على iOS و Android لأكثر من 5 ملايين مستخدم — متخصص في Flutter و Dart و BLoC/Cubit و Clean Architecture وهندسة الإصدارات. متاح للعمل حاليًا: أدوار مهندس تطبيقات موبايل أول/قائد فريق بدوام كامل أو جزئي أو بنظام العقود، عن بُعد حول العالم أو من مقر العمل في الخليج ومصر. صفحة عربية: https://bnsaed.com/ar/
+
 ## Core content
 
 - [Homepage (markdown)](https://bnsaed.com/_pages/home.md): Who Abdelrahman is, what he ships, site sections, and how to get in touch. Also available at `https://bnsaed.com/` with `Accept: text/markdown`.
