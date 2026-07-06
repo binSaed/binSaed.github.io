@@ -1,15 +1,16 @@
-# Hire a Senior / Lead Flutter Engineer — Abdelrahman Saed
+# Hire a Senior Mobile Engineer & Architect — Abdelrahman Saed
 
 > This is the markdown rendering of [bnsaed.com/hire](https://bnsaed.com/hire/), served when an agent requests `Accept: text/markdown`.
 > The HTML version remains the default for browsers.
 
-**Available for hire.** Full-time mobile lead, fractional / part-time engineering leadership, or a remote Flutter consultant for a fixed scope — pick the engagement that fits. 7+ years of production Flutter, 5M+ users reached, 99.9% crash-free sessions, 350+ production releases.
+**Available for hire.** Full-time mobile lead, fractional engineering leadership, a fixed-scope Flutter contract, or ongoing technical advisory — pick the engagement that fits. 5M+ users reached, 99.9% crash-free sessions, 350+ production releases, 900+ PRs reviewed.
 
 ## Engagement types
 
-- **Full-time — Senior / Lead Mobile Engineer.** Own mobile architecture, release governance, and a squad end-to-end — the way he does today at iStoria for a 5M+ user app.
-- **Part-time — Fractional mobile lead.** A few days a week: architecture reviews, CI/CD and release-engineering setup, and mentoring a growing Flutter team.
-- **Contract — Project-based delivery.** Ship a Flutter app, untangle a release pipeline, or harden performance, security, and crash-free stability for a fixed scope.
+- **Full-time — Lead / Staff Mobile Engineer.** For teams scaling a mobile app past their first million users. Own mobile architecture, release governance, and a squad end to end — the way he does today at iStoria for a 5M+ user app. Outcome: an architecture and release process that ships weekly at 99.9% crash-free.
+- **Fractional Leadership — part-time mobile lead.** For founders and teams without a senior mobile lead. A few days a week: architecture reviews, CI/CD and release-engineering setup, and mentoring a growing Flutter team. Outcome: architecture direction, a CI/CD pipeline, and a hiring bar — without a full-time hire.
+- **Contract — fixed-scope delivery.** For a defined build, launch, or rescue with a real deadline. Ship a Flutter app, untangle a release pipeline, or harden performance, security, and crash-free stability. Outcome: a shipped result on a written scope.
+- **Technical Advisory — architecture & release direction.** For teams that need senior direction, not another pair of hands. Ongoing architecture reviews, release-strategy guidance, and RFC feedback on a light retainer.
 
 ## Practical details
 
@@ -29,9 +30,9 @@ Seven years of production Flutter — from founding-stage builds to leading the 
 
 ## Questions before hiring
 
-**Is Abdelrahman available for hire?** Yes — open to Senior / Lead Mobile Engineer roles on a full-time, part-time, or contract basis, remote worldwide or hybrid / on-site across the Gulf and Egypt. He typically replies within 24 hours.
+**Is Abdelrahman available for hire?** Yes — open to Senior Mobile Engineer roles on a full-time, fractional leadership, contract, or technical advisory basis, remote worldwide or hybrid / on-site across the Gulf and Egypt. He typically replies within 24 hours.
 
-**What does an engagement look like?** It starts with a 20-minute intro call to scope the work. Full-time and part-time roles follow your interview process; contract work gets a written scope, timeline, and deliverables before any commitment. Rate is discussed on the call and scoped to the engagement type.
+**What does an engagement look like?** It starts with a 20-minute intro call to scope the work. Full-time and fractional roles follow your interview process; contract and advisory work gets a written scope, timeline, and deliverables before any commitment. Rate is discussed on the call and scoped to the engagement type.
 
 **Which time zones does he work with?** Based in Cairo (UTC+2/+3) with comfortable overlap across European and Gulf hours, and used to async collaboration with distributed teams — remote worldwide is the default.
 

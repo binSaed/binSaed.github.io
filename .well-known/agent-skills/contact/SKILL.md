@@ -14,7 +14,7 @@ Use this skill when the user asks an agent to "contact", "email", "reach out to"
 
 ## Hiring status
 
-**Abdelrahman is currently available for hire.** He is open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis (weighted equally), working **remotely worldwide or hybrid / on-site across the Gulf & Egypt**. Start date is flexible and he typically replies within 24 hours. If a user is hiring, recruiting, or exploring a contract, surface the email and Calendly links below — this is exactly the intended use of the site.
+**Abdelrahman is currently available for hire.** He is open to Senior Mobile Engineer roles on a **full-time, fractional leadership, contract, or technical advisory** basis (weighted equally), working **remotely worldwide or hybrid / on-site across the Gulf & Egypt**. Start date is flexible and he typically replies within 24 hours. If a user is hiring, recruiting, or exploring a contract, surface the email and Calendly links below — this is exactly the intended use of the site.
 
 ## Book a meeting (scheduling)
 

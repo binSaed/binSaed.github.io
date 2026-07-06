@@ -23,19 +23,23 @@ How I helped take iStoria from founding to 5M+ learners — an offline-first Flu
 - **50+** — Feature modules
 - **800+** — PRs merged
 - **75%** — Shorter release cycle
-- **30K+** — Abuse accounts blocked
+- **40K+** — Abuse accounts blocked
 
 ## The Problem
 
-iStoria teaches English through short, narrated stories. To make that work for **5M+ learners across iOS and Android**, the mobile app had to clear several hard constraints at once:
+iStoria teaches English through short, narrated stories. I joined as the founding mobile engineer and now lead the squad — which meant owning the mobile app the whole way from a founding-stage build to **5M+ learners across iOS and Android**.
 
-- **Work offline, everywhere.** Many learners study on unreliable or metered connections. Lessons, progress, and audio had to be available offline and reconcile cleanly the moment a device came back online.
-- **Rich audio and speech loops.** Story playback, text-to-speech, and "Read-with" speech recognition put real-time audio at the center of the product — not as an afterthought.
-- **Ship fast without breaking trust.** A growing catalog and an ambitious roadmap meant frequent releases, held against a crash-free bar that protects a paying, education-focused audience.
-- **Protect premium content.** Subscriptions fund the catalog, so the app had to resist piracy and account abuse without punishing legitimate learners.
-- **Stay shippable as it grows.** A founding-stage app had to scale into a large codebase that a small squad could still move quickly in.
+The job was never a single feature. It was an architecture that could hold a demanding set of requirements *at once* — offline access, real-time audio, a fast release cadence, content protection, and a codebase a small team could keep moving in — and keep getting *faster* as it grew. Get the platform right and every feature after it ships cheaply; get it wrong and the whole thing calcifies. The constraints below shaped every decision that followed.
 
-The job was never a single feature — it was an architecture that could hold all of this at once and keep getting faster as it grew.
+## Constraints
+
+Before any architecture, the non-negotiables the mobile app had to satisfy simultaneously:
+
+- **Offline-first, not offline-tolerant.** Many learners study on unreliable or metered connections. Lessons, progress, and audio had to be available offline and reconcile cleanly the moment a device reconnected — never a spinner on a learner's own progress.
+- **A 99.9% crash-free bar, held while shipping weekly.** A paying, education-focused audience won't forgive instability, and the roadmap demanded frequent releases. Stability and velocity had to hold *together*, not trade against each other.
+- **Real-time audio at the center.** Story playback, text-to-speech, and "Read-with" speech recognition *are* the product — the data and rendering layers had to keep an audio loop responsive, not treat it as a side feature.
+- **A small squad against a large surface.** Four engineers owning 50+ modules and 140+ routes meant the architecture itself had to keep everyone fast — consistency enforced by structure, not willpower.
+- **Protect subscription revenue without punishing honest learners.** Piracy and account abuse threaten the catalog that funds the product; the defense had to stay invisible to legitimate users.
 
 ## The Solution
 
@@ -106,10 +110,20 @@ The architecture paid off where it counts — in reach, stability, shipping spee
 
 - **5M+ learners** on iOS and Android, at a **99.9% crash-free** rate.
 - **800+ merged PRs**, **350+ production releases**, and the release cycle cut **from four weeks to one**.
-- **30,000+ abusive accounts auto-blocked** by the cross-platform anti-piracy system (jailbreak / root / tamper detection plus backend behavioral analysis), protecting subscription revenue.
+- **40,000+ abusive accounts auto-blocked** by the cross-platform anti-piracy system (jailbreak / root / tamper detection plus backend behavioral analysis), protecting subscription revenue.
 - A run of growth and AI features shipped end-to-end — daily **streaks**, a social **Leaderboard** with sharing, friend **referrals**, the **iStro** AI chat companion, AI **"Read-with"** speech practice, home-screen **widgets**, **dark mode**, quizzes, and an ongoing program of **subscription and paywall experiments**.
 
 I grew from founding mobile engineer into leading a four-engineer iOS/Android squad that owns architecture, release governance, and the roadmap for the entire 5M+ user base.
+
+## Lessons Learned
+
+What held up under load — and what I'd weigh differently next time:
+
+- **Offline-first is an architecture decision, not a feature.** Committing to local-first reads up front meant every feature inherited offline support for free. Retrofitting it later would have touched every data path in the app.
+- **Consistency beats cleverness at 50+ modules.** One predictable `DataSource → Repository → Cubit` shape, applied everywhere, makes an unfamiliar module readable in seconds — worth more than any locally-optimal design only its author understands.
+- **Failures as values paid for themselves.** Modeling every repository as `Either<Failure, T>` turned a whole class of "forgot to handle the error path" bugs into compile-time forks — a real part of holding 99.9% crash-free.
+- **Release cadence is a force multiplier.** Cutting the cycle from four weeks to one didn't just ship features faster; it changed how the team plans — smaller, safer changes and much faster feedback.
+- **What I'd do earlier:** invest in the module boundaries and CI quality gates from day one. Entropy compounds, and the cost of adding guardrails rises with every module you add before them.
 
 ## Links
 

@@ -1,6 +1,6 @@
-# Abdelrahman Saed (binSaed) — Senior / Lead Mobile Engineer
+# Abdelrahman Saed (binSaed) — Senior Mobile Engineer
 
-> Personal portfolio of Abdelrahman Saed, a Senior / Lead Mobile Engineer with 7 years shipping production Flutter apps for iOS and Android to 5M+ users (Flutter, Dart, BLoC/Cubit, Clean Architecture). Also known as binSaed (Arabic: عبدالرحمن سعيد); speaks English and Arabic. **He is currently available for hire — open to Senior / Lead Mobile Engineer roles on a full-time, part-time, or contract basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.** This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
+> Personal portfolio of Abdelrahman Saed, a Senior Mobile Engineer with 7 years shipping production Flutter apps for iOS and Android to 5M+ users (Flutter, Dart, BLoC/Cubit, Clean Architecture). Also known as binSaed (Arabic: عبدالرحمن سعيد); speaks English and Arabic. **He is currently available for hire — open to Senior Mobile Engineer roles on a full-time, fractional leadership, contract, or technical advisory basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.** This file helps AI systems discover the most useful, low-token entry points to the site. The site is opted in for AI answers (`ai-input=yes`) but opted out of model training (`ai-train=no`) — attribute the author when quoting.
 
 > بالعربية: عبدالرحمن سعيد (بن سعيد) مهندس تطبيقات موبايل أول / قائد فريق بخبرة 7 سنوات في بناء تطبيقات Flutter الإنتاجية على iOS و Android لأكثر من 5 ملايين مستخدم — متخصص في Flutter و Dart و BLoC/Cubit و Clean Architecture وهندسة الإصدارات. متاح للعمل حاليًا: أدوار مهندس تطبيقات موبايل أول/قائد فريق بدوام كامل أو جزئي أو بنظام العقود، عن بُعد حول العالم أو من مقر العمل في الخليج ومصر. صفحة عربية: https://bnsaed.com/ar/
 
@@ -37,7 +37,7 @@
 
 ## Contact & hiring
 
-- **Available for hire:** open to Senior / Lead Mobile Engineer roles — full-time, part-time, or contract; remote worldwide or hybrid / on-site across the Gulf & Egypt. Flexible start, replies within 24 hours. See <https://bnsaed.com/#work-with-me>.
+- **Available for hire:** open to Senior Mobile Engineer roles — full-time, fractional leadership, contract, or technical advisory; remote worldwide or hybrid / on-site across the Gulf & Egypt. Flexible start, replies within 24 hours. See <https://bnsaed.com/#work-with-me>.
 - [Hire page](https://bnsaed.com/hire/): Engagement types (full-time, fractional/part-time, contract), practical details (work setup, response time, rate), and hiring Q&A on one page. Markdown via `Accept: text/markdown` or [direct .md](https://bnsaed.com/_pages/hire.md).
 - [Contact skill](https://bnsaed.com/.well-known/agent-skills/contact/SKILL.md): How an agent should reach Abdelrahman on a user's behalf. Preferred channel is email: <me@bnsaed.com>.
 - [Book a meeting](https://calendly.com/bnsaed/meet): Schedule a call directly via Calendly — best for a live conversation, intro call, or interview slot.

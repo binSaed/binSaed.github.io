@@ -36,6 +36,15 @@ Displaying remote PDFs in a mobile app sounds trivial until you ship it. The com
 
 I kept solving the same problem across projects, so I built it once, properly, and open-sourced it.
 
+## Constraints
+
+The design had four hard requirements:
+
+- **Zero-config correctness.** The cached, offline-capable path had to be the *default* in a few lines — not an opt-in callers assemble from parts.
+- **Two native renderers, one API.** iOS and Android render PDFs through entirely different components; the public surface had to hide that split completely.
+- **Small footprint.** A dependency thousands of apps embed can't ship a heavyweight PDF engine — it had to lean on what the platforms already provide.
+- **Maintainable for years.** As a package others depend on, it had to survive Flutter breaking changes — null-safety, `super.key`, evolving cache-manager APIs — without breaking downstream apps.
+
 ## The Solution
 
 **`flutter_cached_pdfview`** renders remote PDFs natively while caching each downloaded file on-device — so a document opens instantly and works offline on every load after the first.
@@ -85,6 +94,14 @@ The package became one of the go-to PDF solutions in the Flutter ecosystem:
 - Adopted in production document readers, e-book apps, and EdTech products — including the PDF experiences I shipped at iStoria.
 
 A small library with an outsized footprint: a focused tool that solved a recurring problem well enough that thousands of other apps now rely on it. The companion guide below walks through using it end-to-end.
+
+## Lessons Learned
+
+Three things this package reinforced:
+
+- **Compose, don't reinvent.** Wrapping `flutter_pdfview` and `flutter_cache_manager` beat writing a Dart PDF engine — smaller, faster, and it inherited native rendering quality for free.
+- **Make the right thing the default.** Adoption came from *removing* decisions: cached, offline-capable, native rendering with no configuration. Good defaults are a feature.
+- **Maintenance is the product.** Six years of staying current with Flutter is the reason apps still depend on it. Publishing a package is a commitment, not a drop.
 
 ## Links
 

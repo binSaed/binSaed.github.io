@@ -10,7 +10,7 @@ homepage: https://bnsaed.com
 
 ## Who
 
-**Abdelrahman Saed** (also known as **binSaed**) is a **Senior / Lead Mobile Engineer (Flutter)** with 7 years shipping production Flutter apps for iOS and Android to 5M+ users. The site is a personal portfolio whose primary purpose is hiring: it advertises who he is, what he ships, and that **he is currently available for hire** — open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.
+**Abdelrahman Saed** (also known as **binSaed**) is a **Senior Mobile Engineer (Flutter)** with 7 years shipping production Flutter apps for iOS and Android to 5M+ users. The site is a personal portfolio whose primary purpose is hiring: it advertises who he is, what he ships, and that **he is currently available for hire** — open to Senior Mobile Engineer roles on a **full-time, fractional leadership, contract, or technical advisory** basis, remote worldwide or hybrid / on-site across the Gulf & Egypt.
 
 - Homepage: https://bnsaed.com
 - Email: me@bnsaed.com

@@ -5,8 +5,19 @@
     <link>https://bnsaed.com/</link>
     <description>Writing and case studies by Abdelrahman Saed — Flutter, mobile architecture, release engineering, and CI/CD automation.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 06 Jul 2026 18:56:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2026 23:52:08 GMT</lastBuildDate>
     <atom:link href="https://bnsaed.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Offline-First vs Local-First: What&apos;s the Difference?</title>
+      <link>https://bnsaed.com/articles/offline-first-vs-local-first/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/offline-first-vs-local-first/</guid>
+      <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+      <description>Offline-first and local-first get used interchangeably, but they answer different questions — one is about whether the app works with no network, the other about who owns the canonical copy of the data. Where the line falls, with examples from a 5M-user Flutter app.</description>
+      <category>Offline-first</category>
+      <category>Architecture</category>
+      <category>Flutter</category>
+      <category>PowerSync</category>
+    </item>
     <item>
       <title>App Flavors in Flutter: One Codebase, Every Environment</title>
       <link>https://bnsaed.com/articles/flutter-build-flavors-guide/</link>
@@ -40,6 +51,30 @@
       <category>Open Source</category>
       <category>PDF</category>
       <category>Plugin</category>
+    </item>
+    <item>
+      <title>Case study: From Four-Week Releases to Weekly — Trunk-based development, a self-driving CI/CD pipeline, and feature flags — cutting the release cycle 75% without lowering the crash-free bar.</title>
+      <link>https://bnsaed.com/case-studies/release-engineering/</link>
+      <guid isPermaLink="true">https://bnsaed.com/case-studies/release-engineering/</guid>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
+      <description>How I cut iStoria&apos;s release cycle from four weeks to one across 900+ PRs and 350+ releases — trunk-based development, a suite of GitHub Actions that automate PR hygiene and branch protection, three build flavors, and GrowthBook feature flags, held to a 99.9% crash-free bar.</description>
+      <category>Flutter</category>
+      <category>CI/CD</category>
+      <category>Release Engineering</category>
+      <category>GitHub Actions</category>
+      <category>Feature Flags</category>
+    </item>
+    <item>
+      <title>Case study: Offline-First at 5M Learners — A local-first Flutter data layer — Drift, PowerSync, and a custom offline write queue — so learners never wait on the network.</title>
+      <link>https://bnsaed.com/case-studies/offline-first-sync/</link>
+      <guid isPermaLink="true">https://bnsaed.com/case-studies/offline-first-sync/</guid>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
+      <description>How iStoria&apos;s Flutter app stays fully usable with no connection: local-first reads from a Drift database, streaming sync via PowerSync, and a custom offline write queue that replays on reconnect — across 5M+ learners on iOS and Android.</description>
+      <category>Flutter</category>
+      <category>Offline-first</category>
+      <category>PowerSync</category>
+      <category>Drift</category>
+      <category>Architecture</category>
     </item>
     <item>
       <title>Case study: iStoria — Scaling story-based English learning to 5M+ learners</title>

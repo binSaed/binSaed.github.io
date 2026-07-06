@@ -6,7 +6,7 @@
       "type": "skill-md",
       "description": "Overview of Abdelrahman Saed's portfolio site (bnsaed.com) — who he is, what's on the site, and how agents should retrieve structured data.",
       "url": "https://bnsaed.com/.well-known/agent-skills/site-overview/SKILL.md",
-      "digest": "sha256:26723bc83ca9a508a0858a3501630886647289fe2e16685e76dbc6f94db9c036"
+      "digest": "sha256:f00b23d51594eeff0d7756f3c5b2f4f552613bc0a9110cca8df22095ab70a1c8"
     },
     {
       "name": "article-reader",
@@ -20,7 +20,7 @@
       "type": "skill-md",
       "description": "How an AI agent should contact Abdelrahman Saed on behalf of a user.",
       "url": "https://bnsaed.com/.well-known/agent-skills/contact/SKILL.md",
-      "digest": "sha256:58946431d758d794acf7af3355d4e41dcf9803e657a15afcbe8ce265c56a425b"
+      "digest": "sha256:3afdd82459e0ce801013c75c8ad329009d77c01a9240986092183cabe34b83cc"
     }
   ]
 }

@@ -7,7 +7,7 @@
           "rel": "service-doc",
           "href": "https://bnsaed.com/",
           "type": "text/html",
-          "title": "Abdelrahman Saed — Senior / Lead Mobile Engineer (Flutter) Portfolio"
+          "title": "Abdelrahman Saed — Senior Mobile Engineer (Flutter) Portfolio"
         },
         {
           "rel": "service-desc",
@@ -126,6 +126,12 @@
           "href": "https://bnsaed.com/articles/flutter-build-flavors-guide/",
           "type": "text/html",
           "title": "App Flavors in Flutter: One Codebase, Every Environment"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/offline-first-vs-local-first/",
+          "type": "text/html",
+          "title": "Offline-First vs Local-First: What's the Difference?"
         }
       ]
     }

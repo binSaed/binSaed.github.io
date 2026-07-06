@@ -1,11 +1,11 @@
-# Abdelrahman Saed — Senior / Lead Mobile Engineer
+# Abdelrahman Saed — Senior Mobile Engineer
 
 > This is the markdown rendering of [bnsaed.com](https://bnsaed.com/), served when an agent requests `Accept: text/markdown`.
 > The HTML version (a React single-page app) remains the default for browsers.
 
 ## About
 
-I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. I work in Flutter and Dart with BLoC/Cubit and Clean Architecture, and I currently lead the mobile squad at iStoria, owning architecture, release governance, and delivery for a 50+ module codebase. This site is my personal portfolio: who I am, what I ship, and how to get in touch.
+I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. I work in Flutter and Dart with BLoC/Cubit and Clean Architecture, and I currently lead the mobile squad at iStoria, owning architecture, release governance, and delivery for a 50+ module codebase. This site is my personal portfolio: who I am, what I ship, and how to get in touch.
 
 - Email: <me@bnsaed.com>
 - Book a meeting: <https://calendly.com/bnsaed/meet>
@@ -16,11 +16,12 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior / Lead Mobile 
 
 ## Availability — open to hire
 
-**Abdelrahman is currently available for hire.** He is open to Senior / Lead Mobile Engineer roles on a **full-time, part-time, or contract** basis (weighted equally):
+**Abdelrahman is currently available for hire.** He is open to Senior Mobile Engineer roles on a **full-time, fractional leadership, contract, or technical advisory** basis (weighted equally):
 
-- **Full-time** — Senior / Lead Mobile Engineer owning architecture, release governance, and a squad end-to-end.
-- **Part-time** — fractional mobile lead: architecture reviews, CI/CD and release-engineering setup, and mentoring a Flutter team a few days a week.
-- **Contract / freelance** — project-based delivery: shipping a Flutter app, untangling a release pipeline, or hardening performance, security, and crash-free stability.
+- **Full-time** — Senior / Lead Mobile Engineer owning architecture, release governance, and a squad end to end.
+- **Fractional leadership** — part-time mobile lead: architecture reviews, CI/CD and release-engineering setup, and mentoring a Flutter team a few days a week.
+- **Contract** — fixed-scope delivery: shipping a Flutter app, untangling a release pipeline, or hardening performance, security, and crash-free stability.
+- **Technical advisory** — architecture and release direction: ongoing reviews, release-strategy guidance, and RFC feedback on a light retainer.
 
 Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egypt**. Flexible start date; typically replies within 24 hours. To hire or start a conversation, email <me@bnsaed.com> or book a call at <https://calendly.com/bnsaed/meet>.
 
@@ -112,7 +113,7 @@ Attribute the author when quoting.
 
 ### Who is Abdelrahman Saed?
 
-Abdelrahman Saed (also known as binSaed) is a Senior / Lead Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. He currently leads the mobile squad at iStoria.
+Abdelrahman Saed (also known as binSaed) is a Senior Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. He currently leads the mobile squad at iStoria.
 
 ### What is Abdelrahman Saed's current role?
 
