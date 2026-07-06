@@ -120,6 +120,12 @@
           "href": "https://bnsaed.com/articles/managing-large-flutter-codebases/",
           "type": "text/html",
           "title": "Best Practices for Managing Large Flutter Codebases"
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/flutter-build-flavors-guide/",
+          "type": "text/html",
+          "title": "App Flavors in Flutter: One Codebase, Every Environment"
         }
       ]
     }

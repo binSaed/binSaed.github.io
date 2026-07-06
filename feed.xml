@@ -5,8 +5,19 @@
     <link>https://bnsaed.com/</link>
     <description>Writing and case studies by Abdelrahman Saed — Flutter, mobile architecture, release engineering, and CI/CD automation.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 06 Jul 2026 12:50:58 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2026 13:35:56 GMT</lastBuildDate>
     <atom:link href="https://bnsaed.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>App Flavors in Flutter: One Codebase, Every Environment</title>
+      <link>https://bnsaed.com/articles/flutter-build-flavors-guide/</link>
+      <guid isPermaLink="true">https://bnsaed.com/articles/flutter-build-flavors-guide/</guid>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 GMT</pubDate>
+      <description>How to run local, staging, and production from a single Flutter codebase with build flavors — Dart entry points, typed per-flavor config, and the Android and iOS native wiring that makes it real.</description>
+      <category>Flutter</category>
+      <category>Dart</category>
+      <category>Build &amp; Release</category>
+      <category>DevOps</category>
+    </item>
     <item>
       <title>Best Practices for Managing Large Flutter Codebases</title>
       <link>https://bnsaed.com/articles/managing-large-flutter-codebases/</link>
