@@ -114,6 +114,12 @@
           "href": "https://bnsaed.com/articles/ai-weekly-engineering-reviews/",
           "type": "text/html",
           "title": "I built an AI that writes weekly engineering summaries. Then I had to decide whether I should."
+        },
+        {
+          "rel": "service-doc",
+          "href": "https://bnsaed.com/articles/managing-large-flutter-codebases/",
+          "type": "text/html",
+          "title": "Best Practices for Managing Large Flutter Codebases"
         }
       ]
     }
