@@ -17,3 +17,4 @@
 - البريد: me@bnsaed.com
 - GitHub: https://github.com/binSaed
 - LinkedIn: https://www.linkedin.com/in/binsaed/
+- YouTube: https://www.youtube.com/@binSaed

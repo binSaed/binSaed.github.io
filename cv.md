@@ -10,6 +10,7 @@
 - **Book a meeting:** <https://calendly.com/bnsaed/meet>
 - **Website:** <https://bnsaed.com>
 - **LinkedIn:** <https://www.linkedin.com/in/binsaed/>
+- **YouTube:** <https://www.youtube.com/@binSaed>
 - **GitHub:** <https://github.com/binSaed>
 - **Stack Overflow:** <https://stackoverflow.com/users/11001850/abdelrahman-saed>
 - **pub.dev:** <https://pub.dev/publishers/bnsaed.com/packages>

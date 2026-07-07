@@ -17,6 +17,7 @@ homepage: https://bnsaed.com
 - Book a meeting: https://calendly.com/bnsaed/meet
 - GitHub: https://github.com/binSaed
 - LinkedIn: https://www.linkedin.com/in/binsaed/
+- YouTube: https://www.youtube.com/@binSaed
 
 ## Site sections
 

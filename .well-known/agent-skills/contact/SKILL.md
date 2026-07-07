@@ -43,6 +43,7 @@ The site has a contact form at `https://bnsaed.com/#contact` backed by Firebase.
 ## Social channels
 
 - LinkedIn: https://www.linkedin.com/in/binsaed/
+- YouTube: https://www.youtube.com/@binSaed
 - GitHub: https://github.com/binSaed (issues/discussions on public repos only)
 
 ## Do not

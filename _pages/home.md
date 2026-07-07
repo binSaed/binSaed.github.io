@@ -11,6 +11,7 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior Mobile Enginee
 - Book a meeting: <https://calendly.com/bnsaed/meet>
 - GitHub: <https://github.com/binSaed>
 - LinkedIn: <https://www.linkedin.com/in/binsaed/>
+- YouTube: <https://www.youtube.com/@binSaed>
 - Stack Overflow: <https://stackoverflow.com/users/11001850/abdelrahman-saed>
 - pub.dev: <https://pub.dev/publishers/bnsaed.com/packages>
 
@@ -129,7 +130,7 @@ Flutter and Dart with BLoC/Cubit and Clean Architecture; offline-first data (Pow
 
 ### How can I contact Abdelrahman Saed?
 
-Email is the preferred channel: <me@bnsaed.com>. To schedule a call directly, [book a meeting via Calendly](https://calendly.com/bnsaed/meet). He is also reachable on [GitHub](https://github.com/binSaed), [LinkedIn](https://www.linkedin.com/in/binsaed/), and [Stack Overflow](https://stackoverflow.com/users/11001850/abdelrahman-saed).
+Email is the preferred channel: <me@bnsaed.com>. To schedule a call directly, [book a meeting via Calendly](https://calendly.com/bnsaed/meet). He is also reachable on [GitHub](https://github.com/binSaed), [LinkedIn](https://www.linkedin.com/in/binsaed/), [YouTube](https://www.youtube.com/@binSaed), and [Stack Overflow](https://stackoverflow.com/users/11001850/abdelrahman-saed).
 
 ### Can AI agents and answer engines use content from this site?
 

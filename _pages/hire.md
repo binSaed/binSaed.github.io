@@ -41,3 +41,4 @@ Seven years of production Flutter — from founding-stage builds to leading the 
 - Email (preferred): <me@bnsaed.com>
 - Book a 20-minute call: <https://calendly.com/bnsaed/meet>
 - LinkedIn: <https://www.linkedin.com/in/binsaed/>
+- YouTube: <https://www.youtube.com/@binSaed>
