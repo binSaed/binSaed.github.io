@@ -14,7 +14,7 @@ Scaling story-based English learning to 5M+ learners
 
 **Role:** Founding → Lead Mobile Engineer · **Timeline:** 2022 — Present · **Platforms:** iOS, Android
 
-How I helped take iStoria from founding to 5M+ learners — an offline-first Flutter architecture across a 50+ module codebase, growth features from streaks and a social leaderboard to the iStro AI companion, and a release cycle cut from four weeks to one across 800+ merged PRs.
+How I took iStoria from founding to 5M+ learners — an offline-first Flutter architecture, a release cycle cut from four weeks to one, and 99.9% crash-free at scale.
 
 ## Key metrics
 
