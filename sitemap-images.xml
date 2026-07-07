@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://bnsaed.com/articles/flutter-cached-pdfview-guide/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/flutter-cached-pdfview-guide-hero.webp</image:loc>
+      <image:caption>flutter_cached_pdfview — native cached PDF viewing on iOS and Android</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/github-actions-branch-protection-guardrails/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/github-actions-branch-protection-guardrails-hero.webp</image:loc>
+      <image:caption>Guardrails — a neon shield protecting the master branch</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/github-actions-branch-protection-guardrails-diagram.webp</image:loc>
+      <image:caption>Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/automate-pull-request-hygiene/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/automate-pull-request-hygiene-hero.webp</image:loc>
+      <image:caption>A pull request auto-filling its own context beside a quality gate</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/automate-pull-request-hygiene-diagram.webp</image:loc>
+      <image:caption>Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/sync-jira-with-github-prs/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/sync-jira-with-github-prs-hero.webp</image:loc>
+      <image:caption>A glowing bridge syncing an issue board and a pull request</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/sync-jira-with-github-prs-diagram.webp</image:loc>
+      <image:caption>Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/auto-rebase-and-detect-merge-conflicts-hero.webp</image:loc>
+      <image:caption>A radar sweep over branch lines with conflicts pulsing red</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/auto-rebase-and-detect-merge-conflicts-diagram.webp</image:loc>
+      <image:caption>Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/bot-that-resolves-merge-conflicts/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/bot-that-resolves-merge-conflicts-hero.webp</image:loc>
+      <image:caption>A robot arm carefully braiding two translation streams back into one</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/bot-that-resolves-merge-conflicts-diagram.webp</image:loc>
+      <image:caption>Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/automated-stale-branch-cleanup/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/automated-stale-branch-cleanup-hero.webp</image:loc>
+      <image:caption>A robot broom sweeping dead branches from a healthy git tree</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/automated-stale-branch-cleanup-diagram.webp</image:loc>
+      <image:caption>Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/ai-weekly-engineering-reviews/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/ai-weekly-engineering-reviews-hero.webp</image:loc>
+      <image:caption>Private, per-engineer weekly summary cards routed individually</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/ai-weekly-engineering-reviews-diagram.webp</image:loc>
+      <image:caption>Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/managing-large-flutter-codebases/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/managing-large-flutter-codebases-hero.webp</image:loc>
+      <image:caption>A large, orderly Flutter codebase — modules arranged like a city grid</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/flutter-build-flavors-guide/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-images/flutter-build-flavors-guide-hero.webp</image:loc>
+      <image:caption>Flutter build flavors — one codebase producing local, staging, and production apps</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/case-studies/istoria/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/project-images/istoria.webp</image:loc>
+      <image:caption>iStoria</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/case-studies/flutter-cached-pdfview/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/project-images/flutter-cached-pdfview.webp</image:loc>
+      <image:caption>flutter_cached_pdfview</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/speaking/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/speaking/flutter-night-swypex.webp</image:loc>
+      <image:caption>Abdelrahman Saed presenting &apos;Building Unstoppable Offline-First Apps&apos; to a full room at Flutter Night @ Swypex, Smart Village.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/recommendations/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/saber-son.jpg</image:loc>
+      <image:caption>Saber Son</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/alhassan-balousha.jpg</image:loc>
+      <image:caption>AlHassan Balousha</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/fady-mondy.jpg</image:loc>
+      <image:caption>Fady Mondy</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/mohammed-helaiwa.jpg</image:loc>
+      <image:caption>Mohammed Helaiwa</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/maher-al-ghannam.jpg</image:loc>
+      <image:caption>Maher Al-Ghannam</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/omar-sulieman.jpg</image:loc>
+      <image:caption>Omar Sulieman</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/abdelrahman-shehata.jpg</image:loc>
+      <image:caption>Abdelrahman Shehata</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/haitham-essam.jpg</image:loc>
+      <image:caption>Haitham Essam</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/islam-khalil.jpg</image:loc>
+      <image:caption>Islam Khalil</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/abdullah-ehab.jpg</image:loc>
+      <image:caption>Abdullah Ehab</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/recommendations/mohamed-reda.jpg</image:loc>
+      <image:caption>Mohamed Reda</image:caption>
+    </image:image>
+  </url>
+</urlset>

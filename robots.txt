@@ -33,3 +33,4 @@ Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://bnsaed.com/sitemap.xml
+Sitemap: https://bnsaed.com/sitemap-images.xml
