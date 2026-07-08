@@ -21,7 +21,7 @@
 
 ## Proof
 
-Seven years of production Flutter — from founding-stage builds to leading the mobile squad behind a 5M+ user app:
+7 years of production Flutter — from founding-stage builds to leading the mobile squad behind a 5M+ user app:
 
 - [Case studies](https://bnsaed.com/case-studies/) — iStoria (5M+ learners) and flutter_cached_pdfview (43K+ downloads), in depth.
 - [Projects](https://bnsaed.com/projects/) — open-source packages and shipped apps.
