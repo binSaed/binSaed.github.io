@@ -54,7 +54,7 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 
 ## Projects
 
-- [flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview) — native PDF viewer for iOS & Android with caching and password-protected files (134+ GitHub stars, 501+ pub.dev likes, 43k+ downloads). [source](https://github.com/binSaed/flutter_cached_pdfview)
+- [flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview) — native PDF viewer for iOS & Android with caching and password-protected files (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads). [source](https://github.com/binSaed/flutter_cached_pdfview)
 - [iStoria](https://istoria.app/en/) — story-based English learning with 5M+ downloads.
 - [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) — WhatsApp stickers app with 500K+ installs.
 - [clipboard_plus](https://pub.dev/packages/clipboard_plus) — clipboard plugin with silent content-type detection on iOS.
@@ -126,7 +126,7 @@ Flutter and Dart with BLoC/Cubit and Clean Architecture; offline-first data (Pow
 
 ### What are Abdelrahman Saed's notable projects?
 
-[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 43k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He publishes packages on pub.dev under bnsaed.com.
+[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He publishes packages on pub.dev under bnsaed.com.
 
 ### How can I contact Abdelrahman Saed?
 

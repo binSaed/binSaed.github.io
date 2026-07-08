@@ -61,7 +61,7 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 
 ## Projects
 
-- [flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview) — native PDF viewer for iOS & Android with caching and password-protected files (134+ GitHub stars, 501+ pub.dev likes, 43k+ downloads). [source](https://github.com/binSaed/flutter_cached_pdfview)
+- [flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview) — native PDF viewer for iOS & Android with caching and password-protected files (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads). [source](https://github.com/binSaed/flutter_cached_pdfview)
 - [iStoria](https://istoria.app/en/) — story-based English learning with 5M+ downloads.
 - [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) — WhatsApp stickers app with 500K+ installs.
 - [clipboard_plus](https://pub.dev/packages/clipboard_plus) — clipboard plugin with silent content-type detection on iOS.
@@ -133,7 +133,7 @@ Flutter and Dart with BLoC/Cubit and Clean Architecture; offline-first data (Pow
 
 ### What are Abdelrahman Saed's notable projects?
 
-[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 43k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He publishes packages on pub.dev under bnsaed.com.
+[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He publishes packages on pub.dev under bnsaed.com.
 
 ### How can I contact Abdelrahman Saed?
 
@@ -236,7 +236,7 @@ Senior Mobile Engineer with **7 years** shipping production iOS and Android apps
 
 ## Projects
 
-- **[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview)** — Cross-platform Flutter PDF viewer (iOS/Android) with URL/asset/local caching, password-protected PDFs, and gesture-based zoom; **[134★ on GitHub](https://github.com/binSaed/flutter_cached_pdfview)**, **501 likes / 43.3k+ downloads on pub.dev**.
+- **[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview)** — Cross-platform Flutter PDF viewer (iOS/Android) with URL/asset/local caching, password-protected PDFs, and gesture-based zoom; **[134★ on GitHub](https://github.com/binSaed/flutter_cached_pdfview)**, **501 likes / 57.4k+ downloads on pub.dev**.
 - **[flutter_zoom_checker](https://pub.dev/packages/flutter_zoom_checker)** — iOS/Android display-zoom (UI scaling) detection plugin, working around a Flutter framework limitation ([issue #95421](https://github.com/flutter/flutter/issues/95421)).
 - **[dio_firebase_performance_plus](https://github.com/binSaed/dio_firebase_performance_plus)** — Dio interceptor streaming HTTP request metrics to Firebase Performance Monitoring.
 - **[clipboard_plus](https://pub.dev/packages/clipboard_plus)** — Flutter clipboard plugin with **silent content-type detection on iOS** (UIPasteboard) — detects URLs, text, and images without triggering the iOS paste permission dialog.
@@ -273,7 +273,7 @@ url: https://bnsaed.com/articles/flutter-cached-pdfview-guide
 
 A cached PDF viewer in Flutter displays remote PDFs while caching each downloaded file on-device, so it opens instantly and works offline on every load after the first. The `flutter_cached_pdfview` package builds this for you: it wraps the native `flutter_pdfview` renderer with `flutter_cache_manager`, exposing URL, asset, and file-path sources plus progress placeholders and error widgets out of the box. To use it, add `flutter_cached_pdfview: ^0.4.4` to your `pubspec.yaml`, then render `const PDF().cachedFromUrl(url, ...)`. The first load downloads and caches the document; every later load is served straight from disk, cutting both wait time and bandwidth. The package targets Android API 20 and above and iOS 11 and above, and is maintained on pub.dev by its original author. The guide below walks through installation, basic usage with modern Flutter 3.x syntax, multiple sources, loading states, and error handling.
 
-I wrote `flutter_cached_pdfview`, and I've maintained it since 2020. It grew out of the same problem showing up in project after project — remote PDFs that re-downloaded on every open, broke the moment the network dropped, and needed the same loading and error boilerplate rebuilt each time. So I built the cached, offline-capable, native-rendering path once, made it the default, and open-sourced it. It's since grown to **130+ GitHub stars, 500+ pub.dev likes, 43,000+ downloads, and 100+ forks**, shipped under the MIT license and used in production document readers, e-book apps, and EdTech products — including the PDF experiences I shipped at iStoria. If you want the design story behind it — the constraints, the two-native-renderers-one-API problem, and what six years of maintenance taught me — read the [flutter_cached_pdfview case study](/case-studies/flutter-cached-pdfview/). This article is the hands-on guide to using it.
+I wrote `flutter_cached_pdfview`, and I've maintained it since 2020. It grew out of the same problem showing up in project after project — remote PDFs that re-downloaded on every open, broke the moment the network dropped, and needed the same loading and error boilerplate rebuilt each time. So I built the cached, offline-capable, native-rendering path once, made it the default, and open-sourced it. It's since grown to **134+ GitHub stars, 501+ pub.dev likes, 57,000+ downloads, and 100+ forks**, shipped under the MIT license and used in production document readers, e-book apps, and EdTech products — including the PDF experiences I shipped at iStoria. If you want the design story behind it — the constraints, the two-native-renderers-one-API problem, and what six years of maintenance taught me — read the [flutter_cached_pdfview case study](/case-studies/flutter-cached-pdfview/). This article is the hands-on guide to using it.
 
 ## Why does PDF caching matter in a mobile app?
 
@@ -4241,7 +4241,7 @@ The entire point of the package is performance and resilience under real-world c
 
 The package became one of the go-to PDF solutions in the Flutter ecosystem:
 
-- **130+ GitHub stars**, **500+ pub.dev likes**, and **43,000+ downloads**.
+- **134+ GitHub stars**, **501+ pub.dev likes**, and **57,000+ downloads**.
 - **100+ forks** and contributions from the community.
 - Maintained continuously since **2020**, kept current with modern Flutter (null-safety, `super.key`, current cache-manager APIs).
 - Adopted in production document readers, e-book apps, and EdTech products — including the PDF experiences I shipped at iStoria.

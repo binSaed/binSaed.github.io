@@ -89,7 +89,7 @@ Senior Mobile Engineer with **7 years** shipping production iOS and Android apps
 
 ## Projects
 
-- **[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview)** — Cross-platform Flutter PDF viewer (iOS/Android) with URL/asset/local caching, password-protected PDFs, and gesture-based zoom; **[134★ on GitHub](https://github.com/binSaed/flutter_cached_pdfview)**, **501 likes / 43.3k+ downloads on pub.dev**.
+- **[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview)** — Cross-platform Flutter PDF viewer (iOS/Android) with URL/asset/local caching, password-protected PDFs, and gesture-based zoom; **[134★ on GitHub](https://github.com/binSaed/flutter_cached_pdfview)**, **501 likes / 57.4k+ downloads on pub.dev**.
 - **[flutter_zoom_checker](https://pub.dev/packages/flutter_zoom_checker)** — iOS/Android display-zoom (UI scaling) detection plugin, working around a Flutter framework limitation ([issue #95421](https://github.com/flutter/flutter/issues/95421)).
 - **[dio_firebase_performance_plus](https://github.com/binSaed/dio_firebase_performance_plus)** — Dio interceptor streaming HTTP request metrics to Firebase Performance Monitoring.
 - **[clipboard_plus](https://pub.dev/packages/clipboard_plus)** — Flutter clipboard plugin with **silent content-type detection on iOS** (UIPasteboard) — detects URLs, text, and images without triggering the iOS paste permission dialog.

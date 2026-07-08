@@ -5,7 +5,7 @@
     <link>https://bnsaed.com/</link>
     <description>Writing and case studies by Abdelrahman Saed — Flutter, mobile architecture, release engineering, and CI/CD automation.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 08 Jul 2026 13:38:06 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jul 2026 14:02:34 GMT</lastBuildDate>
     <atom:link href="https://bnsaed.com/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>Offline-First vs Local-First: What&apos;s the Difference?</title>
@@ -45,7 +45,7 @@
       <link>https://bnsaed.com/case-studies/flutter-cached-pdfview/</link>
       <guid isPermaLink="true">https://bnsaed.com/case-studies/flutter-cached-pdfview/</guid>
       <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
-      <description>An open-source Flutter package for native, cached PDF viewing on iOS and Android — wrapping the platform renderers with on-device caching so documents open instantly and work offline. 130+ stars, 500+ pub.dev likes, 43K+ downloads.</description>
+      <description>An open-source Flutter package for native, cached PDF viewing on iOS and Android — wrapping the platform renderers with on-device caching so documents open instantly and work offline. 134+ stars, 501+ pub.dev likes, 57K+ downloads.</description>
       <category>Flutter</category>
       <category>Dart</category>
       <category>Open Source</category>

@@ -14,13 +14,13 @@ An open-source cached PDF viewer for Flutter, adopted across thousands of apps
 
 **Role:** Creator & maintainer · **Timeline:** 2020 — Present · **Platforms:** iOS, Android
 
-An open-source Flutter package for native, cached PDF viewing on iOS and Android — wrapping the platform renderers with on-device caching so documents open instantly and work offline. 130+ stars, 500+ pub.dev likes, 43K+ downloads.
+An open-source Flutter package for native, cached PDF viewing on iOS and Android — wrapping the platform renderers with on-device caching so documents open instantly and work offline. 134+ stars, 501+ pub.dev likes, 57K+ downloads.
 
 ## Key metrics
 
-- **130+** — GitHub stars
-- **500+** — pub.dev likes
-- **43K+** — Downloads
+- **134+** — GitHub stars
+- **501+** — pub.dev likes
+- **57K+** — Downloads
 - **100+** — Forks
 - **6 yrs** — Maintained
 - **MIT** — Licensed
@@ -88,7 +88,7 @@ The entire point of the package is performance and resilience under real-world c
 
 The package became one of the go-to PDF solutions in the Flutter ecosystem:
 
-- **130+ GitHub stars**, **500+ pub.dev likes**, and **43,000+ downloads**.
+- **134+ GitHub stars**, **501+ pub.dev likes**, and **57,000+ downloads**.
 - **100+ forks** and contributions from the community.
 - Maintained continuously since **2020**, kept current with modern Flutter (null-safety, `super.key`, current cache-manager APIs).
 - Adopted in production document readers, e-book apps, and EdTech products — including the PDF experiences I shipped at iStoria.
