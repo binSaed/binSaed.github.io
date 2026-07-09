@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
+    <loc>https://bnsaed.com/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/avatar-512.webp</image:loc>
+      <image:caption>Abdelrahman Saed</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/project-images/istoria.webp</image:loc>
+      <image:caption>iStoria</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/project-images/flutter-cached-pdfview.webp</image:loc>
+      <image:caption>flutter_cached_pdfview</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/og.png</image:loc>
+      <image:caption>Abdelrahman Saed</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://bnsaed.com/articles/flutter-cached-pdfview-guide/</loc>
     <image:image>
       <image:loc>https://bnsaed.com/article-images/flutter-cached-pdfview-guide-hero.webp</image:loc>
       <image:caption>flutter_cached_pdfview — native cached PDF viewing on iOS and Android</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/flutter-cached-pdfview-guide.png</image:loc>
+      <image:caption>Building a Cached PDF Viewer in Flutter</image:caption>
     </image:image>
   </url>
   <url>
@@ -17,6 +40,10 @@
       <image:loc>https://bnsaed.com/article-images/github-actions-branch-protection-guardrails-diagram.webp</image:loc>
       <image:caption>Flow: a push to master checked against allowed-merge rules, then reverted if unauthorized</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/github-actions-branch-protection-guardrails.png</image:loc>
+      <image:caption>The repo that rejects my own pushes to master</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://bnsaed.com/articles/automate-pull-request-hygiene/</loc>
@@ -27,6 +54,10 @@
     <image:image>
       <image:loc>https://bnsaed.com/article-images/automate-pull-request-hygiene-diagram.webp</image:loc>
       <image:caption>Flow: a PR passing a JSON check and the analyzer, then merge-allowed or blocked with a self-deleting comment</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/automate-pull-request-hygiene.png</image:loc>
+      <image:caption>PRs that fill in their own paperwork (and a gate that won&apos;t let bad code merge)</image:caption>
     </image:image>
   </url>
   <url>
@@ -39,6 +70,10 @@
       <image:loc>https://bnsaed.com/article-images/sync-jira-with-github-prs-diagram.webp</image:loc>
       <image:caption>Flow: a branch name feeding a regex and a Jira API call, fanning out into fix, jira and Slow-PR labels</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/sync-jira-with-github-prs.png</image:loc>
+      <image:caption>Making Jira and GitHub agree without anyone updating both</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/</loc>
@@ -49,6 +84,10 @@
     <image:image>
       <image:loc>https://bnsaed.com/article-images/auto-rebase-and-detect-merge-conflicts-diagram.webp</image:loc>
       <image:caption>Flow: a push to master looping over PRs, polling mergeable state, labeling conflicts, then a grouped chat digest</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/auto-rebase-and-detect-merge-conflicts.png</image:loc>
+      <image:caption>Every merge to master quietly breaks other PRs. So I built a radar for it.</image:caption>
     </image:image>
   </url>
   <url>
@@ -61,6 +100,10 @@
       <image:loc>https://bnsaed.com/article-images/bot-that-resolves-merge-conflicts-diagram.webp</image:loc>
       <image:caption>Decision flow: if every conflicting file matches the translations path, merge and push; otherwise abort and hand to a human</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/bot-that-resolves-merge-conflicts.png</image:loc>
+      <image:caption>I let a bot resolve merge conflicts and push the fix. Here&apos;s how I made that safe.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://bnsaed.com/articles/automated-stale-branch-cleanup/</loc>
@@ -71,6 +114,10 @@
     <image:image>
       <image:loc>https://bnsaed.com/article-images/automated-stale-branch-cleanup-diagram.webp</image:loc>
       <image:caption>Classification funnel: branches sorted into sacred, protected, open-PR, merged, stale and active, with a capped delete tray</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/automated-stale-branch-cleanup.png</image:loc>
+      <image:caption>A repo that cleans up after itself — without deleting the wrong branch</image:caption>
     </image:image>
   </url>
   <url>
@@ -83,12 +130,20 @@
       <image:loc>https://bnsaed.com/article-images/ai-weekly-engineering-reviews-diagram.webp</image:loc>
       <image:caption>Flow: git and issue-tracker data merged into per-person two-week stats, summarized by a constrained LLM, routed privately</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/ai-weekly-engineering-reviews.png</image:loc>
+      <image:caption>I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://bnsaed.com/articles/managing-large-flutter-codebases/</loc>
     <image:image>
       <image:loc>https://bnsaed.com/article-images/managing-large-flutter-codebases-hero.webp</image:loc>
       <image:caption>A large, orderly Flutter codebase — modules arranged like a city grid</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/managing-large-flutter-codebases.png</image:loc>
+      <image:caption>Best Practices for Managing Large Flutter Codebases</image:caption>
     </image:image>
   </url>
   <url>
@@ -97,12 +152,41 @@
       <image:loc>https://bnsaed.com/article-images/flutter-build-flavors-guide-hero.webp</image:loc>
       <image:caption>Flutter build flavors — one codebase producing local, staging, and production apps</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/flutter-build-flavors-guide.png</image:loc>
+      <image:caption>App Flavors in Flutter: One Codebase, Every Environment</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/articles/offline-first-vs-local-first/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/article-og/offline-first-vs-local-first.png</image:loc>
+      <image:caption>Offline-First vs Local-First: What&apos;s the Difference?</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://bnsaed.com/case-studies/istoria/</loc>
     <image:image>
       <image:loc>https://bnsaed.com/project-images/istoria.webp</image:loc>
       <image:caption>iStoria</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/case-study-og/istoria.png</image:loc>
+      <image:caption>iStoria</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/case-studies/offline-first-sync/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/case-study-og/offline-first-sync.png</image:loc>
+      <image:caption>Offline-First at 5M Learners</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/case-studies/release-engineering/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/case-study-og/release-engineering.png</image:loc>
+      <image:caption>From Four-Week Releases to Weekly</image:caption>
     </image:image>
   </url>
   <url>
@@ -111,16 +195,38 @@
       <image:loc>https://bnsaed.com/project-images/flutter-cached-pdfview.webp</image:loc>
       <image:caption>flutter_cached_pdfview</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/case-study-og/flutter-cached-pdfview.png</image:loc>
+      <image:caption>flutter_cached_pdfview</image:caption>
+    </image:image>
   </url>
   <url>
-    <loc>https://bnsaed.com/speaking/</loc>
+    <loc>https://bnsaed.com/articles/</loc>
     <image:image>
-      <image:loc>https://bnsaed.com/speaking/flutter-night-swypex.webp</image:loc>
-      <image:caption>Abdelrahman Saed presenting &apos;Building Unstoppable Offline-First Apps&apos; to a full room at Flutter Night @ Swypex, Smart Village.</image:caption>
+      <image:loc>https://bnsaed.com/hub-og/articles.png</image:loc>
+      <image:caption>Abdelrahman Saed — articles</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/projects/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/hub-og/projects.png</image:loc>
+      <image:caption>Abdelrahman Saed — projects</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/case-studies/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/hub-og/case-studies.png</image:loc>
+      <image:caption>Abdelrahman Saed — case-studies</image:caption>
     </image:image>
   </url>
   <url>
     <loc>https://bnsaed.com/recommendations/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/hub-og/recommendations.png</image:loc>
+      <image:caption>Abdelrahman Saed — recommendations</image:caption>
+    </image:image>
     <image:image>
       <image:loc>https://bnsaed.com/recommendations/saber-son.jpg</image:loc>
       <image:caption>Saber Son</image:caption>
@@ -164,6 +270,24 @@
     <image:image>
       <image:loc>https://bnsaed.com/recommendations/mohamed-reda.jpg</image:loc>
       <image:caption>Mohamed Reda</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/speaking/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/hub-og/speaking.png</image:loc>
+      <image:caption>Abdelrahman Saed — speaking</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/speaking/flutter-night-swypex.webp</image:loc>
+      <image:caption>Abdelrahman Saed presenting &apos;Building Unstoppable Offline-First Apps&apos; to a full room at Flutter Night @ Swypex, Smart Village.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/hire/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/hub-og/hire.png</image:loc>
+      <image:caption>Abdelrahman Saed — hire</image:caption>
     </image:image>
   </url>
 </urlset>
