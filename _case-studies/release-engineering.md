@@ -14,7 +14,7 @@ Trunk-based development, a self-driving CI/CD pipeline, and feature flags — cu
 
 **Role:** Lead Mobile Engineer · **Timeline:** 2022 — Present · **Platforms:** iOS, Android
 
-How I cut iStoria's release cycle from four weeks to one across 900+ PRs and 350+ releases — trunk-based development, a suite of GitHub Actions that automate PR hygiene and branch protection, three build flavors, and GrowthBook feature flags, held to a 99.9% crash-free bar.
+Flutter release engineering at iStoria: a four-week release cycle cut to one across 350+ releases — trunk-based development, CI/CD automation, feature flags.
 
 ## Key metrics
 

@@ -1,5 +1,5 @@
 ---
-title: Offline-First at 5M Learners — A local-first Flutter data layer — Drift, PowerSync, and a custom offline write queue — so learners never wait on the network.
+title: Offline-First Flutter at 5M Learners — A local-first Flutter data layer — Drift, PowerSync, and a custom offline write queue — so learners never wait on the network.
 slug: offline-first-sync
 date: 2026-06-29
 readTime: 6 min read
@@ -8,13 +8,13 @@ author: Abdelrahman Saed
 url: https://bnsaed.com/case-studies/offline-first-sync
 ---
 
-# Offline-First at 5M Learners — Case Study
+# Offline-First Flutter at 5M Learners — Case Study
 
 A local-first Flutter data layer — Drift, PowerSync, and a custom offline write queue — so learners never wait on the network.
 
 **Role:** Founding → Lead Mobile Engineer · **Timeline:** 2022 — Present · **Platforms:** iOS, Android
 
-How iStoria's Flutter app stays fully usable with no connection: local-first reads from a Drift database, streaming sync via PowerSync, and a custom offline write queue that replays on reconnect — across 5M+ learners on iOS and Android.
+How iStoria's Flutter app stays fully usable offline: local-first reads from Drift, PowerSync streaming sync, and an offline write queue replayed on reconnect.
 
 ## Key metrics
 

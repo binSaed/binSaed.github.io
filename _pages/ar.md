@@ -9,7 +9,7 @@
 - أكثر من 350 إصدارًا إنتاجيًا
 - معدل خلوّ من الأعطال 99.9%
 - أكثر من 7 سنوات خبرة في تطوير الموبايل
-- أكثر من 5 حزم مفتوحة المصدر
+- أكثر من 7 حزم مفتوحة المصدر
 - أكثر من 900 مراجعة كود (PR)
 
 ## المهارات
@@ -26,7 +26,7 @@
 
 ## مشاريع مختارة
 - iStoria — تطبيق تعلّم الإنجليزية القائم على القصص، أكثر من 5 ملايين مستخدم.
-- flutter_cached_pdfview — عارض PDF أصلي مفتوح المصدر مع تخزين مؤقت (134+ نجمة، 501+ إعجاب، 57 ألف+ تنزيل).
+- flutter_cached_pdfview — عارض PDF أصلي مفتوح المصدر مع تخزين مؤقت (134+ نجمة، 501+ إعجاب، 55 ألف+ تنزيل).
 - Stickerawy — تطبيق ملصقات واتساب، أكثر من 500 ألف تثبيت.
 
 ## أسئلة شائعة
@@ -43,13 +43,15 @@
 Flutter و Dart مع BLoC/Cubit والمعمارية النظيفة (Clean Architecture)؛ البيانات دون اتصال أولاً (PowerSync و Drift)؛ هندسة الإصدارات و CI/CD (GitHub Actions و Codemagic و Fastlane وأعلام الميزات)؛ تحقيق الدخل (RevenueCat و Stripe و AdMob)؛ والتحليلات (Adjust و PostHog و GrowthBook)، إضافةً إلى التكامل الأصلي مع iOS و Android.
 
 ### ما أبرز مشاريع عبدالرحمن سعيد في فلاتر؟
-حزمة flutter_cached_pdfview مفتوحة المصدر لعرض ملفات PDF أصليًا مع التخزين المؤقت (أكثر من 134 نجمة على GitHub و501 إعجاب على pub.dev و57 ألف تنزيل)؛ وتطبيق iStoria لتعلّم الإنجليزية بأكثر من 5 ملايين تنزيل؛ وتطبيق Stickerawy لملصقات واتساب بأكثر من 500 ألف تثبيت. ينشر حزمه على pub.dev باسم bnsaed.com.
+حزمة flutter_cached_pdfview مفتوحة المصدر لعرض ملفات PDF أصليًا مع التخزين المؤقت (أكثر من 134 نجمة على GitHub و501 إعجاب على pub.dev و55 ألف تنزيل)؛ وتطبيق iStoria لتعلّم الإنجليزية الذي يستخدمه أكثر من 5 ملايين متعلّم؛ وتطبيق Stickerawy لملصقات واتساب بأكثر من 500 ألف تثبيت. ينشر حزمه على pub.dev باسم bnsaed.com.
 
 ### كيف أتواصل مع عبدالرحمن سعيد؟
 البريد الإلكتروني هو القناة المفضّلة: me@bnsaed.com. لحجز مكالمة مباشرة احجز موعدًا على calendly.com/bnsaed/meet. متاح أيضًا على GitHub (github.com/binSaed) و LinkedIn (linkedin.com/in/binsaed) و YouTube (youtube.com/@binSaed) و Stack Overflow.
 
 ## روابط
 - الموقع الكامل بالإنجليزية: https://bnsaed.com/
+- التوظيف والعمل معي (بالإنجليزية): https://bnsaed.com/hire/
+- المقالات (بالإنجليزية): https://bnsaed.com/articles/
 - السيرة الذاتية (PDF): https://bnsaed.com/CV/cv.pdf
 - البريد: me@bnsaed.com
 - احجز مكالمة: https://calendly.com/bnsaed/meet
