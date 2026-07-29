@@ -91,9 +91,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-M-52U9mK.js"></script>
+    <script type="module" crossorigin src="/assets/index-BdtLbFKI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-iqlcZCOr.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-Dmi8svKo.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-Y2OQdRAE.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -159,9 +159,9 @@
           <li>Part 1: <a href="/articles/github-actions-branch-protection-guardrails/">The repo that rejects my own pushes to master</a> — Two small GitHub Actions that stop accidental direct pushes to master and auto-restore build-breaking files — reversible by design, with an explicit escape hatch.</li>
           <li>Part 2: <a href="/articles/automate-pull-request-hygiene/">PRs that fill in their own paperwork (and a gate that won't let bad code merge)</a> — Separating the chores of code review from the judgment: auto-context on every PR, plus a quality gate that validates translations, runs the analyzer, and cleans up after itself.</li>
           <li>Part 3: <a href="/articles/sync-jira-with-github-prs/">Making Jira and GitHub agree without anyone updating both</a> — A branch-name regex and one REST call mirror Jira status, fix versions, and labels onto every PR — plus a Slow PR flag that surfaces finished work that is not shipping.</li>
-          <li>Part 4: <a href="/articles/auto-rebase-and-detect-merge-conflicts/">Every merge to master quietly breaks other PRs. So I built a radar for it.</a> — A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person.</li>
+          <li>Part 4: <a href="/articles/auto-rebase-and-detect-merge-conflicts/">Every merge to master quietly breaks other PRs. So I built a radar for it.</a> — Two GitHub Actions workflows that rebase every open PR on each merge to master and route conflict alerts to the right author — so merge conflicts never sit unnoticed.</li>
           <li>Part 5: <a href="/articles/bot-that-resolves-merge-conflicts/">I let a bot resolve merge conflicts and push the fix. Here's how I made that safe.</a> — How to ship a genuinely dangerous automation safely — by shrinking its blast radius to one provably-safe case, working only in throwaway space, and failing closed on anything unexpected.</li>
-          <li>Part 6: <a href="/articles/automated-stale-branch-cleanup/">A repo that cleans up after itself — without deleting the wrong branch</a> — Bulk branch deletion done safely, as a careful classification with a per-run cap, deferral, and a full audit trail — never a blunt age filter.</li>
+          <li>Part 6: <a href="/articles/automated-stale-branch-cleanup/">A repo that cleans up after itself — without deleting the wrong branch</a> — A GitHub Actions workflow that classifies and deletes stale branches safely — per-run cap, deferral window, and a full audit trail. No accidental deletes.</li>
           <li>Part 7: <a href="/articles/ai-weekly-engineering-reviews/">I built an AI that writes weekly engineering summaries. Then I had to decide whether I should.</a> — Aggregating git and Jira into per-person weekly summaries with an LLM is a weekend project. Doing it responsibly — private, descriptive, transparent — is the actual work.</li>
         </ul>
         <h2>More writing</h2>
@@ -169,7 +169,7 @@
           <li><a href="/articles/offline-first-vs-local-first/">Offline-First vs Local-First: What's the Difference?</a> — Offline-first vs local-first: one is about working with no network, the other about who owns the canonical data — with examples from a 5M-user Flutter app.</li>
           <li><a href="/articles/managing-large-flutter-codebases/">Best Practices for Managing Large Flutter Codebases</a> — Hard-won lessons from scaling iStoria — a 220K+ line, 60+ module Flutter app serving 5M+ learners — into a codebase a small team can still ship weekly.</li>
           <li><a href="/articles/flutter-build-flavors-guide/">App Flavors in Flutter: One Codebase, Every Environment</a> — How to run local, staging, and production from a single Flutter codebase with build flavors — Dart entry points, typed per-flavor config, and the Android and iOS native wiring that makes it real.</li>
-          <li><a href="/articles/flutter-cached-pdfview-guide/">Building a Cached PDF Viewer in Flutter</a> — A hands-on guide to cached, offline-capable, native PDF viewing in Flutter with flutter_cached_pdfview — from the package's creator and maintainer.</li>
+          <li><a href="/articles/flutter-cached-pdfview-guide/">Building a Cached PDF Viewer in Flutter</a> — How to load a PDF from a URL in Flutter with fast native rendering, on-device caching, and offline support — a flutter_cached_pdfview guide from its author.</li>
         </ul>
 
         <hr />

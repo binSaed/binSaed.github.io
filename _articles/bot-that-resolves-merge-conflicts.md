@@ -2,6 +2,7 @@
 title: "I let a bot resolve merge conflicts and push the fix. Here's how I made that safe."
 slug: bot-that-resolves-merge-conflicts
 date: 2026-05-12
+dateModified: 2026-07-25
 readTime: 8 min read
 tags: [GitHub Actions, Git, Automation, CI/CD]
 author: Abdelrahman Saed
@@ -167,6 +168,13 @@ When in doubt, the bot does *nothing*. That's the entire philosophy in one catch
 - **Pushing to a contributor's branch needs the right permissions** and is why forks are excluded outright. Know your token's scope.
 - **Scope creep is the real danger.** The instant someone asks "can it also resolve `pubspec.yaml`?" you're negotiating away the one guard that makes it safe. The narrowness *is* the feature. Defend it.
 - **It is not a merge-conflict AI.** No model, no guessing. For this class, dumb-and-provable beats smart-and-probabilistic every time.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. The bot only resolves the one safe case — the rest of the cluster detects conflicts and keeps the repo tidy:
+
+- [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — the two-workflow system that notices every PR broken by a merge and tells the right author.
+- [Automating PR hygiene with GitHub Actions](/articles/automate-pull-request-hygiene/) — auto-context on every PR plus a quality gate that runs the analyzer and cleans up after itself.
 
 ## Takeaway
 

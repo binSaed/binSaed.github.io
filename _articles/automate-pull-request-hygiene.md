@@ -2,6 +2,7 @@
 title: "PRs that fill in their own paperwork (and a gate that won't let bad code merge)"
 slug: automate-pull-request-hygiene
 date: 2026-04-21
+dateModified: 2026-07-25
 readTime: 6 min read
 tags: [GitHub Actions, Developer Experience, CI/CD, Code Review]
 author: Abdelrahman Saed
@@ -142,6 +143,13 @@ And when it's red, it actually blocks — the job exits non-zero so the merge is
 - **`paths:` is a double-edged filter.** Scope it too tightly and a relevant change skips the gate; too loosely and you run the analyzer on doc-only PRs. Revisit it as the repo grows.
 - **Bot-comment deletion depends on the bot identity.** If you switch the token the comments are posted under, the `user.type === 'Bot'` filter can stop matching your own history. Test after any auth change.
 - **Automating chores can hide them.** New teammates never learn *why* the ticket link matters because they never do it manually. Worth a sentence in onboarding so the automation is understood, not just trusted.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. Once PRs fill in their own paperwork, the next problems are mergeability and conflict:
+
+- [How the merge-conflict radar works](/articles/auto-rebase-and-detect-merge-conflicts/) — a two-workflow system that refreshes every open PR on each merge to `master` and routes conflict alerts to the right author.
+- [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the provably-safe, single-regex case where auto-committing a conflict fix is genuinely fine.
 
 ## Takeaway
 

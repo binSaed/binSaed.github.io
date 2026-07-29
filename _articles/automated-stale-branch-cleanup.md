@@ -2,10 +2,11 @@
 title: "A repo that cleans up after itself — without deleting the wrong branch"
 slug: automated-stale-branch-cleanup
 date: 2026-06-02
+dateModified: 2026-07-25
 readTime: 6 min read
 tags: [GitHub Actions, Git, DevOps, Automation]
 author: Abdelrahman Saed
-description: "Bulk branch deletion done safely, as a careful classification with a per-run cap, deferral, and a full audit trail — never a blunt age filter."
+description: "A GitHub Actions workflow that classifies and deletes stale branches safely — per-run cap, deferral window, and a full audit trail. No accidental deletes."
 url: https://bnsaed.com/articles/automated-stale-branch-cleanup
 ---
 
@@ -124,6 +125,13 @@ Every action lands in two places: a digest posted to team chat (counts, grouped 
 - **API pagination has real limits.** Listing thousands of PRs/branches can truncate; the job logs when a list may be incomplete rather than pretending it saw everything. Trust-but-verify your counts on large repos.
 - **The cap is a feature, resist removing it.** "Just clean it all up at once" is the request that precedes the incident. Defer-and-repeat is slower and far safer.
 - **Schedule it for quiet hours.** Deleting branches while people push invites races. Off-peak isn't just politeness; it reduces edge cases.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. Cleanup is the last step — the rest of the cluster keeps branches and PRs mergeable in the first place:
+
+- [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — refresh every open PR on each merge to `master` and route conflict alerts to the right author.
+- [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the single provably-safe case where auto-committing a conflict fix is fine.
 
 ## Takeaway
 

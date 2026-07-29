@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bnsaed.com/</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://bnsaed.com/articles/</loc>
-    <lastmod>2026-07-07</lastmod>
+    <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -25,7 +25,7 @@
   </url>
   <url>
     <loc>https://bnsaed.com/case-studies/</loc>
-    <lastmod>2026-06-29</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -61,7 +61,7 @@
   </url>
   <url>
     <loc>https://bnsaed.com/case-studies/istoria/</loc>
-    <lastmod>2026-06-29</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -79,13 +79,13 @@
   </url>
   <url>
     <loc>https://bnsaed.com/case-studies/flutter-cached-pdfview/</loc>
-    <lastmod>2026-06-29</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bnsaed.com/articles/flutter-cached-pdfview-guide/</loc>
-    <lastmod>2026-07-07</lastmod>
+    <lastmod>2026-07-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -97,7 +97,7 @@
   </url>
   <url>
     <loc>https://bnsaed.com/articles/automate-pull-request-hygiene/</loc>
-    <lastmod>2026-04-21</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -109,19 +109,19 @@
   </url>
   <url>
     <loc>https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts/</loc>
-    <lastmod>2026-05-05</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bnsaed.com/articles/bot-that-resolves-merge-conflicts/</loc>
-    <lastmod>2026-05-12</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bnsaed.com/articles/automated-stale-branch-cleanup/</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>

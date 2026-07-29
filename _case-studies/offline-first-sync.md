@@ -1,5 +1,5 @@
 ---
-title: Offline-First Flutter at 5M Learners — A local-first Flutter data layer — Drift, PowerSync, and a custom offline write queue — so learners never wait on the network.
+title: "Offline-First Flutter at 5M Learners — A local-first Flutter data layer — Drift, PowerSync, and a custom offline write queue — so learners never wait on the network."
 slug: offline-first-sync
 date: 2026-06-29
 readTime: 6 min read

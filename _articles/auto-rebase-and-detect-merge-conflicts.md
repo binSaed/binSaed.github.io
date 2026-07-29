@@ -2,10 +2,11 @@
 title: "Every merge to master quietly breaks other PRs. So I built a radar for it."
 slug: auto-rebase-and-detect-merge-conflicts
 date: 2026-05-05
+dateModified: 2026-07-25
 readTime: 6 min read
 tags: [GitHub Actions, Git, CI/CD, DevOps]
 author: Abdelrahman Saed
-description: "A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person."
+description: "Two GitHub Actions workflows that rebase every open PR on each merge to master and route conflict alerts to the right author — so merge conflicts never sit unnoticed."
 url: https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts
 ---
 
@@ -133,6 +134,13 @@ The reason this lands where GitHub's own notifications don't: it's **push-based,
 - **`422` is overloaded.** It means both "real conflict" and "nothing to update." Don't treat it as a failure signal — let the mergeability poll be your source of truth.
 - **Chat handle mapping is manual.** A GitHub-login → chat-ID table has to be maintained as people join and leave. It's the kind of small debt that silently breaks pings.
 - **Don't over-notify.** A conflict digest every hour becomes wallpaper. Daily + on-merge was the right dose; tune it to your team's tolerance.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. The radar tells you *that* a PR conflicts — the rest of the cluster decides what to do about it:
+
+- [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the one provably-safe case where a GitHub Action can auto-commit a conflict fix to a contributor's branch.
+- [Automated stale branch cleanup](/articles/automated-stale-branch-cleanup/) — deleting dead branches in bulk without deleting the wrong one: classify, cap, defer, audit.
 
 ## Takeaway
 

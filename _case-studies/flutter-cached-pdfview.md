@@ -1,20 +1,21 @@
 ---
-title: flutter_cached_pdfview — An open-source cached PDF viewer for Flutter, adopted across thousands of apps
+title: "flutter_cached_pdfview: Cached PDF Viewer for Flutter — An open-source cached PDF viewer for Flutter, adopted across thousands of apps"
 slug: flutter-cached-pdfview
 date: 2026-06-29
+dateModified: 2026-07-25
 readTime: 5 min read
 tags: [Flutter, Dart, Open Source, PDF, Plugin]
 author: Abdelrahman Saed
 url: https://bnsaed.com/case-studies/flutter-cached-pdfview
 ---
 
-# flutter_cached_pdfview — Case Study
+# flutter_cached_pdfview: Cached PDF Viewer for Flutter — Case Study
 
 An open-source cached PDF viewer for Flutter, adopted across thousands of apps
 
 **Role:** Creator & maintainer · **Timeline:** 2020 — Present · **Platforms:** iOS, Android
 
-An open-source Flutter package for native, cached PDF viewing on iOS and Android — wrapping the platform renderers with on-device caching so documents open instantly and work offline. 134+ stars, 501+ pub.dev likes, 57K+ downloads.
+The fastest cached PDF viewer for Flutter — native rendering, on-device caching, opens instantly and works offline. 134+ stars, 501+ pub.dev likes, 57K+ downloads.
 
 ## Key metrics
 

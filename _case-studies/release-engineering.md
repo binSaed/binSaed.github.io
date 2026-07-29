@@ -1,5 +1,5 @@
 ---
-title: From Four-Week Releases to Weekly — Trunk-based development, a self-driving CI/CD pipeline, and feature flags — cutting the release cycle 75% without lowering the crash-free bar.
+title: "From Four-Week Releases to Weekly — Trunk-based development, a self-driving CI/CD pipeline, and feature flags — cutting the release cycle 75% without lowering the crash-free bar."
 slug: release-engineering
 date: 2026-06-29
 readTime: 7 min read

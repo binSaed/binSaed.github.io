@@ -1,14 +1,15 @@
 ---
-title: iStoria — Scaling story-based English learning to 5M+ learners
+title: "iStoria: Scaling Flutter to 5M+ Learners — Scaling story-based English learning to 5M+ learners"
 slug: istoria
 date: 2026-06-29
+dateModified: 2026-07-25
 readTime: 8 min read
 tags: [Flutter, EdTech, Offline-first, Architecture, Scale]
 author: Abdelrahman Saed
 url: https://bnsaed.com/case-studies/istoria
 ---
 
-# iStoria — Case Study
+# iStoria: Scaling Flutter to 5M+ Learners — Case Study
 
 Scaling story-based English learning to 5M+ learners
 

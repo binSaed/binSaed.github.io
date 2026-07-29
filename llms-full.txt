@@ -1,6 +1,6 @@
 # Abdelrahman Saed (binSaed) — full text for LLMs
 
-> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-07-18.
+> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-07-29.
 > Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
 
 ---
@@ -258,7 +258,7 @@ Senior Mobile Engineer with **7 years** shipping production iOS and Android apps
 title: Building a Cached PDF Viewer in Flutter
 slug: flutter-cached-pdfview-guide
 date: 2024-01-15
-dateModified: 2026-07-07
+dateModified: 2026-07-30
 readTime: 7 min read
 tags: [Flutter, Dart, PDF, Mobile]
 author: Abdelrahman Saed
@@ -284,6 +284,16 @@ Loading a PDF from a URL is deceptively easy to get wrong. The naive approach �
 - **Offline support** — because reads resolve to the on-device cache, previously viewed PDFs keep working with no connection at all.
 
 The goal of the package is to make that behavior the *default*, in a few lines, on both platforms — rather than something you assemble from a renderer, a cache manager, and a pile of state handling.
+
+## Fast, offline, native — why it's one of the most popular Flutter PDF viewers
+
+If you search for a Flutter PDF viewer, you'll find a long list of packages. What makes `flutter_cached_pdfview` one of the most popular — **134+ GitHub stars, 501+ pub.dev likes, 57,000+ downloads, and 100+ forks** across thousands of shipped apps — is that it combines three things most alternatives make you build yourself:
+
+- **Fast loading from the second open onward.** The first load downloads the document once via `flutter_cache_manager`; every subsequent open of the same URL resolves straight from disk with no network round-trip. For users re-opening a manual, statement, or textbook, that's the difference between a fast loading PDF viewer and one that makes them wait on the network every time.
+- **High-performance native rendering.** The package wraps `flutter_pdfview`, which delegates to the platform's own PDF renderer (Android's `PdfRenderer` / iOS's `PDFKit`) rather than shipping a JavaScript or Dart-based renderer. That's the high-performance Flutter PDF viewer path — documents look and scroll the way the OS itself renders them, with gesture zoom and pan that behave natively on each platform.
+- **Offline by default, feature-rich surface.** Once a document is cached it keeps working with no connection at all, and the same widget exposes swipe direction, night mode, password-protected documents, auto-spacing, and page-fling — the feature-rich configuration surface most teams end up needing, without leaving the widget.
+
+Put together, that's the goal many teams are chasing when they go looking for the fastest PDF viewer in Flutter, or a blazing fast PDF viewer that doesn't re-download on every open: native rendering for performance, on-device caching for speed and offline, and a configuration surface that covers the common cases. The rest of this guide is the hands-on version.
 
 ## Getting started
 
@@ -329,7 +339,7 @@ class PDFViewerPage extends StatelessWidget {
 
 The first time this page opens `pdfUrl`, the file downloads and is stored in a managed on-device cache; every subsequent open of the same URL is served from disk.
 
-## Loading from any source
+## Loading a PDF from a URL, asset, or file path
 
 The same widget renders three sources behind one API, so you can swap where a document comes from without touching your UI:
 
@@ -386,7 +396,7 @@ errorWidget: (error) => Center(
 
 ## Configuring the viewer
 
-The `PDF()` constructor forwards the underlying `flutter_pdfview` options, so you can tune scroll direction, password-protected documents, and appearance without leaving the widget:
+The `PDF()` constructor forwards the underlying `flutter_pdfview` options, giving you the feature-rich configuration surface the native renderers expose — scroll direction, password-protected documents, night mode, and page behavior — without leaving the widget:
 
 ```dart
 const PDF(
@@ -765,6 +775,7 @@ jobs:
 title: "PRs that fill in their own paperwork (and a gate that won't let bad code merge)"
 slug: automate-pull-request-hygiene
 date: 2026-04-21
+dateModified: 2026-07-25
 readTime: 6 min read
 tags: [GitHub Actions, Developer Experience, CI/CD, Code Review]
 author: Abdelrahman Saed
@@ -905,6 +916,13 @@ And when it's red, it actually blocks — the job exits non-zero so the merge is
 - **`paths:` is a double-edged filter.** Scope it too tightly and a relevant change skips the gate; too loosely and you run the analyzer on doc-only PRs. Revisit it as the repo grows.
 - **Bot-comment deletion depends on the bot identity.** If you switch the token the comments are posted under, the `user.type === 'Bot'` filter can stop matching your own history. Test after any auth change.
 - **Automating chores can hide them.** New teammates never learn *why* the ticket link matters because they never do it manually. Worth a sentence in onboarding so the automation is understood, not just trusted.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. Once PRs fill in their own paperwork, the next problems are mergeability and conflict:
+
+- [How the merge-conflict radar works](/articles/auto-rebase-and-detect-merge-conflicts/) — a two-workflow system that refreshes every open PR on each merge to `master` and routes conflict alerts to the right author.
+- [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the provably-safe, single-regex case where auto-committing a conflict fix is genuinely fine.
 
 ## Takeaway
 
@@ -1777,10 +1795,11 @@ jobs:
 title: "Every merge to master quietly breaks other PRs. So I built a radar for it."
 slug: auto-rebase-and-detect-merge-conflicts
 date: 2026-05-05
+dateModified: 2026-07-25
 readTime: 6 min read
 tags: [GitHub Actions, Git, CI/CD, DevOps]
 author: Abdelrahman Saed
-description: "A two-workflow radar that refreshes every open PR on each merge to master, treats mergeability as eventually consistent, and routes conflict alerts to the right person."
+description: "Two GitHub Actions workflows that rebase every open PR on each merge to master and route conflict alerts to the right author — so merge conflicts never sit unnoticed."
 url: https://bnsaed.com/articles/auto-rebase-and-detect-merge-conflicts
 ---
 
@@ -1908,6 +1927,13 @@ The reason this lands where GitHub's own notifications don't: it's **push-based,
 - **`422` is overloaded.** It means both "real conflict" and "nothing to update." Don't treat it as a failure signal — let the mergeability poll be your source of truth.
 - **Chat handle mapping is manual.** A GitHub-login → chat-ID table has to be maintained as people join and leave. It's the kind of small debt that silently breaks pings.
 - **Don't over-notify.** A conflict digest every hour becomes wallpaper. Daily + on-merge was the right dose; tune it to your team's tolerance.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. The radar tells you *that* a PR conflicts — the rest of the cluster decides what to do about it:
+
+- [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the one provably-safe case where a GitHub Action can auto-commit a conflict fix to a contributor's branch.
+- [Automated stale branch cleanup](/articles/automated-stale-branch-cleanup/) — deleting dead branches in bulk without deleting the wrong one: classify, cap, defer, audit.
 
 ## Takeaway
 
@@ -2114,6 +2140,7 @@ jobs:
 title: "I let a bot resolve merge conflicts and push the fix. Here's how I made that safe."
 slug: bot-that-resolves-merge-conflicts
 date: 2026-05-12
+dateModified: 2026-07-25
 readTime: 8 min read
 tags: [GitHub Actions, Git, Automation, CI/CD]
 author: Abdelrahman Saed
@@ -2279,6 +2306,13 @@ When in doubt, the bot does *nothing*. That's the entire philosophy in one catch
 - **Pushing to a contributor's branch needs the right permissions** and is why forks are excluded outright. Know your token's scope.
 - **Scope creep is the real danger.** The instant someone asks "can it also resolve `pubspec.yaml`?" you're negotiating away the one guard that makes it safe. The narrowness *is* the feature. Defend it.
 - **It is not a merge-conflict AI.** No model, no guessing. For this class, dumb-and-provable beats smart-and-probabilistic every time.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. The bot only resolves the one safe case — the rest of the cluster detects conflicts and keeps the repo tidy:
+
+- [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — the two-workflow system that notices every PR broken by a merge and tells the right author.
+- [Automating PR hygiene with GitHub Actions](/articles/automate-pull-request-hygiene/) — auto-context on every PR plus a quality gate that runs the analyzer and cleans up after itself.
 
 ## Takeaway
 
@@ -2471,10 +2505,11 @@ jobs:
 title: "A repo that cleans up after itself — without deleting the wrong branch"
 slug: automated-stale-branch-cleanup
 date: 2026-06-02
+dateModified: 2026-07-25
 readTime: 6 min read
 tags: [GitHub Actions, Git, DevOps, Automation]
 author: Abdelrahman Saed
-description: "Bulk branch deletion done safely, as a careful classification with a per-run cap, deferral, and a full audit trail — never a blunt age filter."
+description: "A GitHub Actions workflow that classifies and deletes stale branches safely — per-run cap, deferral window, and a full audit trail. No accidental deletes."
 url: https://bnsaed.com/articles/automated-stale-branch-cleanup
 ---
 
@@ -2593,6 +2628,13 @@ Every action lands in two places: a digest posted to team chat (counts, grouped 
 - **API pagination has real limits.** Listing thousands of PRs/branches can truncate; the job logs when a list may be incomplete rather than pretending it saw everything. Trust-but-verify your counts on large repos.
 - **The cap is a feature, resist removing it.** "Just clean it all up at once" is the request that precedes the incident. Defer-and-repeat is slower and far safer.
 - **Schedule it for quiet hours.** Deleting branches while people push invites races. Off-peak isn't just politeness; it reduces edge cases.
+
+## Related reading
+
+This article is part of [The Self-Driving Repo](/articles/) series. Cleanup is the last step — the rest of the cluster keeps branches and PRs mergeable in the first place:
+
+- [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — refresh every open PR on each merge to `master` and route conflict alerts to the right author.
+- [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the single provably-safe case where auto-committing a conflict fix is fine.
 
 ## Takeaway
 
@@ -3928,7 +3970,7 @@ If you want the production version of how this plays out — the read path, the 
 
 ---
 
-# iStoria — Case Study
+# iStoria: Scaling Flutter to 5M+ Learners — Case Study
 
 Scaling story-based English learning to 5M+ learners
 
@@ -4174,7 +4216,7 @@ I wrote about the guardrail half of this at length in the **[Self-Driving Repo](
 
 ---
 
-# flutter_cached_pdfview — Case Study
+# flutter_cached_pdfview: Cached PDF Viewer for Flutter — Case Study
 
 An open-source cached PDF viewer for Flutter, adopted across thousands of apps
 
