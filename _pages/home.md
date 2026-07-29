@@ -47,7 +47,7 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 ## Experience
 
 - **Lead Mobile Engineer**, iStoria (Jun 2025 – Present) — lead a 4-engineer iOS/Android squad; cut the release cycle 75% (4 weeks → 1); architected a 50+ module Flutter codebase with 140+ routes.
-- **Founding Mobile Engineer**, iStoria (Jan 2022 – Jun 2025) — shipped flagship growth & AI features; offline-first infrastructure (PowerSync + Drift); a cross-platform anti-piracy system that auto-blocked 30,000+ abusive accounts; ~35% cold-start / ~60% rendering / ~20% memory gains.
+- **Founding Mobile Engineer**, iStoria (Jan 2022 – Jun 2025) — shipped flagship growth & AI features; offline-first infrastructure (PowerSync + Drift); a cross-platform anti-piracy system that auto-blocked 40,000+ abusive accounts; ~35% cold-start / ~60% rendering / ~20% memory gains.
 - **Mobile Engineer**, Happy Trip (Oct 2020 – Jan 2022) — owned mobile delivery; networking SDK cutting networking code 60%; delivered the company's first mobile platform in 14 months.
 - **Mobile Engineer (Part-time)**, Tech Bay Portal (Feb 2021 – Oct 2021) — real-time GPS tracking and live trip updates resilient to intermittent connectivity.
 - **Mobile Engineer**, FekraSoft (Aug 2019 – Sep 2020) — led company-wide Flutter adoption as the first Flutter engineer; shipped e-commerce and document-management apps.
