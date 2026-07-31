@@ -1,6 +1,6 @@
 # Abdelrahman Saed (binSaed) — full text for LLMs
 
-> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-07-29.
+> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-07-31.
 > Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
 
 ---
