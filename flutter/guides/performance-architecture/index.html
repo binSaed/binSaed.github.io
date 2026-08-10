@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -222,23 +222,132 @@ BlocSelector&lt;LessonBloc, LessonState, List&lt;Lesson&gt;&gt;(
 <p>At iStoria, our PowerSync sync engine runs entirely on a background thread on the native side. We learned this the hard way — the initial implementation did SQLite operations on the main thread, causing jank on every sync cycle.</p>
 
         <h2>Recommended folder structure</h2>
-<p>lib/ ├── core/ │   ├── performance/ │   │   ├── frame_monitor.dart        # tracks FPS, logs jank in profile mode │   │   └── memory_tracker.dart       # detects retention spikes in DevTools │   └── utils/ │       └── isolate_runner.dart       # compute() wrapper for typed offloading ├── features/ │   └── lesson/ │       └── presentation/ │           └── widgets/ │               ├── lesson_list.dart       # ListView.builder with itemExtent │               ├── lesson_tile.dart        # const constructor, granular selector │               └── cached_lesson_image.dart # cacheWidth/cacheHeight optimized</p>
+<pre><code class="language-text">lib/
+├── core/
+│   ├── performance/
+│   │   ├── frame_monitor.dart        # tracks FPS, logs jank in profile mode
+│   │   └── memory_tracker.dart       # detects retention spikes in DevTools
+│   └── utils/
+│       └── isolate_runner.dart       # compute() wrapper for typed offloading
+├── features/
+│   └── lesson/
+│       └── presentation/
+│           └── widgets/
+│               ├── lesson_list.dart       # ListView.builder with itemExtent
+│               ├── lesson_tile.dart        # const constructor, granular selector
+│               └── cached_lesson_image.dart # cacheWidth/cacheHeight optimized</code></pre>
 
         <h2>Code example</h2>
-<p>// core/utils/isolate_runner.dart — typed compute() wrapper import 'package:flutter/foundation.dart';</p>
-<p>/// Offloads heavy computation to a background isolate. /// Use for JSON parsing, data transformation, or any CPU-intensive work. Future&lt;T&gt; runInIsolate&lt;T, P&gt;(   T Function(P) work,   P param, ) {   return compute(work, param); }</p>
-<p>// Example: parse a large API response off the UI thread List&lt;LessonModel&gt; parseLessons(String json) {   final decoded = jsonDecode(json) as List;   return decoded.map((e) =&gt; LessonModel.fromJson(e)).toList(); }</p>
-<p>// In the repository: @override Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {   final rawJson = await remoteDatasource.fetchLessonsRaw(courseId);   // Parse on a background isolate — UI thread stays smooth   final models = await runInIsolate(parseLessons, rawJson);   return Right(models.map((m) =&gt; m.toEntity()).toList()); }</p>
-<p>// presentation/widgets/lesson_tile.dart — const + granular selector class LessonTile extends StatelessWidget {   final Lesson lesson;</p>
-<p>  const LessonTile({super.key, required this.lesson});</p>
-<p>  @override   Widget build(BuildContext context) {     return BlocSelector&lt;LessonBloc, LessonState, bool&gt;(       // Rebuild this tile ONLY when this specific lesson's completion changes       selector: (state) {         if (state is! LessonLoaded) return false;         return state.lessons             .firstWhere((l) =&gt; l.id == lesson.id,                 orElse: () =&gt; lesson)             .isCompleted;       },       builder: (context, isCompleted) {         return ListTile(           leading: CachedLessonImage(url: lesson.thumbnailUrl),           title: Text(lesson.title),           trailing: AnimatedSwitcher(             duration: const Duration(milliseconds: 200),             child: isCompleted                 ? const Icon(Icons.check_circle, key: ValueKey('done'))                 : const SizedBox.shrink(key: ValueKey('empty')),           ),         );       },     );   } }</p>
-<p>// presentation/widgets/lesson_list.dart — virtualized list with itemExtent class LessonList extends StatelessWidget {   final List&lt;Lesson&gt; lessons;</p>
-<p>  const LessonList({super.key, required this.lessons});</p>
-<p>  @override   Widget build(BuildContext context) {     return ListView.builder(       itemCount: lessons.length,       itemExtent: 72,  // fixed height → skips per-item layout, maximum scroll FPS       itemBuilder: (context, index) {         return LessonTile(           key: ValueKey(lessons[index].id),           lesson: lessons[index],         );       },     );   } }</p>
-<p>// presentation/widgets/cached_lesson_image.dart — memory-optimized images class CachedLessonImage extends StatelessWidget {   final String url;</p>
-<p>  const CachedLessonImage({super.key, required this.url});</p>
-<p>  @override   Widget build(BuildContext context) {     // Determine display dimensions from the layout     const displayWidth = 56.0;     const displayHeight = 56.0;     // Convert to physical pixels for cacheWidth/cacheHeight     final dpr = MediaQuery.devicePixelRatioOf(context);     final cacheW = (displayWidth * dpr).round();     final cacheH = (displayHeight * dpr).round();</p>
-<p>    return CachedNetworkImage(       imageUrl: url,       cacheWidth: cacheW,    // decode at display size, not full source resolution       cacheHeight: cacheH,       fadeInDuration: const Duration(milliseconds: 150),       placeholder: (_, __) =&gt; Container(         width: displayWidth,         height: displayHeight,         color: Theme.of(context).colorScheme.surfaceContainerHighest,       ),     );   } }</p>
+<pre><code class="language-dart">// core/utils/isolate_runner.dart — typed compute() wrapper
+import 'package:flutter/foundation.dart';
+
+/// Offloads heavy computation to a background isolate.
+/// Use for JSON parsing, data transformation, or any CPU-intensive work.
+Future&lt;T&gt; runInIsolate&lt;T, P&gt;(
+  T Function(P) work,
+  P param,
+) {
+  return compute(work, param);
+}
+
+// Example: parse a large API response off the UI thread
+List&lt;LessonModel&gt; parseLessons(String json) {
+  final decoded = jsonDecode(json) as List;
+  return decoded.map((e) =&gt; LessonModel.fromJson(e)).toList();
+}
+
+// In the repository:
+@override
+Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {
+  final rawJson = await remoteDatasource.fetchLessonsRaw(courseId);
+  // Parse on a background isolate — UI thread stays smooth
+  final models = await runInIsolate(parseLessons, rawJson);
+  return Right(models.map((m) =&gt; m.toEntity()).toList());
+}
+
+// presentation/widgets/lesson_tile.dart — const + granular selector
+class LessonTile extends StatelessWidget {
+  final Lesson lesson;
+
+  const LessonTile({super.key, required this.lesson});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector&lt;LessonBloc, LessonState, bool&gt;(
+      // Rebuild this tile ONLY when this specific lesson's completion changes
+      selector: (state) {
+        if (state is! LessonLoaded) return false;
+        return state.lessons
+            .firstWhere((l) =&gt; l.id == lesson.id,
+                orElse: () =&gt; lesson)
+            .isCompleted;
+      },
+      builder: (context, isCompleted) {
+        return ListTile(
+          leading: CachedLessonImage(url: lesson.thumbnailUrl),
+          title: Text(lesson.title),
+          trailing: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: isCompleted
+                ? const Icon(Icons.check_circle, key: ValueKey('done'))
+                : const SizedBox.shrink(key: ValueKey('empty')),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// presentation/widgets/lesson_list.dart — virtualized list with itemExtent
+class LessonList extends StatelessWidget {
+  final List&lt;Lesson&gt; lessons;
+
+  const LessonList({super.key, required this.lessons});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: lessons.length,
+      itemExtent: 72,  // fixed height → skips per-item layout, maximum scroll FPS
+      itemBuilder: (context, index) {
+        return LessonTile(
+          key: ValueKey(lessons[index].id),
+          lesson: lessons[index],
+        );
+      },
+    );
+  }
+}
+
+// presentation/widgets/cached_lesson_image.dart — memory-optimized images
+class CachedLessonImage extends StatelessWidget {
+  final String url;
+
+  const CachedLessonImage({super.key, required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    // Determine display dimensions from the layout
+    const displayWidth = 56.0;
+    const displayHeight = 56.0;
+    // Convert to physical pixels for cacheWidth/cacheHeight
+    final dpr = MediaQuery.devicePixelRatioOf(context);
+    final cacheW = (displayWidth * dpr).round();
+    final cacheH = (displayHeight * dpr).round();
+
+    return CachedNetworkImage(
+      imageUrl: url,
+      cacheWidth: cacheW,    // decode at display size, not full source resolution
+      cacheHeight: cacheH,
+      fadeInDuration: const Duration(milliseconds: 150),
+      placeholder: (_, __) =&gt; Container(
+        width: displayWidth,
+        height: displayHeight,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      ),
+    );
+  }
+}</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

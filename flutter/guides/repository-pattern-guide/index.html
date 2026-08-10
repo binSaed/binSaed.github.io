@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -197,22 +197,129 @@
 <p>But not all data is synced. For non-synced data (config, feature flags, one-off API calls), the repository uses the cache-first or cache-then-network strategy. Having a clear repository-per-data-strategy makes the codebase predictable: if you know which repository you are calling, you know the data strategy.</p>
 
         <h2>Recommended folder structure</h2>
-<p>lib/features/lesson/ ├── domain/ │   ├── entities/ │   │   └── lesson.dart                   # pure domain entity │   └── repositories/ │       └── lesson_repository.dart         # ABSTRACT contract ├── data/ │   ├── datasources/ │   │   ├── lesson_remote_datasource.dart  # Dio API calls │   │   └── lesson_local_datasource.dart   # Drift database queries │   ├── models/ │   │   └── lesson_model.dart              # DTO: fromJson / toEntity │   └── repositories/ │       └── lesson_repository_impl.dart     # CONCRETE implementation</p>
+<pre><code class="language-text">lib/features/lesson/
+├── domain/
+│   ├── entities/
+│   │   └── lesson.dart                   # pure domain entity
+│   └── repositories/
+│       └── lesson_repository.dart         # ABSTRACT contract
+├── data/
+│   ├── datasources/
+│   │   ├── lesson_remote_datasource.dart  # Dio API calls
+│   │   └── lesson_local_datasource.dart   # Drift database queries
+│   ├── models/
+│   │   └── lesson_model.dart              # DTO: fromJson / toEntity
+│   └── repositories/
+│       └── lesson_repository_impl.dart     # CONCRETE implementation</code></pre>
 
         <h2>Code example</h2>
-<p>// domain/repositories/lesson_repository.dart — THE CONTRACT abstract class LessonRepository {   Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId);   Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId);   Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId); }</p>
-<p>// data/models/lesson_model.dart — DTO (data transfer object) class LessonModel extends Lesson {   final String remoteId;</p>
-<p>  const LessonModel({     required this.remoteId,     required super.id,     required super.title,     required super.durationMinutes,     required super.isCompleted,     required super.courseId,   });</p>
-<p>  factory LessonModel.fromJson(Map&lt;String, dynamic&gt; json) {     return LessonModel(       remoteId: json['id'] as String,       id: json['uuid'] as String,       title: json['title'] as String,       durationMinutes: (json['duration_sec'] as num).toInt() ~/ 60,       isCompleted: json['completed'] as bool? ?? false,       courseId: json['course_id'] as String,     );   }</p>
-<p>  Lesson toEntity() =&gt; Lesson(         id: id,         title: title,         durationMinutes: durationMinutes,         isCompleted: isCompleted,         courseId: courseId,       ); }</p>
-<p>// data/repositories/lesson_repository_impl.dart — THE IMPLEMENTATION class LessonRepositoryImpl implements LessonRepository {   final LessonRemoteDatasource remoteDatasource;   final LessonLocalDatasource localDatasource;   final NetworkInfo networkInfo;</p>
-<p>  LessonRepositoryImpl({     required this.remoteDatasource,     required this.localDatasource,     required this.networkInfo,   });</p>
-<p>  @override   Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {     if (await networkInfo.isConnected) {       try {         final jsonList = await remoteDatasource.fetchLessons(courseId);         final models = jsonList.map(LessonModel.fromJson).toList();</p>
-<p>        // Cache locally for offline access         await localDatasource.cacheLessons(courseId, models);</p>
-<p>        return Right(models.map((m) =&gt; m.toEntity()).toList());       } on ServerException catch (e) {         // Network failed — try the cache before giving up         return _getFromCache(courseId, fallbackFailure: ServerFailure(e.message));       }     }     // Offline — serve from cache     return _getFromCache(courseId, fallbackFailure: const OfflineFailure());   }</p>
-<p>  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; _getFromCache(     String courseId, {     required Failure fallbackFailure,   }) async {     try {       final cached = await localDatasource.getCachedLessons(courseId);       if (cached.isEmpty) return Left(fallbackFailure);       return Right(cached.map((m) =&gt; m.toEntity()).toList());     } on CacheException {       return Left(fallbackFailure);     }   }</p>
-<p>  @override   Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId) {     // Reactive stream from local DB — UI updates when cache or sync changes it     return localDatasource         .watchCachedLessons(courseId)         .map((models) =&gt; models.map((m) =&gt; m.toEntity()).toList());   }</p>
-<p>  @override   Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId) async {     try {       // Optimistic: update local first       await localDatasource.markComplete(lessonId);       // Then sync to server       await remoteDatasource.postCompletion(lessonId);       final updated = await localDatasource.getLesson(lessonId);       return Right(updated.toEntity());     } on ServerException catch (e) {       return Left(ServerFailure(e.message));     }   } }</p>
+<pre><code class="language-dart">// domain/repositories/lesson_repository.dart — THE CONTRACT
+abstract class LessonRepository {
+  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId);
+  Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId);
+  Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId);
+}
+
+// data/models/lesson_model.dart — DTO (data transfer object)
+class LessonModel extends Lesson {
+  final String remoteId;
+
+  const LessonModel({
+    required this.remoteId,
+    required super.id,
+    required super.title,
+    required super.durationMinutes,
+    required super.isCompleted,
+    required super.courseId,
+  });
+
+  factory LessonModel.fromJson(Map&lt;String, dynamic&gt; json) {
+    return LessonModel(
+      remoteId: json['id'] as String,
+      id: json['uuid'] as String,
+      title: json['title'] as String,
+      durationMinutes: (json['duration_sec'] as num).toInt() ~/ 60,
+      isCompleted: json['completed'] as bool? ?? false,
+      courseId: json['course_id'] as String,
+    );
+  }
+
+  Lesson toEntity() =&gt; Lesson(
+        id: id,
+        title: title,
+        durationMinutes: durationMinutes,
+        isCompleted: isCompleted,
+        courseId: courseId,
+      );
+}
+
+// data/repositories/lesson_repository_impl.dart — THE IMPLEMENTATION
+class LessonRepositoryImpl implements LessonRepository {
+  final LessonRemoteDatasource remoteDatasource;
+  final LessonLocalDatasource localDatasource;
+  final NetworkInfo networkInfo;
+
+  LessonRepositoryImpl({
+    required this.remoteDatasource,
+    required this.localDatasource,
+    required this.networkInfo,
+  });
+
+  @override
+  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final jsonList = await remoteDatasource.fetchLessons(courseId);
+        final models = jsonList.map(LessonModel.fromJson).toList();
+
+        // Cache locally for offline access
+        await localDatasource.cacheLessons(courseId, models);
+
+        return Right(models.map((m) =&gt; m.toEntity()).toList());
+      } on ServerException catch (e) {
+        // Network failed — try the cache before giving up
+        return _getFromCache(courseId, fallbackFailure: ServerFailure(e.message));
+      }
+    }
+    // Offline — serve from cache
+    return _getFromCache(courseId, fallbackFailure: const OfflineFailure());
+  }
+
+  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; _getFromCache(
+    String courseId, {
+    required Failure fallbackFailure,
+  }) async {
+    try {
+      final cached = await localDatasource.getCachedLessons(courseId);
+      if (cached.isEmpty) return Left(fallbackFailure);
+      return Right(cached.map((m) =&gt; m.toEntity()).toList());
+    } on CacheException {
+      return Left(fallbackFailure);
+    }
+  }
+
+  @override
+  Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId) {
+    // Reactive stream from local DB — UI updates when cache or sync changes it
+    return localDatasource
+        .watchCachedLessons(courseId)
+        .map((models) =&gt; models.map((m) =&gt; m.toEntity()).toList());
+  }
+
+  @override
+  Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId) async {
+    try {
+      // Optimistic: update local first
+      await localDatasource.markComplete(lessonId);
+      // Then sync to server
+      await remoteDatasource.postCompletion(lessonId);
+      final updated = await localDatasource.getLesson(lessonId);
+      return Right(updated.toEntity());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    }
+  }
+}</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

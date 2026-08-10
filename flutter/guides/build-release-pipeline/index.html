@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -225,31 +225,158 @@ flutter build ipa --flavor staging --export-options-plist ios/staging/ExportOpti
 <p>This cadence requires trunk-based development (no long-lived branches) and feature flags (ship code without enabling features). The pipeline is what makes it repeatable — no manual steps, no manual signing, no manual store uploads.</p>
 
         <h2>Recommended folder structure</h2>
-<p>lib/ ├── main.dart                    # production entry point (default) ├── main_dev.dart                 # development entry point ├── main_staging.dart             # staging entry point ├── main_prod.dart                # production entry point (explicit) ├── core/ │   └── config/ │       └── env_config.dart       # reads String.fromEnvironment values └── ...</p>
-<p>android/ ├── app/ │   └── build.gradle              # productFlavors: dev, staging, prod └── ...</p>
-<p>ios/ ├── Runner.xcodeproj              # schemes: dev, staging, prod ├── flutter/ │   ├── staging/ExportOptions.plist │   └── prod/ExportOptions.plist └── ...</p>
-<p>.github/workflows/ ├── pr-check.yml                  # analyze + test + build (staging) on every PR ├── release.yml                   # build prod + upload to stores on tag └── nightly.yml                   # integration tests + dependency audit</p>
-<p>fastlane/                         # optional, for store metadata management ├── Fastfile                      # lanes for upload to Play Store / TestFlight └── match/                        # certificate management (private repo)</p>
+<pre><code class="language-text">lib/
+├── main.dart                    # production entry point (default)
+├── main_dev.dart                 # development entry point
+├── main_staging.dart             # staging entry point
+├── main_prod.dart                # production entry point (explicit)
+├── core/
+│   └── config/
+│       └── env_config.dart       # reads String.fromEnvironment values
+└── ...
+
+android/
+├── app/
+│   └── build.gradle              # productFlavors: dev, staging, prod
+└── ...
+
+ios/
+├── Runner.xcodeproj              # schemes: dev, staging, prod
+├── flutter/
+│   ├── staging/ExportOptions.plist
+│   └── prod/ExportOptions.plist
+└── ...
+
+.github/workflows/
+├── pr-check.yml                  # analyze + test + build (staging) on every PR
+├── release.yml                   # build prod + upload to stores on tag
+└── nightly.yml                   # integration tests + dependency audit
+
+fastlane/                         # optional, for store metadata management
+├── Fastfile                      # lanes for upload to Play Store / TestFlight
+└── match/                        # certificate management (private repo)</code></pre>
 
         <h2>Code example</h2>
-<p>// lib/main_dev.dart — development entry point import 'package:flutter/material.dart'; import 'app.dart'; import 'core/config/env_config.dart';</p>
-<p>Future&lt;void&gt; main() async {   EnvConfig.initialize(     apiUrl: const String.fromEnvironment(       'API_URL',       defaultValue: 'https://dev-api.istoria.app',     ),     environment: Environment.dev,     analyticsEnabled: false,   );   runApp(const MyApp()); }</p>
-<p>// lib/main_prod.dart — production entry point Future&lt;void&gt; main() async {   EnvConfig.initialize(     apiUrl: const String.fromEnvironment(       'API_URL',       defaultValue: 'https://api.istoria.app',     ),     environment: Environment.prod,     analyticsEnabled: true,   );   runApp(const MyApp()); }</p>
-<p>// core/config/env_config.dart — central config enum Environment { dev, staging, prod }</p>
-<p>class EnvConfig {   static late String apiUrl;   static late Environment environment;   static late bool analyticsEnabled;</p>
-<p>  static void initialize({     required String apiUrl,     required Environment environment,     required bool analyticsEnabled,   }) {     EnvConfig.apiUrl = apiUrl;     EnvConfig.environment = environment;     EnvConfig.analyticsEnabled = analyticsEnabled;   }</p>
-<p>  static bool get isProduction =&gt; environment == Environment.prod; }</p>
-<h1>android/app/build.gradle — flavor definitions</h1>
-<p>android {     flavorDimensions += "default"     productFlavors {         dev {             dimension "default"             applicationIdSuffix ".dev"             versionNameSuffix "-dev"         }         staging {             dimension "default"             applicationIdSuffix ".staging"             versionNameSuffix "-staging"         }         prod {             dimension "default"         }     } }</p>
-<h1>.github/workflows/release.yml — production release pipeline</h1>
-<p>name: Release on:   push:     tags: ['v*']</p>
-<p>jobs:   build-and-deploy:     runs-on: macos-latest     steps:       - uses: actions/checkout@v4       - uses: subosito/flutter-action@v2         with:           flutter-version: '3.x'           channel: stable</p>
-<p>      - name: Install dependencies         run: flutter pub get</p>
-<p>      - name: Run tests         run: flutter test --coverage</p>
-<p>      - name: Build Android (production)         run: flutter build appbundle \             --flavor prod \             --dart-define=API_URL=https://api.istoria.app</p>
-<p>      - name: Build iOS (production)         run: flutter build ipa \             --flavor prod \             --export-options-plist ios/prod/ExportOptions.plist \             --dart-define=API_URL=https://api.istoria.app</p>
-<p>      - name: Upload to Google Play         uses: r0adkll/upload-google-play@v1         with:           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT }}           packageName: app.istoria           releaseFiles: build/app/outputs/bundle/prodRelease/app-prod-release.aab           track: internal           status: completed</p>
-<p>      - name: Upload to TestFlight         uses: apple-actions/upload-testflight@v1         with:           app-store-connect-issuer-id: ${{ secrets.ASC_ISSUER_ID }}           app-store-connect-key-id: ${{ secrets.ASC_KEY_ID }}           app-store-connect-private-key: ${{ secrets.ASC_PRIVATE_KEY }}           app-path: build/ios/ipa/istoria.ipa</p>
+<pre><code class="language-dart">// lib/main_dev.dart — development entry point
+import 'package:flutter/material.dart';
+import 'app.dart';
+import 'core/config/env_config.dart';
+
+Future&lt;void&gt; main() async {
+  EnvConfig.initialize(
+    apiUrl: const String.fromEnvironment(
+      'API_URL',
+      defaultValue: 'https://dev-api.istoria.app',
+    ),
+    environment: Environment.dev,
+    analyticsEnabled: false,
+  );
+  runApp(const MyApp());
+}
+
+// lib/main_prod.dart — production entry point
+Future&lt;void&gt; main() async {
+  EnvConfig.initialize(
+    apiUrl: const String.fromEnvironment(
+      'API_URL',
+      defaultValue: 'https://api.istoria.app',
+    ),
+    environment: Environment.prod,
+    analyticsEnabled: true,
+  );
+  runApp(const MyApp());
+}
+
+// core/config/env_config.dart — central config
+enum Environment { dev, staging, prod }
+
+class EnvConfig {
+  static late String apiUrl;
+  static late Environment environment;
+  static late bool analyticsEnabled;
+
+  static void initialize({
+    required String apiUrl,
+    required Environment environment,
+    required bool analyticsEnabled,
+  }) {
+    EnvConfig.apiUrl = apiUrl;
+    EnvConfig.environment = environment;
+    EnvConfig.analyticsEnabled = analyticsEnabled;
+  }
+
+  static bool get isProduction =&gt; environment == Environment.prod;
+}
+
+# android/app/build.gradle — flavor definitions
+android {
+    flavorDimensions += "default"
+    productFlavors {
+        dev {
+            dimension "default"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        staging {
+            dimension "default"
+            applicationIdSuffix ".staging"
+            versionNameSuffix "-staging"
+        }
+        prod {
+            dimension "default"
+        }
+    }
+}
+
+# .github/workflows/release.yml — production release pipeline
+name: Release
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  build-and-deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Build Android (production)
+        run: flutter build appbundle \
+            --flavor prod \
+            --dart-define=API_URL=https://api.istoria.app
+
+      - name: Build iOS (production)
+        run: flutter build ipa \
+            --flavor prod \
+            --export-options-plist ios/prod/ExportOptions.plist \
+            --dart-define=API_URL=https://api.istoria.app
+
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT }}
+          packageName: app.istoria
+          releaseFiles: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+          track: internal
+          status: completed
+
+      - name: Upload to TestFlight
+        uses: apple-actions/upload-testflight@v1
+        with:
+          app-store-connect-issuer-id: ${{ secrets.ASC_ISSUER_ID }}
+          app-store-connect-key-id: ${{ secrets.ASC_KEY_ID }}
+          app-store-connect-private-key: ${{ secrets.ASC_PRIVATE_KEY }}
+          app-path: build/ios/ipa/istoria.ipa</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

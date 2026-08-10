@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -188,17 +188,114 @@
 <p>The most common failure is the "shared utils" dump. Engineers under deadline pressure throw a helper into <code>core/utils/</code> instead of asking whether it belongs in the feature. Over time, <code>core/</code> grows into a dependency that every feature transitively couples to. The fix is discipline: <code>core/</code> should contain only framework-level concerns. If it is business logic, it goes in a feature or in <code>shared/</code>.</p>
 
         <h2>Recommended folder structure</h2>
-<p>lib/ ├── main.dart ├── core/                       # framework-level, no business logic │   ├── di/ │   │   └── injection.dart      # get_it / injectable setup │   ├── networking/ │   │   ├── dio_client.dart │   │   └── interceptors/ │   ├── error/ │   │   ├── failures.dart │   │   └── error_handler.dart │   ├── routing/ │   │   └── app_router.dart     # centralized GoRouter / AutoRoute config │   ├── theme/ │   └── constants/ ├── shared/                     # cross-feature domain + UI │   ├── domain/ │   │   └── entities/ │   │       └── user.dart       # shared User entity │   └── widgets/ │       ├── loading_indicator.dart │       └── empty_state.dart └── features/     ├── auth/     │   ├── domain/     │   │   ├── entities/     │   │   ├── repositories/     │   │   │   └── auth_repository.dart     │   │   └── usecases/     │   ├── data/     │   │   ├── datasources/     │   │   ├── models/     │   │   └── repositories/     │   │       └── auth_repository_impl.dart     │   ├── presentation/     │   │   ├── cubit/     │   │   │   ├── auth_cubit.dart     │   │   │   └── auth_state.dart     │   │   ├── pages/     │   │   └── widgets/     │   └── auth.dart            # barrel file — public API only     ├── lesson/     │   ├── domain/     │   ├── data/     │   ├── presentation/     │   └── lesson.dart     └── course/         ├── domain/         ├── data/         ├── presentation/         └── course.dart</p>
+<pre><code class="language-text">lib/
+├── main.dart
+├── core/                       # framework-level, no business logic
+│   ├── di/
+│   │   └── injection.dart      # get_it / injectable setup
+│   ├── networking/
+│   │   ├── dio_client.dart
+│   │   └── interceptors/
+│   ├── error/
+│   │   ├── failures.dart
+│   │   └── error_handler.dart
+│   ├── routing/
+│   │   └── app_router.dart     # centralized GoRouter / AutoRoute config
+│   ├── theme/
+│   └── constants/
+├── shared/                     # cross-feature domain + UI
+│   ├── domain/
+│   │   └── entities/
+│   │       └── user.dart       # shared User entity
+│   └── widgets/
+│       ├── loading_indicator.dart
+│       └── empty_state.dart
+└── features/
+    ├── auth/
+    │   ├── domain/
+    │   │   ├── entities/
+    │   │   ├── repositories/
+    │   │   │   └── auth_repository.dart
+    │   │   └── usecases/
+    │   ├── data/
+    │   │   ├── datasources/
+    │   │   ├── models/
+    │   │   └── repositories/
+    │   │       └── auth_repository_impl.dart
+    │   ├── presentation/
+    │   │   ├── cubit/
+    │   │   │   ├── auth_cubit.dart
+    │   │   │   └── auth_state.dart
+    │   │   ├── pages/
+    │   │   └── widgets/
+    │   └── auth.dart            # barrel file — public API only
+    ├── lesson/
+    │   ├── domain/
+    │   ├── data/
+    │   ├── presentation/
+    │   └── lesson.dart
+    └── course/
+        ├── domain/
+        ├── data/
+        ├── presentation/
+        └── course.dart</code></pre>
 
         <h2>Code example</h2>
-<p>// features/auth/auth.dart — BARREL FILE: the only thing other features import export 'presentation/pages/login_page.dart'; export 'presentation/cubit/auth_cubit.dart'; export 'domain/entities/user.dart';</p>
-<p>// NOTE: auth_repository_impl.dart, auth_datasource.dart, auth_models.dart // are NOT exported. They are implementation details private to the auth feature.</p>
-<p>// shared/domain/entities/user.dart — shared across features class AppUser {   final String id;   final String name;   final String email;   final String? avatarUrl;</p>
-<p>  const AppUser({     required this.id,     required this.name,     required this.email,     this.avatarUrl,   }); }</p>
-<p>// core/di/injection.dart — features register their dependencies here // but only through their public barrel API final getIt = GetIt.instance;</p>
-<p>Future&lt;void&gt; configureDependencies() async {   // Core   getIt.registerLazySingleton&lt;DioClient&gt;(() =&gt; DioClient());</p>
-<p>  // Auth feature — only the public types are visible   getIt.registerFactory&lt;AuthCubit&gt;(     () =&gt; AuthCubit(repository: getIt&lt;AuthRepository&gt;()),   ); }</p>
-<p>// Cross-feature navigation — features call route names, not each other's widgets // core/routing/app_router.dart final appRouter = GoRouter(   routes: [     GoRoute(       path: '/login',       name: 'login',           // other features use appRouter.go('login')       builder: (context, state) =&gt; const LoginPage(),     ),     GoRoute(       path: '/lesson/:id',       name: 'lessonDetail',       builder: (context, state) =&gt; LessonDetailPage(         lessonId: state.pathParameters['id']!,       ),     ),   ], );</p>
+<pre><code class="language-dart">// features/auth/auth.dart — BARREL FILE: the only thing other features import
+export 'presentation/pages/login_page.dart';
+export 'presentation/cubit/auth_cubit.dart';
+export 'domain/entities/user.dart';
+
+// NOTE: auth_repository_impl.dart, auth_datasource.dart, auth_models.dart
+// are NOT exported. They are implementation details private to the auth feature.
+
+// shared/domain/entities/user.dart — shared across features
+class AppUser {
+  final String id;
+  final String name;
+  final String email;
+  final String? avatarUrl;
+
+  const AppUser({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.avatarUrl,
+  });
+}
+
+// core/di/injection.dart — features register their dependencies here
+// but only through their public barrel API
+final getIt = GetIt.instance;
+
+Future&lt;void&gt; configureDependencies() async {
+  // Core
+  getIt.registerLazySingleton&lt;DioClient&gt;(() =&gt; DioClient());
+
+  // Auth feature — only the public types are visible
+  getIt.registerFactory&lt;AuthCubit&gt;(
+    () =&gt; AuthCubit(repository: getIt&lt;AuthRepository&gt;()),
+  );
+}
+
+// Cross-feature navigation — features call route names, not each other's widgets
+// core/routing/app_router.dart
+final appRouter = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/login',
+      name: 'login',           // other features use appRouter.go('login')
+      builder: (context, state) =&gt; const LoginPage(),
+    ),
+    GoRoute(
+      path: '/lesson/:id',
+      name: 'lessonDetail',
+      builder: (context, state) =&gt; LessonDetailPage(
+        lessonId: state.pathParameters['id']!,
+      ),
+    ),
+  ],
+);</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -185,17 +185,118 @@
 <p>This is the single biggest payoff: you can test the business rules in milliseconds, without a device, without a network mock, without waiting for a build. On a 50+ module codebase, that speed is what keeps the team shipping.</p>
 
         <h2>Recommended folder structure</h2>
-<p>lib/ ├── core/                    # shared utilities, theme, routing, DI container │   ├── error/ │   │   ├── failures.dart │   │   └── exceptions.dart │   ├── usecases/ │   │   └── usecase.dart     # abstract UseCase&lt;Type, Params&gt; │   └── utils/ ├── features/ │   └── lesson/ │       ├── domain/ │       │   ├── entities/ │       │   │   └── lesson.dart │       │   ├── repositories/ │       │   │   └── lesson_repository.dart   # abstract contract │       │   └── usecases/ │       │       └── get_lessons.dart │       ├── data/ │       │   ├── datasources/ │       │   │   ├── lesson_remote_datasource.dart │       │   │   └── lesson_local_datasource.dart │       │   ├── models/ │       │   │   └── lesson_model.dart        # DTO + toEntity/fromJson │       │   └── repositories/ │       │       └── lesson_repository_impl.dart │       └── presentation/ │           ├── bloc/ │           │   ├── lesson_bloc.dart │           │   ├── lesson_event.dart │           │   └── lesson_state.dart │           ├── pages/ │           │   └── lesson_page.dart │           └── widgets/ │               └── lesson_card.dart</p>
+<pre><code class="language-text">lib/
+├── core/                    # shared utilities, theme, routing, DI container
+│   ├── error/
+│   │   ├── failures.dart
+│   │   └── exceptions.dart
+│   ├── usecases/
+│   │   └── usecase.dart     # abstract UseCase&lt;Type, Params&gt;
+│   └── utils/
+├── features/
+│   └── lesson/
+│       ├── domain/
+│       │   ├── entities/
+│       │   │   └── lesson.dart
+│       │   ├── repositories/
+│       │   │   └── lesson_repository.dart   # abstract contract
+│       │   └── usecases/
+│       │       └── get_lessons.dart
+│       ├── data/
+│       │   ├── datasources/
+│       │   │   ├── lesson_remote_datasource.dart
+│       │   │   └── lesson_local_datasource.dart
+│       │   ├── models/
+│       │   │   └── lesson_model.dart        # DTO + toEntity/fromJson
+│       │   └── repositories/
+│       │       └── lesson_repository_impl.dart
+│       └── presentation/
+│           ├── bloc/
+│           │   ├── lesson_bloc.dart
+│           │   ├── lesson_event.dart
+│           │   └── lesson_state.dart
+│           ├── pages/
+│           │   └── lesson_page.dart
+│           └── widgets/
+│               └── lesson_card.dart</code></pre>
 
         <h2>Code example</h2>
-<p>// domain/entities/lesson.dart — PURE DART, no Flutter imports class Lesson {   final String id;   final String title;   final int durationMinutes;   final bool isCompleted;   final String courseId;</p>
-<p>  const Lesson({     required this.id,     required this.title,     required this.durationMinutes,     required this.isCompleted,     required this.courseId,   });</p>
-<p>  Lesson copyWith({     String? title,     int? durationMinutes,     bool? isCompleted,   }) {     return Lesson(       id: id,       title: title ?? this.title,       durationMinutes: durationMinutes ?? this.durationMinutes,       isCompleted: isCompleted ?? this.isCompleted,       courseId: courseId,     );   } }</p>
-<p>// domain/repositories/lesson_repository.dart — CONTRACT only, no implementation abstract class LessonRepository {   Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId);   Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId);   Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId); }</p>
-<p>// data/repositories/lesson_repository_impl.dart — THE IMPLEMENTATION class LessonRepositoryImpl implements LessonRepository {   final LessonRemoteDatasource remoteDatasource;   final LessonLocalDatasource localDatasource;   final NetworkInfo networkInfo;</p>
-<p>  LessonRepositoryImpl({     required this.remoteDatasource,     required this.localDatasource,     required this.networkInfo,   });</p>
-<p>  @override   Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {     if (await networkInfo.isConnected) {       try {         final remoteLessons = await remoteDatasource.fetchLessons(courseId);         await localDatasource.cacheLessons(courseId, remoteLessons);         return Right(remoteLessons.map((m) =&gt; m.toEntity()).toList());       } on ServerException {         // Fall through to local — offline-first cache strategy       }     }     try {       final localLessons = await localDatasource.getCachedLessons(courseId);       return Right(localLessons.map((m) =&gt; m.toEntity()).toList());     } on CacheException {       return Left(CacheFailure());     }   }</p>
-<p>  @override   Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId) {     return localDatasource         .watchCachedLessons(courseId)         .map((models) =&gt; models.map((m) =&gt; m.toEntity()).toList());   } }</p>
+<pre><code class="language-dart">// domain/entities/lesson.dart — PURE DART, no Flutter imports
+class Lesson {
+  final String id;
+  final String title;
+  final int durationMinutes;
+  final bool isCompleted;
+  final String courseId;
+
+  const Lesson({
+    required this.id,
+    required this.title,
+    required this.durationMinutes,
+    required this.isCompleted,
+    required this.courseId,
+  });
+
+  Lesson copyWith({
+    String? title,
+    int? durationMinutes,
+    bool? isCompleted,
+  }) {
+    return Lesson(
+      id: id,
+      title: title ?? this.title,
+      durationMinutes: durationMinutes ?? this.durationMinutes,
+      isCompleted: isCompleted ?? this.isCompleted,
+      courseId: courseId,
+    );
+  }
+}
+
+// domain/repositories/lesson_repository.dart — CONTRACT only, no implementation
+abstract class LessonRepository {
+  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId);
+  Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId);
+  Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId);
+}
+
+// data/repositories/lesson_repository_impl.dart — THE IMPLEMENTATION
+class LessonRepositoryImpl implements LessonRepository {
+  final LessonRemoteDatasource remoteDatasource;
+  final LessonLocalDatasource localDatasource;
+  final NetworkInfo networkInfo;
+
+  LessonRepositoryImpl({
+    required this.remoteDatasource,
+    required this.localDatasource,
+    required this.networkInfo,
+  });
+
+  @override
+  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteLessons = await remoteDatasource.fetchLessons(courseId);
+        await localDatasource.cacheLessons(courseId, remoteLessons);
+        return Right(remoteLessons.map((m) =&gt; m.toEntity()).toList());
+      } on ServerException {
+        // Fall through to local — offline-first cache strategy
+      }
+    }
+    try {
+      final localLessons = await localDatasource.getCachedLessons(courseId);
+      return Right(localLessons.map((m) =&gt; m.toEntity()).toList());
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId) {
+    return localDatasource
+        .watchCachedLessons(courseId)
+        .map((models) =&gt; models.map((m) =&gt; m.toEntity()).toList());
+  }
+}</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

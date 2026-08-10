@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -184,7 +184,7 @@
 <p>PowerSync exists precisely to provide that layer: deterministic local-first sync with a conflict-resolution policy and a sync-rules DSL for partitioning data per user.</p>
 <h2>The Flutter integration</h2>
 <p>PowerSync ships a Flutter client (<code>powersync</code>) that syncs into a local SQLite database — which Drift can wrap. So your architecture becomes:</p>
-<pre><code>Supabase Postgres  ←→  PowerSync sync service  ←→  on-device SQLite (Drift)  ←→  BLoC/UI</code></pre>
+<pre><code class="language-text">Supabase Postgres  ←→  PowerSync sync service  ←→  on-device SQLite (Drift)  ←→  BLoC/UI</code></pre>
 <p>Reads and writes go to local SQLite (instant, offline-capable). PowerSync reconciles in the background. The UI never blocks on network.</p>
 <h2>When you need PowerSync</h2>
 <p>You need PowerSync (or equivalent) when:</p>

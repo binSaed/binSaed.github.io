@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -194,22 +194,120 @@
 <p>Test the offline/online transitions explicitly. In integration tests, toggle connectivity and verify that writes are queued, reads still work, and sync resumes correctly. The biggest bugs in offline-first apps happen at the transition points — going offline mid-sync, coming back online with a large queue, or handling partial sync failures.</p>
 
         <h2>Recommended folder structure</h2>
-<p>lib/ ├── core/ │   ├── database/ │   │   ├── app_database.dart          # Drift database definition │   │   └── tables/ │   │       ├── lessons.dart │   │       └── sync_queue.dart        # pending local changes │   ├── sync/ │   │   ├── sync_engine.dart           # PowerSync / custom sync coordinator │   │   ├── connectivity_manager.dart │   │   └── conflict_resolver.dart │   └── error/ └── features/     └── lesson/         ├── domain/         │   ├── entities/lesson.dart         │   └── repositories/lesson_repository.dart         ├── data/         │   ├── datasources/         │   │   └── lesson_local_datasource.dart   # Drift queries         │   └── repositories/         │       └── lesson_repository_impl.dart     # reads stream, writes local         └── presentation/             ├── cubit/             │   ├── lesson_cubit.dart             │   └── lesson_state.dart               # includes syncStatus             └── widgets/                 └── sync_status_badge.dart</p>
+<pre><code class="language-text">lib/
+├── core/
+│   ├── database/
+│   │   ├── app_database.dart          # Drift database definition
+│   │   └── tables/
+│   │       ├── lessons.dart
+│   │       └── sync_queue.dart        # pending local changes
+│   ├── sync/
+│   │   ├── sync_engine.dart           # PowerSync / custom sync coordinator
+│   │   ├── connectivity_manager.dart
+│   │   └── conflict_resolver.dart
+│   └── error/
+└── features/
+    └── lesson/
+        ├── domain/
+        │   ├── entities/lesson.dart
+        │   └── repositories/lesson_repository.dart
+        ├── data/
+        │   ├── datasources/
+        │   │   └── lesson_local_datasource.dart   # Drift queries
+        │   └── repositories/
+        │       └── lesson_repository_impl.dart     # reads stream, writes local
+        └── presentation/
+            ├── cubit/
+            │   ├── lesson_cubit.dart
+            │   └── lesson_state.dart               # includes syncStatus
+            └── widgets/
+                └── sync_status_badge.dart</code></pre>
 
         <h2>Code example</h2>
-<p>// domain/repositories/lesson_repository.dart — offline-first contract abstract class LessonRepository {   /// Reactive stream from the LOCAL database — instant, no network wait.   /// Updates automatically when sync pulls new data from the server.   Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId);</p>
-<p>  /// Optimistic write: saves to local DB first, sync engine handles upload.   Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId);</p>
-<p>  /// Forces a sync cycle (used by "refresh" gestures and connectivity restore).   Future&lt;Either&lt;Failure, void&gt;&gt; syncNow(); }</p>
-<p>// data/repositories/lesson_repository_impl.dart class LessonRepositoryImpl implements LessonRepository {   final LessonLocalDatasource localDatasource;   final SyncEngine syncEngine;</p>
-<p>  LessonRepositoryImpl({     required this.localDatasource,     required this.syncEngine,   });</p>
-<p>  @override   Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId) {     // This stream emits from the local Drift database.     // When syncEngine pulls server changes and writes them locally,     // Drift's watch() fires and the UI gets the new data automatically.     return localDatasource         .watchLessonsByCourse(courseId)         .map((rows) =&gt; rows.map(_toEntity).toList());   }</p>
-<p>  @override   Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId) async {     try {       // 1. Write to local DB immediately (optimistic — UI reacts via stream)       await localDatasource.updateLessonStatus(         lessonId,         isCompleted: true,         pendingSync: true,   // marks the row for the sync queue       );</p>
-<p>      // 2. Sync engine picks up pendingSync rows and uploads them.       // If offline, they sit in the queue until connectivity returns.       unawaited(syncEngine.enqueueUpload(LessonCompletedEvent(lessonId)));</p>
-<p>      // 3. Return success — the user sees their change instantly       final updated = await localDatasource.getLessonById(lessonId);       return Right(_toEntity(updated));     } on CacheException {       return Left(CacheFailure());     }   }</p>
-<p>  @override   Future&lt;Either&lt;Failure, void&gt;&gt; syncNow() async {     try {       await syncEngine.forceSync();       return const Right(null);     } on SyncException catch (e) {       return Left(SyncFailure(message: e.message));     }   }</p>
-<p>  Lesson _toEntity(LessonEntry row) =&gt; Lesson(         id: row.id,         title: row.title,         durationMinutes: row.durationMinutes,         isCompleted: row.isCompleted,         courseId: row.courseId,       ); }</p>
-<p>// presentation/cubit/lesson_state.dart — sync status is part of UI state abstract class LessonState {} class LessonInitial extends LessonState {} class LessonLoading extends LessonState {} class LessonLoaded extends LessonState {   final List&lt;Lesson&gt; lessons;   final SyncStatus syncStatus;    // synced | syncing | pending | error</p>
-<p>  LessonLoaded({required this.lessons, required this.syncStatus}); }</p>
+<pre><code class="language-dart">// domain/repositories/lesson_repository.dart — offline-first contract
+abstract class LessonRepository {
+  /// Reactive stream from the LOCAL database — instant, no network wait.
+  /// Updates automatically when sync pulls new data from the server.
+  Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId);
+
+  /// Optimistic write: saves to local DB first, sync engine handles upload.
+  Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId);
+
+  /// Forces a sync cycle (used by "refresh" gestures and connectivity restore).
+  Future&lt;Either&lt;Failure, void&gt;&gt; syncNow();
+}
+
+// data/repositories/lesson_repository_impl.dart
+class LessonRepositoryImpl implements LessonRepository {
+  final LessonLocalDatasource localDatasource;
+  final SyncEngine syncEngine;
+
+  LessonRepositoryImpl({
+    required this.localDatasource,
+    required this.syncEngine,
+  });
+
+  @override
+  Stream&lt;List&lt;Lesson&gt;&gt; watchLessons(String courseId) {
+    // This stream emits from the local Drift database.
+    // When syncEngine pulls server changes and writes them locally,
+    // Drift's watch() fires and the UI gets the new data automatically.
+    return localDatasource
+        .watchLessonsByCourse(courseId)
+        .map((rows) =&gt; rows.map(_toEntity).toList());
+  }
+
+  @override
+  Future&lt;Either&lt;Failure, Lesson&gt;&gt; markComplete(String lessonId) async {
+    try {
+      // 1. Write to local DB immediately (optimistic — UI reacts via stream)
+      await localDatasource.updateLessonStatus(
+        lessonId,
+        isCompleted: true,
+        pendingSync: true,   // marks the row for the sync queue
+      );
+
+      // 2. Sync engine picks up pendingSync rows and uploads them.
+      // If offline, they sit in the queue until connectivity returns.
+      unawaited(syncEngine.enqueueUpload(LessonCompletedEvent(lessonId)));
+
+      // 3. Return success — the user sees their change instantly
+      final updated = await localDatasource.getLessonById(lessonId);
+      return Right(_toEntity(updated));
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future&lt;Either&lt;Failure, void&gt;&gt; syncNow() async {
+    try {
+      await syncEngine.forceSync();
+      return const Right(null);
+    } on SyncException catch (e) {
+      return Left(SyncFailure(message: e.message));
+    }
+  }
+
+  Lesson _toEntity(LessonEntry row) =&gt; Lesson(
+        id: row.id,
+        title: row.title,
+        durationMinutes: row.durationMinutes,
+        isCompleted: row.isCompleted,
+        courseId: row.courseId,
+      );
+}
+
+// presentation/cubit/lesson_state.dart — sync status is part of UI state
+abstract class LessonState {}
+class LessonInitial extends LessonState {}
+class LessonLoading extends LessonState {}
+class LessonLoaded extends LessonState {
+  final List&lt;Lesson&gt; lessons;
+  final SyncStatus syncStatus;    // synced | syncing | pending | error
+
+  LessonLoaded({required this.lessons, required this.syncStatus});
+}</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -230,24 +230,175 @@ on&lt;SubmitPressed&gt;(_onSubmit, transformer: droppable());</code></pre>
 <p>This test runs in milliseconds, needs no device, and verifies the exact state sequence. This is why we invest in BLoC — the testability pays for the boilerplate.</p>
 
         <h2>Recommended folder structure</h2>
-<p>lib/features/lesson/presentation/ ├── bloc/ │   ├── lesson_bloc.dart         # BLoC: event handlers, transformers │   ├── lesson_event.dart         # Events: what happened (past tense) │   └── lesson_state.dart         # States: complete UI snapshots ├── cubit/                        # Use Cubit instead when the flow is simple │   ├── lesson_cubit.dart │   └── lesson_state.dart ├── pages/ │   └── lesson_page.dart          # BlocProvider + UI └── widgets/     ├── lesson_list.dart     └── lesson_error_view.dart</p>
+<pre><code class="language-text">lib/features/lesson/presentation/
+├── bloc/
+│   ├── lesson_bloc.dart         # BLoC: event handlers, transformers
+│   ├── lesson_event.dart         # Events: what happened (past tense)
+│   └── lesson_state.dart         # States: complete UI snapshots
+├── cubit/                        # Use Cubit instead when the flow is simple
+│   ├── lesson_cubit.dart
+│   └── lesson_state.dart
+├── pages/
+│   └── lesson_page.dart          # BlocProvider + UI
+└── widgets/
+    ├── lesson_list.dart
+    └── lesson_error_view.dart</code></pre>
 
         <h2>Code example</h2>
-<p>// lesson_event.dart — EVENTS describe what happened abstract class LessonEvent {} class LessonLoadRequested extends LessonEvent {   final String courseId;   LessonLoadRequested(this.courseId); } class LessonRefreshRequested extends LessonEvent {   final String courseId;   LessonRefreshRequested(this.courseId); } class LessonCompleted extends LessonEvent {   final String lessonId;   LessonCompleted(this.lessonId); } class LessonSearchChanged extends LessonEvent {   final String query;   LessonSearchChanged(this.query); }</p>
-<p>// lesson_state.dart — STATES are complete, immutable UI snapshots abstract class LessonState {} class LessonInitial extends LessonState {} class LessonLoading extends LessonState {} class LessonLoaded extends LessonState {   final List&lt;Lesson&gt; lessons;   final bool isRefreshing;   final bool isPaginating;   final bool hasReachedMax;</p>
-<p>  const LessonLoaded({     required this.lessons,     this.isRefreshing = false,     this.isPaginating = false,     this.hasReachedMax = false,   });</p>
-<p>  LessonLoaded copyWith({     List&lt;Lesson&gt;? lessons,     bool? isRefreshing,     bool? isPaginating,     bool? hasReachedMax,   }) {     return LessonLoaded(       lessons: lessons ?? this.lessons,       isRefreshing: isRefreshing ?? this.isRefreshing,       isPaginating: isPaginating ?? this.isPaginating,       hasReachedMax: hasReachedMax ?? this.hasReachedMax,     );   } } class LessonError extends LessonState {   final String message;   final List&lt;Lesson&gt;? lastKnownLessons; // keep old data visible on error   LessonError(this.message, {this.lastKnownLessons}); }</p>
-<p>// lesson_bloc.dart — THE BLOC: pure logic, event → state class LessonBloc extends Bloc&lt;LessonEvent, LessonState&gt; {   final LessonRepository repository;</p>
-<p>  LessonBloc(this.repository) : super(LessonInitial()) {     on&lt;LessonLoadRequested&gt;(_onLoadRequested);     on&lt;LessonRefreshRequested&gt;(_onRefreshRequested);     on&lt;LessonCompleted&gt;(_onCompleted);     on&lt;LessonSearchChanged&gt;(_onSearchChanged, transformer: restartable());   }</p>
-<p>  Future&lt;void&gt; _onLoadRequested(     LessonLoadRequested event,     Emitter&lt;LessonState&gt; emit,   ) async {     emit(LessonLoading());     final result = await repository.getLessons(event.courseId);     result.fold(       (failure) =&gt; emit(LessonError(failure.message)),       (lessons) =&gt; emit(LessonLoaded(lessons: lessons)),     );   }</p>
-<p>  Future&lt;void&gt; _onRefreshRequested(     LessonRefreshRequested event,     Emitter&lt;LessonState&gt; emit,   ) async {     // Keep the existing data visible — just show the refresh indicator     final currentLessons = _currentLessons;     emit(LessonLoaded(lessons: currentLessons, isRefreshing: true));</p>
-<p>    final result = await repository.getLessons(event.courseId);     result.fold(       (failure) =&gt; emit(LessonError(failure.message, lastKnownLessons: currentLessons)),       (lessons) =&gt; emit(LessonLoaded(lessons: lessons)),     );   }</p>
-<p>  Future&lt;void&gt; _onCompleted(     LessonCompleted event,     Emitter&lt;LessonState&gt; emit,   ) async {     final result = await repository.markComplete(event.lessonId);     result.fold(       (failure) =&gt; emit(LessonError(failure.message, lastKnownLessons: _currentLessons)),       (_) {         // Optimistic: update the local list immediately         if (state is LessonLoaded) {           final updated = _currentLessons.map((l) {             return l.id == event.lessonId ? l.copyWith(isCompleted: true) : l;           }).toList();           emit((state as LessonLoaded).copyWith(lessons: updated));         }       },     );   }</p>
-<p>  Future&lt;void&gt; _onSearchChanged(     LessonSearchChanged event,     Emitter&lt;LessonState&gt; emit,   ) async {     if (event.query.isEmpty) return; // restartable() cancels stale searches     final result = await repository.searchLessons(event.query);     result.fold(       (failure) =&gt; emit(LessonError(failure.message)),       (lessons) =&gt; emit(LessonLoaded(lessons: lessons)),     );   }</p>
-<p>  List&lt;Lesson&gt; get _currentLessons =&gt;       state is LessonLoaded ? (state as LessonLoaded).lessons : []; }</p>
-<p>// TEST — bloc_test verifies exact state sequences in milliseconds void main() {   late LessonRepository mockRepository;   late LessonBloc bloc;</p>
-<p>  setUp(() {     mockRepository = MockLessonRepository();     bloc = LessonBloc(mockRepository);   });</p>
-<p>  blocTest&lt;LessonBloc, LessonState&gt;(     'emits [Loading, Loaded] on successful load',     build: () {       when(() =&gt; mockRepository.getLessons('c1'))           .thenAnswer((_) async =&gt; Right([testLesson]));       return bloc;     },     act: (b) =&gt; b.add(LessonLoadRequested('c1')),     wait: const Duration(milliseconds: 100),     expect: () =&gt; [       isA&lt;LessonLoading&gt;(),       isA&lt;LessonLoaded&gt;().having((s) =&gt; s.lessons.length, 'lessons', 1),     ],   ); }</p>
+<pre><code class="language-dart">// lesson_event.dart — EVENTS describe what happened
+abstract class LessonEvent {}
+class LessonLoadRequested extends LessonEvent {
+  final String courseId;
+  LessonLoadRequested(this.courseId);
+}
+class LessonRefreshRequested extends LessonEvent {
+  final String courseId;
+  LessonRefreshRequested(this.courseId);
+}
+class LessonCompleted extends LessonEvent {
+  final String lessonId;
+  LessonCompleted(this.lessonId);
+}
+class LessonSearchChanged extends LessonEvent {
+  final String query;
+  LessonSearchChanged(this.query);
+}
+
+// lesson_state.dart — STATES are complete, immutable UI snapshots
+abstract class LessonState {}
+class LessonInitial extends LessonState {}
+class LessonLoading extends LessonState {}
+class LessonLoaded extends LessonState {
+  final List&lt;Lesson&gt; lessons;
+  final bool isRefreshing;
+  final bool isPaginating;
+  final bool hasReachedMax;
+
+  const LessonLoaded({
+    required this.lessons,
+    this.isRefreshing = false,
+    this.isPaginating = false,
+    this.hasReachedMax = false,
+  });
+
+  LessonLoaded copyWith({
+    List&lt;Lesson&gt;? lessons,
+    bool? isRefreshing,
+    bool? isPaginating,
+    bool? hasReachedMax,
+  }) {
+    return LessonLoaded(
+      lessons: lessons ?? this.lessons,
+      isRefreshing: isRefreshing ?? this.isRefreshing,
+      isPaginating: isPaginating ?? this.isPaginating,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
+}
+class LessonError extends LessonState {
+  final String message;
+  final List&lt;Lesson&gt;? lastKnownLessons; // keep old data visible on error
+  LessonError(this.message, {this.lastKnownLessons});
+}
+
+// lesson_bloc.dart — THE BLOC: pure logic, event → state
+class LessonBloc extends Bloc&lt;LessonEvent, LessonState&gt; {
+  final LessonRepository repository;
+
+  LessonBloc(this.repository) : super(LessonInitial()) {
+    on&lt;LessonLoadRequested&gt;(_onLoadRequested);
+    on&lt;LessonRefreshRequested&gt;(_onRefreshRequested);
+    on&lt;LessonCompleted&gt;(_onCompleted);
+    on&lt;LessonSearchChanged&gt;(_onSearchChanged, transformer: restartable());
+  }
+
+  Future&lt;void&gt; _onLoadRequested(
+    LessonLoadRequested event,
+    Emitter&lt;LessonState&gt; emit,
+  ) async {
+    emit(LessonLoading());
+    final result = await repository.getLessons(event.courseId);
+    result.fold(
+      (failure) =&gt; emit(LessonError(failure.message)),
+      (lessons) =&gt; emit(LessonLoaded(lessons: lessons)),
+    );
+  }
+
+  Future&lt;void&gt; _onRefreshRequested(
+    LessonRefreshRequested event,
+    Emitter&lt;LessonState&gt; emit,
+  ) async {
+    // Keep the existing data visible — just show the refresh indicator
+    final currentLessons = _currentLessons;
+    emit(LessonLoaded(lessons: currentLessons, isRefreshing: true));
+
+    final result = await repository.getLessons(event.courseId);
+    result.fold(
+      (failure) =&gt; emit(LessonError(failure.message, lastKnownLessons: currentLessons)),
+      (lessons) =&gt; emit(LessonLoaded(lessons: lessons)),
+    );
+  }
+
+  Future&lt;void&gt; _onCompleted(
+    LessonCompleted event,
+    Emitter&lt;LessonState&gt; emit,
+  ) async {
+    final result = await repository.markComplete(event.lessonId);
+    result.fold(
+      (failure) =&gt; emit(LessonError(failure.message, lastKnownLessons: _currentLessons)),
+      (_) {
+        // Optimistic: update the local list immediately
+        if (state is LessonLoaded) {
+          final updated = _currentLessons.map((l) {
+            return l.id == event.lessonId ? l.copyWith(isCompleted: true) : l;
+          }).toList();
+          emit((state as LessonLoaded).copyWith(lessons: updated));
+        }
+      },
+    );
+  }
+
+  Future&lt;void&gt; _onSearchChanged(
+    LessonSearchChanged event,
+    Emitter&lt;LessonState&gt; emit,
+  ) async {
+    if (event.query.isEmpty) return; // restartable() cancels stale searches
+    final result = await repository.searchLessons(event.query);
+    result.fold(
+      (failure) =&gt; emit(LessonError(failure.message)),
+      (lessons) =&gt; emit(LessonLoaded(lessons: lessons)),
+    );
+  }
+
+  List&lt;Lesson&gt; get _currentLessons =&gt;
+      state is LessonLoaded ? (state as LessonLoaded).lessons : [];
+}
+
+// TEST — bloc_test verifies exact state sequences in milliseconds
+void main() {
+  late LessonRepository mockRepository;
+  late LessonBloc bloc;
+
+  setUp(() {
+    mockRepository = MockLessonRepository();
+    bloc = LessonBloc(mockRepository);
+  });
+
+  blocTest&lt;LessonBloc, LessonState&gt;(
+    'emits [Loading, Loaded] on successful load',
+    build: () {
+      when(() =&gt; mockRepository.getLessons('c1'))
+          .thenAnswer((_) async =&gt; Right([testLesson]));
+      return bloc;
+    },
+    act: (b) =&gt; b.add(LessonLoadRequested('c1')),
+    wait: const Duration(milliseconds: 100),
+    expect: () =&gt; [
+      isA&lt;LessonLoading&gt;(),
+      isA&lt;LessonLoaded&gt;().having((s) =&gt; s.lessons.length, 'lessons', 1),
+    ],
+  );
+}</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -251,25 +251,165 @@ Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String course
 </ul>
 
         <h2>Recommended folder structure</h2>
-<p>lib/ ├── core/ │   ├── error/ │   │   ├── failures.dart            # domain Failure hierarchy │   │   └── exceptions.dart          # data-layer exception types │   └── crash/ │       └── crash_reporter.dart       # Sentry wrapper, initialized in main() ├── features/ │   └── lesson/ │       ├── data/repositories/ │       │   └── lesson_repository_impl.dart   # catches exceptions → maps to Failures │       └── presentation/ │           └── cubit/lesson_cubit.dart        # folds Either → emits states └── main.dart                          # runZonedGuarded + FlutterError.onError</p>
+<pre><code class="language-text">lib/
+├── core/
+│   ├── error/
+│   │   ├── failures.dart            # domain Failure hierarchy
+│   │   └── exceptions.dart          # data-layer exception types
+│   └── crash/
+│       └── crash_reporter.dart       # Sentry wrapper, initialized in main()
+├── features/
+│   └── lesson/
+│       ├── data/repositories/
+│       │   └── lesson_repository_impl.dart   # catches exceptions → maps to Failures
+│       └── presentation/
+│           └── cubit/lesson_cubit.dart        # folds Either → emits states
+└── main.dart                          # runZonedGuarded + FlutterError.onError</code></pre>
 
         <h2>Code example</h2>
-<p>// core/error/failures.dart — DOMAIN FAILURES sealed class Failure {   final String message;   const Failure(this.message); }</p>
-<p>class ServerFailure extends Failure {   final int? statusCode;   const ServerFailure([super.message = 'Server error', this.statusCode]); }</p>
-<p>class CacheFailure extends Failure {   const CacheFailure([super.message = 'Cache error']); }</p>
-<p>class OfflineFailure extends Failure {   const OfflineFailure() : super('You appear to be offline.'); }</p>
-<p>class ValidationFailure extends Failure {   final Map&lt;String, String&gt; fieldErrors;   const ValidationFailure(this.fieldErrors) : super('Validation failed'); }</p>
-<p>class UnauthorizedFailure extends Failure {   const UnauthorizedFailure() : super('Your session has expired.'); }</p>
-<p>class UnexpectedFailure extends Failure {   const UnexpectedFailure(String detail) : super('Something went wrong: $detail'); }</p>
-<p>// core/error/exceptions.dart — DATA-LAYER EXCEPTIONS (never cross into domain) class ServerException implements Exception {   final String message;   final int? statusCode;   ServerException(this.message, [this.statusCode]); } class CacheException implements Exception {   final String message;   CacheException(this.message); }</p>
-<p>// data/repositories/lesson_repository_impl.dart — MAPS exceptions → Failures class LessonRepositoryImpl implements LessonRepository {   final LessonRemoteDatasource remote;   final LessonLocalDatasource local;   final NetworkInfo networkInfo;</p>
-<p>  LessonRepositoryImpl({     required this.remote,     required this.local,     required this.networkInfo,   });</p>
-<p>  @override   Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {     if (!await networkInfo.isConnected) {       // Expected: offline — try cache       return _getFromCacheOrFailure(courseId, const OfflineFailure());     }     try {       final remoteLessons = await remote.fetchLessons(courseId);       await local.cacheLessons(courseId, remoteLessons);       return Right(remoteLessons.map((m) =&gt; m.toEntity()).toList());     } on ServerException catch (e) {       // Server failed — try cache before giving up       return _getFromCacheOrFailure(         courseId,         ServerFailure(e.message, e.statusCode),       );     } catch (e, stack) {       // Truly unexpected — report it, return a safe failure       await Sentry.captureException(e, stackTrace: stack);       return Left(UnexpectedFailure(e.toString()));     }   }</p>
-<p>  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; _getFromCacheOrFailure(     String courseId,     Failure fallback,   ) async {     try {       final cached = await local.getCachedLessons(courseId);       if (cached.isEmpty) return Left(fallback);       return Right(cached.map((m) =&gt; m.toEntity()).toList());     } on CacheException {       return Left(fallback);     }   } }</p>
-<p>// presentation/cubit/lesson_cubit.dart — FOLDS Either → emits states class LessonCubit extends Cubit&lt;LessonState&gt; {   final LessonRepository repository;   LessonCubit(this.repository) : super(LessonInitial());</p>
-<p>  Future&lt;void&gt; loadLessons(String courseId) async {     emit(LessonLoading());     final result = await repository.getLessons(courseId);     emit(       result.fold(         (failure) =&gt; _mapFailureToState(failure),         (lessons) =&gt; LessonLoaded(lessons: lessons),       ),     );   }</p>
-<p>  LessonState _mapFailureToState(Failure failure) {     return switch (failure) {       OfflineFailure() =&gt; LessonError(           failure.message,           action: ErrorAction.retry,         ),       UnauthorizedFailure() =&gt; LessonError(           failure.message,           action: ErrorAction.login,         ),       ServerFailure(:final statusCode) when statusCode == 404 =&gt;         LessonError('Lessons not found.', action: ErrorAction.none),       ServerFailure() =&gt; LessonError(           failure.message,           action: ErrorAction.retry,         ),       _ =&gt; LessonError(failure.message),     };   } }</p>
-<p>// main.dart — ZONE GUARD + CRASH REPORTING void main() {   runZonedGuarded(() {     WidgetsFlutterBinding.ensureInitialized();     FlutterError.onError = (details) {       FlutterError.presentError(details);       Sentry.captureException(details.exception, stackTrace: details.stack);     };     runApp(MyApp());   }, (error, stack) {     // Catches uncaught async errors that slip past try/catch     Sentry.captureException(error, stackTrace: stack);   }); }</p>
+<pre><code class="language-dart">// core/error/failures.dart — DOMAIN FAILURES
+sealed class Failure {
+  final String message;
+  const Failure(this.message);
+}
+
+class ServerFailure extends Failure {
+  final int? statusCode;
+  const ServerFailure([super.message = 'Server error', this.statusCode]);
+}
+
+class CacheFailure extends Failure {
+  const CacheFailure([super.message = 'Cache error']);
+}
+
+class OfflineFailure extends Failure {
+  const OfflineFailure() : super('You appear to be offline.');
+}
+
+class ValidationFailure extends Failure {
+  final Map&lt;String, String&gt; fieldErrors;
+  const ValidationFailure(this.fieldErrors) : super('Validation failed');
+}
+
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure() : super('Your session has expired.');
+}
+
+class UnexpectedFailure extends Failure {
+  const UnexpectedFailure(String detail) : super('Something went wrong: $detail');
+}
+
+// core/error/exceptions.dart — DATA-LAYER EXCEPTIONS (never cross into domain)
+class ServerException implements Exception {
+  final String message;
+  final int? statusCode;
+  ServerException(this.message, [this.statusCode]);
+}
+class CacheException implements Exception {
+  final String message;
+  CacheException(this.message);
+}
+
+// data/repositories/lesson_repository_impl.dart — MAPS exceptions → Failures
+class LessonRepositoryImpl implements LessonRepository {
+  final LessonRemoteDatasource remote;
+  final LessonLocalDatasource local;
+  final NetworkInfo networkInfo;
+
+  LessonRepositoryImpl({
+    required this.remote,
+    required this.local,
+    required this.networkInfo,
+  });
+
+  @override
+  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String courseId) async {
+    if (!await networkInfo.isConnected) {
+      // Expected: offline — try cache
+      return _getFromCacheOrFailure(courseId, const OfflineFailure());
+    }
+    try {
+      final remoteLessons = await remote.fetchLessons(courseId);
+      await local.cacheLessons(courseId, remoteLessons);
+      return Right(remoteLessons.map((m) =&gt; m.toEntity()).toList());
+    } on ServerException catch (e) {
+      // Server failed — try cache before giving up
+      return _getFromCacheOrFailure(
+        courseId,
+        ServerFailure(e.message, e.statusCode),
+      );
+    } catch (e, stack) {
+      // Truly unexpected — report it, return a safe failure
+      await Sentry.captureException(e, stackTrace: stack);
+      return Left(UnexpectedFailure(e.toString()));
+    }
+  }
+
+  Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; _getFromCacheOrFailure(
+    String courseId,
+    Failure fallback,
+  ) async {
+    try {
+      final cached = await local.getCachedLessons(courseId);
+      if (cached.isEmpty) return Left(fallback);
+      return Right(cached.map((m) =&gt; m.toEntity()).toList());
+    } on CacheException {
+      return Left(fallback);
+    }
+  }
+}
+
+// presentation/cubit/lesson_cubit.dart — FOLDS Either → emits states
+class LessonCubit extends Cubit&lt;LessonState&gt; {
+  final LessonRepository repository;
+  LessonCubit(this.repository) : super(LessonInitial());
+
+  Future&lt;void&gt; loadLessons(String courseId) async {
+    emit(LessonLoading());
+    final result = await repository.getLessons(courseId);
+    emit(
+      result.fold(
+        (failure) =&gt; _mapFailureToState(failure),
+        (lessons) =&gt; LessonLoaded(lessons: lessons),
+      ),
+    );
+  }
+
+  LessonState _mapFailureToState(Failure failure) {
+    return switch (failure) {
+      OfflineFailure() =&gt; LessonError(
+          failure.message,
+          action: ErrorAction.retry,
+        ),
+      UnauthorizedFailure() =&gt; LessonError(
+          failure.message,
+          action: ErrorAction.login,
+        ),
+      ServerFailure(:final statusCode) when statusCode == 404 =&gt;
+        LessonError('Lessons not found.', action: ErrorAction.none),
+      ServerFailure() =&gt; LessonError(
+          failure.message,
+          action: ErrorAction.retry,
+        ),
+      _ =&gt; LessonError(failure.message),
+    };
+  }
+}
+
+// main.dart — ZONE GUARD + CRASH REPORTING
+void main() {
+  runZonedGuarded(() {
+    WidgetsFlutterBinding.ensureInitialized();
+    FlutterError.onError = (details) {
+      FlutterError.presentError(details);
+      Sentry.captureException(details.exception, stackTrace: details.stack);
+    };
+    runApp(MyApp());
+  }, (error, stack) {
+    // Catches uncaught async errors that slip past try/catch
+    Sentry.captureException(error, stackTrace: stack);
+  });
+}</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

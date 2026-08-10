@@ -92,9 +92,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
+    <script type="module" crossorigin src="/assets/index-BAy1KGfF.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-B0uHoFxZ.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -232,35 +232,178 @@
 <p>Use <code>--coverage</code> and track coverage trends, but do not obsess over a coverage number. 80% coverage with meaningful tests is better than 100% coverage with trivial assertion-free tests. The goal is confidence, not a metric.</p>
 
         <h2>Recommended folder structure</h2>
-<p>test/                              # mirrors lib/ structure ├── core/ │   ├── error/ │   │   └── failures_test.dart │   └── utils/ │       └── input_validator_test.dart ├── features/ │   └── lesson/ │       ├── domain/ │       │   ├── usecases/ │       │   │   └── get_lessons_test.dart │       │   └── entities/ │       │       └── lesson_test.dart │       ├── data/ │       │   ├── repositories/ │       │   │   └── lesson_repository_impl_test.dart │       │   └── models/ │       │       └── lesson_model_test.dart        # mapper tests │       └── presentation/ │           ├── bloc/ │           │   └── lesson_bloc_test.dart          # bloc_test │           └── widgets/ │               ├── lesson_card_test.dart           # widget test │               └── lesson_card_test.png            # golden image └── helpers/     ├── test_lesson.dart                           # shared fixture factory     ├── mock_repository.dart                       # MockTail setup     └── widget_test_helpers.dart                    # pumpWidget wrappers</p>
-<p>integration_test/ ├── auth_flow_test.dart ├── lesson_completion_test.dart └── offline_sync_test.dart</p>
+<pre><code class="language-text">test/                              # mirrors lib/ structure
+├── core/
+│   ├── error/
+│   │   └── failures_test.dart
+│   └── utils/
+│       └── input_validator_test.dart
+├── features/
+│   └── lesson/
+│       ├── domain/
+│       │   ├── usecases/
+│       │   │   └── get_lessons_test.dart
+│       │   └── entities/
+│       │       └── lesson_test.dart
+│       ├── data/
+│       │   ├── repositories/
+│       │   │   └── lesson_repository_impl_test.dart
+│       │   └── models/
+│       │       └── lesson_model_test.dart        # mapper tests
+│       └── presentation/
+│           ├── bloc/
+│           │   └── lesson_bloc_test.dart          # bloc_test
+│           └── widgets/
+│               ├── lesson_card_test.dart           # widget test
+│               └── lesson_card_test.png            # golden image
+└── helpers/
+    ├── test_lesson.dart                           # shared fixture factory
+    ├── mock_repository.dart                       # MockTail setup
+    └── widget_test_helpers.dart                    # pumpWidget wrappers
+
+integration_test/
+├── auth_flow_test.dart
+├── lesson_completion_test.dart
+└── offline_sync_test.dart</code></pre>
 
         <h2>Code example</h2>
-<p>// test/helpers/mock_repository.dart — shared mock setup import 'package:mocktail/mocktail.dart'; import 'package:flutter_test/flutter_test.dart';</p>
-<p>class MockLessonRepository extends Mock implements LessonRepository {} class MockNetworkInfo extends Mock implements NetworkInfo {}</p>
-<p>MockLessonRepository setupMockLessonRepository() {   final repo = MockLessonRepository();   registerFallbackValue('test-course-id');   return repo; }</p>
-<p>// test/features/lesson/data/repositories/lesson_repository_impl_test.dart class MockRemote extends Mock implements LessonRemoteDatasource {} class MockLocal extends Mock implements LessonLocalDatasource {}</p>
-<p>void main() {   late MockRemote remote;   late MockLocal local;   late MockNetworkInfo networkInfo;   late LessonRepositoryImpl repository;</p>
-<p>  setUp(() {     remote = MockRemote();     local = MockLocal();     networkInfo = MockNetworkInfo();     repository = LessonRepositoryImpl(       remoteDatasource: remote,       localDatasource: local,       networkInfo: networkInfo,     );   });</p>
-<p>  group('getLessons', () {     test('returns Right(lessons) when remote succeeds', () async {       when(() =&gt; networkInfo.isConnected).thenAnswer((_) async =&gt; true);       when(() =&gt; remote.fetchLessons('c1'))           .thenAnswer((_) async =&gt; [lessonModelFixture()]);</p>
-<p>      final result = await repository.getLessons('c1');</p>
-<p>      expect(result.isRight(), true);       verify(() =&gt; local.cacheLessons('c1', any())).called(1);     });</p>
-<p>    test('returns OfflineFailure when disconnected and cache is empty',         () async {       when(() =&gt; networkInfo.isConnected).thenAnswer((_) async =&gt; false);       when(() =&gt; local.getCachedLessons('c1'))           .thenThrow(CacheException('empty'));</p>
-<p>      final result = await repository.getLessons('c1');</p>
-<p>      expect(result.getLeft().toOption().toNullable(), isA&lt;OfflineFailure&gt;());     });</p>
-<p>    test('falls back to cache when server throws ServerException', () async {       when(() =&gt; networkInfo.isConnected).thenAnswer((_) async =&gt; true);       when(() =&gt; remote.fetchLessons('c1'))           .thenThrow(ServerException('500', 500));       when(() =&gt; local.getCachedLessons('c1'))           .thenAnswer((_) async =&gt; [lessonModelFixture()]);</p>
-<p>      final result = await repository.getLessons('c1');</p>
-<p>      expect(result.isRight(), true);     });   }); }</p>
-<p>// test/features/lesson/presentation/bloc/lesson_bloc_test.dart void main() {   late MockLessonRepository repository;   late LessonBloc bloc;</p>
-<p>  setUp(() {     repository = MockLessonRepository();     bloc = LessonBloc(repository);   });</p>
-<p>  blocTest&lt;LessonBloc, LessonState&gt;(     'emits [Loading, Loaded] on successful load',     build: () {       when(() =&gt; repository.getLessons(any()))           .thenAnswer((_) async =&gt; Right([lessonFixture()]));       return bloc;     },     act: (b) =&gt; b.add(LessonLoadRequested('c1')),     wait: const Duration(milliseconds: 100),     expect: () =&gt; [       isA&lt;LessonLoading&gt;(),       isA&lt;LessonLoaded&gt;()           .having((s) =&gt; s.lessons.length, 'lesson count', 1),     ],   );</p>
-<p>  blocTest&lt;LessonBloc, LessonState&gt;(     'emits [Loading, Error] on failure',     build: () {       when(() =&gt; repository.getLessons(any()))           .thenAnswer((_) async =&gt; const Left(ServerFailure('down')));       return bloc;     },     act: (b) =&gt; b.add(LessonLoadRequested('c1')),     wait: const Duration(milliseconds: 100),     expect: () =&gt; [       isA&lt;LessonLoading&gt;(),       isA&lt;LessonError&gt;().having((s) =&gt; s.message, 'error', 'down'),     ],   ); }</p>
-<p>// integration_test/lesson_completion_test.dart — full device test void main() {   IntegrationTestWidgetsFlutterBinding.ensureInitialized();</p>
-<p>  testWidgets('user can complete a lesson end-to-end', (tester) async {     app.main(); // launches the real app     await tester.pumpAndSettle();</p>
-<p>    // Navigate to a course     await tester.tap(find.text('Flutter Basics'));     await tester.pumpAndSettle();</p>
-<p>    // Tap a lesson     await tester.tap(find.text('Introduction'));     await tester.pumpAndSettle();</p>
-<p>    // Mark complete     await tester.tap(find.byKey(const Key('mark-complete-btn')));     await tester.pumpAndSettle();</p>
-<p>    // Verify the completion indicator appears     expect(find.byIcon(Icons.check_circle), findsOneWidget);   }); }</p>
+<pre><code class="language-dart">// test/helpers/mock_repository.dart — shared mock setup
+import 'package:mocktail/mocktail.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+class MockLessonRepository extends Mock implements LessonRepository {}
+class MockNetworkInfo extends Mock implements NetworkInfo {}
+
+MockLessonRepository setupMockLessonRepository() {
+  final repo = MockLessonRepository();
+  registerFallbackValue('test-course-id');
+  return repo;
+}
+
+// test/features/lesson/data/repositories/lesson_repository_impl_test.dart
+class MockRemote extends Mock implements LessonRemoteDatasource {}
+class MockLocal extends Mock implements LessonLocalDatasource {}
+
+void main() {
+  late MockRemote remote;
+  late MockLocal local;
+  late MockNetworkInfo networkInfo;
+  late LessonRepositoryImpl repository;
+
+  setUp(() {
+    remote = MockRemote();
+    local = MockLocal();
+    networkInfo = MockNetworkInfo();
+    repository = LessonRepositoryImpl(
+      remoteDatasource: remote,
+      localDatasource: local,
+      networkInfo: networkInfo,
+    );
+  });
+
+  group('getLessons', () {
+    test('returns Right(lessons) when remote succeeds', () async {
+      when(() =&gt; networkInfo.isConnected).thenAnswer((_) async =&gt; true);
+      when(() =&gt; remote.fetchLessons('c1'))
+          .thenAnswer((_) async =&gt; [lessonModelFixture()]);
+
+      final result = await repository.getLessons('c1');
+
+      expect(result.isRight(), true);
+      verify(() =&gt; local.cacheLessons('c1', any())).called(1);
+    });
+
+    test('returns OfflineFailure when disconnected and cache is empty',
+        () async {
+      when(() =&gt; networkInfo.isConnected).thenAnswer((_) async =&gt; false);
+      when(() =&gt; local.getCachedLessons('c1'))
+          .thenThrow(CacheException('empty'));
+
+      final result = await repository.getLessons('c1');
+
+      expect(result.getLeft().toOption().toNullable(), isA&lt;OfflineFailure&gt;());
+    });
+
+    test('falls back to cache when server throws ServerException', () async {
+      when(() =&gt; networkInfo.isConnected).thenAnswer((_) async =&gt; true);
+      when(() =&gt; remote.fetchLessons('c1'))
+          .thenThrow(ServerException('500', 500));
+      when(() =&gt; local.getCachedLessons('c1'))
+          .thenAnswer((_) async =&gt; [lessonModelFixture()]);
+
+      final result = await repository.getLessons('c1');
+
+      expect(result.isRight(), true);
+    });
+  });
+}
+
+// test/features/lesson/presentation/bloc/lesson_bloc_test.dart
+void main() {
+  late MockLessonRepository repository;
+  late LessonBloc bloc;
+
+  setUp(() {
+    repository = MockLessonRepository();
+    bloc = LessonBloc(repository);
+  });
+
+  blocTest&lt;LessonBloc, LessonState&gt;(
+    'emits [Loading, Loaded] on successful load',
+    build: () {
+      when(() =&gt; repository.getLessons(any()))
+          .thenAnswer((_) async =&gt; Right([lessonFixture()]));
+      return bloc;
+    },
+    act: (b) =&gt; b.add(LessonLoadRequested('c1')),
+    wait: const Duration(milliseconds: 100),
+    expect: () =&gt; [
+      isA&lt;LessonLoading&gt;(),
+      isA&lt;LessonLoaded&gt;()
+          .having((s) =&gt; s.lessons.length, 'lesson count', 1),
+    ],
+  );
+
+  blocTest&lt;LessonBloc, LessonState&gt;(
+    'emits [Loading, Error] on failure',
+    build: () {
+      when(() =&gt; repository.getLessons(any()))
+          .thenAnswer((_) async =&gt; const Left(ServerFailure('down')));
+      return bloc;
+    },
+    act: (b) =&gt; b.add(LessonLoadRequested('c1')),
+    wait: const Duration(milliseconds: 100),
+    expect: () =&gt; [
+      isA&lt;LessonLoading&gt;(),
+      isA&lt;LessonError&gt;().having((s) =&gt; s.message, 'error', 'down'),
+    ],
+  );
+}
+
+// integration_test/lesson_completion_test.dart — full device test
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('user can complete a lesson end-to-end', (tester) async {
+    app.main(); // launches the real app
+    await tester.pumpAndSettle();
+
+    // Navigate to a course
+    await tester.tap(find.text('Flutter Basics'));
+    await tester.pumpAndSettle();
+
+    // Tap a lesson
+    await tester.tap(find.text('Introduction'));
+    await tester.pumpAndSettle();
+
+    // Mark complete
+    await tester.tap(find.byKey(const Key('mark-complete-btn')));
+    await tester.pumpAndSettle();
+
+    // Verify the completion indicator appears
+    expect(find.byIcon(Icons.check_circle), findsOneWidget);
+  });
+}</code></pre>
 
         <h2>Implementation checklist</h2>
         <ul>

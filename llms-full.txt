@@ -6485,7 +6485,7 @@ PowerSync exists precisely to provide that layer: deterministic local-first sync
 
 PowerSync ships a Flutter client (`powersync`) that syncs into a local SQLite database — which Drift can wrap. So your architecture becomes:
 
-```
+```text
 Supabase Postgres  ←→  PowerSync sync service  ←→  on-device SQLite (Drift)  ←→  BLoC/UI
 ```
 
@@ -8690,6 +8690,7 @@ This is the single biggest payoff: you can test the business rules in millisecon
 
 ## Recommended folder structure
 
+```text
 lib/
 ├── core/                    # shared utilities, theme, routing, DI container
 │   ├── error/
@@ -8724,9 +8725,11 @@ lib/
 │           │   └── lesson_page.dart
 │           └── widgets/
 │               └── lesson_card.dart
+```
 
 ## Code example
 
+```dart
 // domain/entities/lesson.dart — PURE DART, no Flutter imports
 class Lesson {
   final String id;
@@ -8803,6 +8806,7 @@ class LessonRepositoryImpl implements LessonRepository {
         .map((models) => models.map((m) => m.toEntity()).toList());
   }
 }
+```
 
 ## FAQ
 
@@ -8874,6 +8878,7 @@ The most common failure is the "shared utils" dump. Engineers under deadline pre
 
 ## Recommended folder structure
 
+```text
 lib/
 ├── main.dart
 ├── core/                       # framework-level, no business logic
@@ -8925,9 +8930,11 @@ lib/
         ├── data/
         ├── presentation/
         └── course.dart
+```
 
 ## Code example
 
+```dart
 // features/auth/auth.dart — BARREL FILE: the only thing other features import
 export 'presentation/pages/login_page.dart';
 export 'presentation/cubit/auth_cubit.dart';
@@ -8983,6 +8990,7 @@ final appRouter = GoRouter(
     ),
   ],
 );
+```
 
 ## FAQ
 
@@ -9066,6 +9074,7 @@ Test the offline/online transitions explicitly. In integration tests, toggle con
 
 ## Recommended folder structure
 
+```text
 lib/
 ├── core/
 │   ├── database/
@@ -9094,9 +9103,11 @@ lib/
             │   └── lesson_state.dart               # includes syncStatus
             └── widgets/
                 └── sync_status_badge.dart
+```
 
 ## Code example
 
+```dart
 // domain/repositories/lesson_repository.dart — offline-first contract
 abstract class LessonRepository {
   /// Reactive stream from the LOCAL database — instant, no network wait.
@@ -9181,6 +9192,7 @@ class LessonLoaded extends LessonState {
 
   LessonLoaded({required this.lessons, required this.syncStatus});
 }
+```
 
 ## FAQ
 
@@ -9266,6 +9278,7 @@ But not all data is synced. For non-synced data (config, feature flags, one-off 
 
 ## Recommended folder structure
 
+```text
 lib/features/lesson/
 ├── domain/
 │   ├── entities/
@@ -9280,9 +9293,11 @@ lib/features/lesson/
 │   │   └── lesson_model.dart              # DTO: fromJson / toEntity
 │   └── repositories/
 │       └── lesson_repository_impl.dart     # CONCRETE implementation
+```
 
 ## Code example
 
+```dart
 // domain/repositories/lesson_repository.dart — THE CONTRACT
 abstract class LessonRepository {
   Future<Either<Failure, List<Lesson>>> getLessons(String courseId);
@@ -9390,6 +9405,7 @@ class LessonRepositoryImpl implements LessonRepository {
     }
   }
 }
+```
 
 ## FAQ
 
@@ -9511,6 +9527,7 @@ Some dependencies require async initialization (a database that needs to open, a
 
 ## Recommended folder structure
 
+```text
 lib/
 ├── main.dart
 ├── core/
@@ -9529,9 +9546,11 @@ lib/
     └── lesson/
         ├── data/repositories/lesson_repository_impl.dart   # @LazySingleton
         └── presentation/cubit/lesson_cubit.dart            # @injectable
+```
 
 ## Code example
 
+```dart
 // pubspec.yaml
 // dependencies:
 //   get_it: ^8.0.0
@@ -9619,6 +9638,7 @@ Future<void> main() async {
 
 // In a widget or anywhere in the app:
 // final cubit = getIt<LessonCubit>();    // resolved with all dependencies
+```
 
 ## FAQ
 
@@ -9754,6 +9774,7 @@ This test runs in milliseconds, needs no device, and verifies the exact state se
 
 ## Recommended folder structure
 
+```text
 lib/features/lesson/presentation/
 ├── bloc/
 │   ├── lesson_bloc.dart         # BLoC: event handlers, transformers
@@ -9767,9 +9788,11 @@ lib/features/lesson/presentation/
 └── widgets/
     ├── lesson_list.dart
     └── lesson_error_view.dart
+```
 
 ## Code example
 
+```dart
 // lesson_event.dart — EVENTS describe what happened
 abstract class LessonEvent {}
 class LessonLoadRequested extends LessonEvent {
@@ -9924,6 +9947,7 @@ void main() {
     ],
   );
 }
+```
 
 ## FAQ
 
@@ -10078,6 +10102,7 @@ At iStoria, we track crash-free rate as a first-class metric. The target is 99.9
 
 ## Recommended folder structure
 
+```text
 lib/
 ├── core/
 │   ├── error/
@@ -10092,9 +10117,11 @@ lib/
 │       └── presentation/
 │           └── cubit/lesson_cubit.dart        # folds Either → emits states
 └── main.dart                          # runZonedGuarded + FlutterError.onError
+```
 
 ## Code example
 
+```dart
 // core/error/failures.dart — DOMAIN FAILURES
 sealed class Failure {
   final String message;
@@ -10238,6 +10265,7 @@ void main() {
     Sentry.captureException(error, stackTrace: stack);
   });
 }
+```
 
 ## FAQ
 
@@ -10381,6 +10409,7 @@ Use `--coverage` and track coverage trends, but do not obsess over a coverage nu
 
 ## Recommended folder structure
 
+```text
 test/                              # mirrors lib/ structure
 ├── core/
 │   ├── error/
@@ -10414,9 +10443,11 @@ integration_test/
 ├── auth_flow_test.dart
 ├── lesson_completion_test.dart
 └── offline_sync_test.dart
+```
 
 ## Code example
 
+```dart
 // test/helpers/mock_repository.dart — shared mock setup
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10554,6 +10585,7 @@ void main() {
     expect(find.byIcon(Icons.check_circle), findsOneWidget);
   });
 }
+```
 
 ## FAQ
 
@@ -10673,6 +10705,7 @@ This cadence requires trunk-based development (no long-lived branches) and featu
 
 ## Recommended folder structure
 
+```text
 lib/
 ├── main.dart                    # production entry point (default)
 ├── main_dev.dart                 # development entry point
@@ -10703,9 +10736,11 @@ ios/
 fastlane/                         # optional, for store metadata management
 ├── Fastfile                      # lanes for upload to Play Store / TestFlight
 └── match/                        # certificate management (private repo)
+```
 
 ## Code example
 
+```dart
 // lib/main_dev.dart — development entry point
 import 'package:flutter/material.dart';
 import 'app.dart';
@@ -10826,6 +10861,7 @@ jobs:
           app-store-connect-key-id: ${{ secrets.ASC_KEY_ID }}
           app-store-connect-private-key: ${{ secrets.ASC_PRIVATE_KEY }}
           app-path: build/ios/ipa/istoria.ipa
+```
 
 ## FAQ
 
@@ -10967,6 +11003,7 @@ At iStoria, our PowerSync sync engine runs entirely on a background thread on th
 
 ## Recommended folder structure
 
+```text
 lib/
 ├── core/
 │   ├── performance/
@@ -10981,9 +11018,11 @@ lib/
 │               ├── lesson_list.dart       # ListView.builder with itemExtent
 │               ├── lesson_tile.dart        # const constructor, granular selector
 │               └── cached_lesson_image.dart # cacheWidth/cacheHeight optimized
+```
 
 ## Code example
 
+```dart
 // core/utils/isolate_runner.dart — typed compute() wrapper
 import 'package:flutter/foundation.dart';
 
@@ -11094,6 +11133,7 @@ class CachedLessonImage extends StatelessWidget {
     );
   }
 }
+```
 
 ## FAQ
 
