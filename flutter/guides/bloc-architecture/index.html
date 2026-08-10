@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>Flutter BLoC Architecture: Structuring Events, States &amp; Logic</h1>
         <p class="pr-tags">State Management · Advanced</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
 <p>BLoC (Business Logic Component) is the state management pattern we use across iStoria's 50+ modules. It separates events (what happened), states (what the UI should show), and the bloc itself (the pure logic that transforms events into states). The result is testable state management that works for both simple and complex feature flows.</p>
 <p>The BLoC ecosystem has two flavors: full BLoC (event-driven, using <code>EventTransformer</code>s and <code>on&lt;Event&gt;</code> handlers) and Cubit (simpler, function-based with <code>emit()</code>). At iStoria we use both — Cubit for features with straightforward state transitions, BLoC for features with complex event flows, debouncing, or analytics requirements.</p>
 <p>This guide covers structuring events, states, and blocs the way a production team does it — not the minimal tutorial version, but the patterns that survive in a 5M-user codebase.</p>

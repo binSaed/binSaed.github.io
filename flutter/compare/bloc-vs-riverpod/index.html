@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>BLoC vs Riverpod</h1>
         <p class="pr-tags">State Management</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
         <h2>Quick answer</h2>
 <p>Use <strong>BLoC</strong> when you lead a team shipping a large, long-lived app where every state transition must be auditable and testable. Use <strong>Riverpod</strong> when you want less ceremony for a smaller app or a feature-team that moves fast and prefers compile-time safety over explicit event classes.</p>
 <p>I run BLoC/Cubit across a 5M-user, 50+ module Flutter codebase at iStoria and I would pick it again for that scale. The enforced separation between events, states, and business logic pays for itself the first time a bug report says "the cart showed the wrong total" and you can replay the exact event stream in a unit test. Riverpod is excellent and I reach for it on greenfield side-projects — but for a squad of engineers who did not all write the original code, BLoC's explicitness is a load-bearing wall.</p>

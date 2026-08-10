@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>Flutter Error Handling: Either&lt;Failure, T&gt; and Beyond</h1>
         <p class="pr-tags">Reliability · Advanced</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
 <p>Error handling in Flutter has two layers: the domain layer (recoverable failures your code handles gracefully) and the platform layer (unexpected crashes you cannot recover from but must report). Mixing them up — catching everything in one big try/catch or throwing exceptions across layers — leads to bugs that are hard to trace and crashes that go unreported.</p>
 <p>At iStoria, we maintain a 99.9% crash-free rate across 5M+ users. The pattern that makes this possible is <code>Either&lt;Failure, T&gt;</code> for recoverable errors and structured crash reporting (Sentry) for everything else. Each layer has a clear responsibility: repositories map exceptions to domain Failures, BLoCs fold over Either, and the platform layer catches the unexpected.</p>
 <p>This guide covers the full pattern — from defining Failure types to wiring up async error zones and crash reporting — as we use it in production.</p>

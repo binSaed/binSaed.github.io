@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>BLoC vs Cubit</h1>
         <p class="pr-tags">State Management</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
         <h2>Quick answer</h2>
 <p><strong>Cubit is a BLoC without event classes.</strong> Same package, same <code>BlocBuilder</code>, same testing infra — you just call methods (<code>emit</code>) instead of dispatching events. Use Cubit for state that changes through simple, internal logic (theme, onboarding step, a toggle). Use full BLoC for flows where <strong>user intent and external triggers</strong> must be traceable (checkout, auth, sync).</p>
 <p>In our 50+ module codebase we use both: Cubit for lightweight feature state, BLoC for anything with a multi-step lifecycle or external inputs. The line is not aesthetic — it is whether you would ever need to ask "what events led to this state?" in a bug report.</p>

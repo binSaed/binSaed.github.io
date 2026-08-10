@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>Offline-First vs Local-First</h1>
         <p class="pr-tags">Architecture</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
         <h2>Quick answer</h2>
 <p><strong>Offline-first</strong> means the app is designed to tolerate disconnection — it caches, queues writes, and degrades gracefully — but the <strong>cloud is still the source of truth</strong>. <strong>Local-first</strong> means the <strong>on-device database is the source of truth</strong> and sync is a background reconciliation, not a primary read/write path. Local-first is the stronger guarantee and the harder architecture.</p>
 <p>At iStoria we run a <strong>local-first</strong> model: PowerSync keeps each device's local Drift/SQLite database authoritative, and the UI never blocks on network. The distinction is not academic — it determines whether the app is usable on a flaky train, and whether concurrent edits survive.</p>

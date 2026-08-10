@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>Flutter Testing Strategy: Unit, Widget &amp; Integration Tests</h1>
         <p class="pr-tags">Reliability · Intermediate</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
 <p>Testing in Flutter follows a pyramid: lots of fast unit tests, a moderate number of widget tests, and a few slow integration tests. The mistake most teams make is inverting the pyramid — writing few unit tests and relying on slow integration tests that are brittle, flaky, and give feedback minutes after a change.</p>
 <p>At iStoria, our 50+ module codebase has thousands of tests running in CI on every pull request. The strategy is simple: domain logic is unit-tested to the extreme, presentation is widget-tested with mocked dependencies, and only critical user journeys get integration tests. This keeps the suite fast (under 3 minutes) and trustworthy (no flaky tests).</p>
 <p>This guide covers what to test at each layer, the patterns we use, and how to keep a large test suite maintainable.</p>

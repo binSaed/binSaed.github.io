@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>Flutter Performance Architecture: Profiling &amp; Optimization</h1>
         <p class="pr-tags">Performance · Advanced</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
 <p>Flutter performance is about two things: not doing unnecessary work on the UI thread, and not blocking the UI thread with work that belongs elsewhere. Jank (dropped frames) happens when the build, layout, or paint phase of a frame takes longer than 16ms (for 60fps). At iStoria, we serve 5M+ users on devices ranging from flagships to low-end Android phones — keeping 60fps across that range requires disciplined architecture, not just clever tricks.</p>
 <p>This guide covers the performance patterns we use: profiling methodology, build optimization, list virtualization, image handling, isolate offloading, and memory management. These are the patterns that separate a smooth app from a janky one at scale.</p>
 

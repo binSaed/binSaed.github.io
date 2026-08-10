@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>Flutter Feature-First Modular Architecture</h1>
         <p class="pr-tags">Architecture · Intermediate</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
 <p>Feature-first modular architecture is the difference between a Flutter codebase that scales and one that collapses under its own weight. At iStoria, we run 50+ modules across a 4-engineer squad. If everything lived in a flat <code>lib/</code> folder, nobody would be able to find anything, and every change would risk breaking an unrelated feature.</p>
 <p>Feature-first means the code is organized by <em>feature</em> (lesson, course, auth, profile), not by <em>type</em> (all models together, all widgets together, all repositories together). Each feature owns its own widgets, state, data, and domain. Features communicate through contracts, not through direct imports of each other's internals.</p>
 <p>The goal is blast-radius containment: a change inside the lesson feature should not require reading or modifying the course feature. This guide shows the pattern we use to achieve that at scale.</p>

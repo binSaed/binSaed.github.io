@@ -92,7 +92,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpXy6d2h.js"></script>
+    <script type="module" crossorigin src="/assets/index-Yr-RbNDI.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-DpmNnsDI.css">
       <style id="prerender-fallback">
@@ -154,6 +154,7 @@
         <p><a href="/flutter/">← Flutter Reference</a></p>
         <h1>Flutter Clean Architecture: A Complete Guide</h1>
         <p class="pr-tags">Architecture · Advanced</p>
+        <p class="pr-muted">By Abdelrahman Saed — Senior Mobile Engineer. Last updated: 2026-08-10.</p>
 <p>Clean Architecture in Flutter is not about layers for the sake of layers — it is about making change cheap and testing easy. On iStoria, a 5M+ user education app with 50+ modules, Clean Architecture is what lets a 4-engineer squad ship weekly without a tangled rewrite every quarter.</p>
 <p>The core idea is the dependency rule: dependencies point inward. The domain layer knows nothing about Flutter, HTTP, or SQLite. The data layer implements the domain's contracts. The presentation layer talks to the domain through use cases. Each boundary is an interface, which means you can swap the database, the HTTP client, or the state management library without touching the business rules.</p>
 <p>This guide is the pattern I use in production — not the textbook version that spawns six use cases per feature. It is trimmed to what actually pays off at scale: testable domain logic, swappable data sources, and a presentation layer that is dumb on purpose.</p>

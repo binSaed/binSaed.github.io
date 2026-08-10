@@ -15,6 +15,13 @@
 - [All articles (index)](https://bnsaed.com/articles/): Browsable hub of every article, grouped by series. Best starting point for the writing.
 - [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide/): Load a PDF from a URL in Flutter with fast native rendering, on-device caching, and offline support — by the `flutter_cached_pdfview` author. Markdown via `Accept: text/markdown` or [direct .md](https://bnsaed.com/_articles/flutter-cached-pdfview-guide.md).
 
+## Flutter Reference — glossary, comparisons, package directory & architecture guides
+
+- [Flutter Reference hub](https://bnsaed.com/flutter/): An in-depth Flutter reference built from 5M+ user production experience — definitions, head-to-head comparisons, curated package directories, and architecture guides.
+- [Glossary](https://bnsaed.com/flutter/): 20 Flutter/Dart terms (BLoC, Cubit, Riverpod, Clean Architecture, Offline-first, Drift, PowerSync, Feature Flags, etc.) — each with a definition, how it works, when to use it, and FAQ.
+- [Comparisons](https://bnsaed.com/flutter/): 20 head-to-head comparisons (BLoC vs Riverpod, Drift vs Hive, Flutter vs React Native, Sentry vs Crashlytics, etc.) — each with a quick answer, feature table, code comparison, and recommendation.
+- [Package Directory](https://bnsaed.com/flutter/): 15 curated "best Flutter [category] packages" pages (state management, PDF, offline data, networking, CI/CD, testing, monetization, etc.) — each with production-tested evaluations and author experience notes.
+
 ### The Self-Driving Repo — a CI/CD automation series
 
 - [The repo that rejects my own pushes to master](https://bnsaed.com/articles/github-actions-branch-protection-guardrails/): Two small GitHub Actions that stop accidental direct pushes to master and auto-restore build-breaking files — reversible by design, with an explicit escape hatch. [direct .md](https://bnsaed.com/_articles/github-actions-branch-protection-guardrails.md).
