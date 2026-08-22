@@ -60,7 +60,7 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 - [clipboard_plus](https://pub.dev/packages/clipboard_plus) — clipboard plugin with silent content-type detection on iOS.
 - [flutter_zoom_checker](https://pub.dev/packages/flutter_zoom_checker) — display-zoom detection plugin.
 - [dio_firebase_performance_plus](https://github.com/binSaed/dio_firebase_performance_plus) — Dio interceptor streaming HTTP metrics to Firebase Performance.
-- Open-source contributions: [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pulls?q=author:binSaed).
+- Open-source contributions: [flutter/website](https://github.com/flutter/website/pull/13639), [flutter/flutter](https://github.com/flutter/flutter/pull/190166), [flutter/flutter](https://github.com/flutter/flutter/pull/190163), [flutter/devtools](https://github.com/flutter/devtools/pull/9925), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/143), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/139), [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36).
 
 ## Articles
 

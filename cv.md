@@ -94,7 +94,7 @@ Senior Mobile Engineer with **7 years** shipping production iOS and Android apps
 - **[dio_firebase_performance_plus](https://github.com/binSaed/dio_firebase_performance_plus)** — Dio interceptor streaming HTTP request metrics to Firebase Performance Monitoring.
 - **[clipboard_plus](https://pub.dev/packages/clipboard_plus)** — Flutter clipboard plugin with **silent content-type detection on iOS** (UIPasteboard) — detects URLs, text, and images without triggering the iOS paste permission dialog.
 - **[Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers)** — WhatsApp stickers Android app with **500K+ installs** on Google Play.
-- **Open-source contributions:** patches and fixes to [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36), and [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pulls?q=author:binSaed).
+- **Open-source contributions:** patches, fixes, and documentation to [flutter/website](https://github.com/flutter/website/pull/13639), [flutter/flutter](https://github.com/flutter/flutter/pull/190166), [flutter/flutter](https://github.com/flutter/flutter/pull/190163), [flutter/devtools](https://github.com/flutter/devtools/pull/9925), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/143), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/139), [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), and [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36).
 
 ## Education
 
