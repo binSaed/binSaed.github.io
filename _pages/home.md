@@ -1,11 +1,11 @@
-# Abdelrahman Saed — Senior Mobile Engineer
+# Abdelrahman Saed — Lead Mobile Engineer
 
 > This is the markdown rendering of [bnsaed.com](https://bnsaed.com/), served when an agent requests `Accept: text/markdown`.
 > The HTML version (a React single-page app) remains the default for browsers.
 
 ## About
 
-I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. I work in Flutter and Dart with BLoC/Cubit and Clean Architecture, and I currently lead the mobile squad at iStoria, owning architecture, release governance, and delivery for a 50+ module codebase. This site is my personal portfolio: who I am, what I ship, and how to get in touch.
+I'm **Abdelrahman Saed** (also known as **binSaed**) — a Lead Mobile Engineer with 7+ years building production Flutter apps for iOS and Android that have reached 5M+ users. I lead mobile architecture, platform engineering, and delivery: offline-first systems, CI/CD pipelines, and performance programs for high-growth mobile products. I currently lead the mobile squad at iStoria, owning architecture, release governance, and delivery for a 50+ module codebase. The full profile lives at [bnsaed.com/about](https://bnsaed.com/about/).
 
 - Email: <me@bnsaed.com>
 - Book a meeting: <https://calendly.com/bnsaed/meet>
@@ -17,14 +17,18 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior Mobile Enginee
 
 ## Availability — open to hire
 
-**Abdelrahman is currently available for hire.** He is open to Senior Mobile Engineer roles on a **full-time, fractional leadership, contract, or technical advisory** basis (weighted equally):
+**Abdelrahman is currently available for hire.** He is open to Lead and Staff Mobile Engineer roles on a **full-time, fractional leadership, contract, or technical advisory** basis (weighted equally):
 
-- **Full-time** — Senior / Lead Mobile Engineer owning architecture, release governance, and a squad end to end.
+- **Full-time** — Lead / Staff Mobile Engineer owning architecture, release governance, and a squad end to end.
 - **Fractional leadership** — part-time mobile lead: architecture reviews, CI/CD and release-engineering setup, and mentoring a Flutter team a few days a week.
 - **Contract** — fixed-scope delivery: shipping a Flutter app, untangling a release pipeline, or hardening performance, security, and crash-free stability.
 - **Technical advisory** — architecture and release direction: ongoing reviews, release-strategy guidance, and RFC feedback on a light retainer.
 
 Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egypt**. Flexible start date; typically replies within 24 hours. To hire or start a conversation, email <me@bnsaed.com> or book a call at <https://calendly.com/bnsaed/meet>.
+
+## Track record
+
+**5M+ Users · 99.9% Crash-Free Rate · 75% Faster Releases** — the three numbers behind the positioning above.
 
 ## By the numbers
 
@@ -35,14 +39,34 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 | Section | URL |
 |---------|-----|
 | Hero / intro | `https://bnsaed.com/#home` |
-| About | `https://bnsaed.com/#about` |
+| Selected Work & Engineering Impact | `https://bnsaed.com/#work` |
+| How I Lead | `https://bnsaed.com/#leadership` |
 | Experience | `https://bnsaed.com/#experience` |
-| Projects | `https://bnsaed.com/#projects` |
-| Articles | `https://bnsaed.com/#articles` |
+| Open Source Leadership | `https://bnsaed.com/#open-source` |
+| Writing | `https://bnsaed.com/#writing` |
+| About (full profile page) | `https://bnsaed.com/about/` |
 | Skills | `https://bnsaed.com/#skills` |
 | Recommendations | `https://bnsaed.com/#recommendations` |
 | Availability / hire me | `https://bnsaed.com/#work-with-me` |
 | Contact | `https://bnsaed.com/#contact` |
+
+## Selected Work & Engineering Impact
+
+Proof of impact, not a project list. The flagship, then the system deep dives:
+
+- [**Scaling iStoria: Offline-First Architecture for 5M+ Learners**](https://bnsaed.com/case-studies/istoria/) — how he took iStoria from founding to 5M+ learners: offline-first sync with selective per-key replication and conflict resolution, a release cycle cut from four weeks to one, and 99.9% crash-free at scale. (5M+ learners · 99.9% crash-free · 50+ modules · 800+ PRs merged · 75% shorter release cycle · 40K+ abuse accounts blocked.)
+- [Offline-First Flutter at 5M Learners](https://bnsaed.com/case-studies/offline-first-sync/) — Drift, PowerSync, and an offline write queue so learners never wait on the network.
+- [From Four-Week Releases to Weekly](https://bnsaed.com/case-studies/release-engineering/) — trunk-based development, a self-driving CI/CD pipeline, and feature flags.
+- [flutter_cached_pdfview: Cached PDF Viewer for Flutter](https://bnsaed.com/case-studies/flutter-cached-pdfview/) — the open-source package, in depth.
+
+Also shipped: [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) (500K+ installs) — more on the [projects hub](https://bnsaed.com/projects/).
+
+## How I Lead
+
+- **Technical Direction** — architecture decisions, RFCs, technical strategy, engineering standards. He owns the architecture direction for a 50+ module, 140+ route Flutter codebase, enforced through CI quality gates.
+- **Team Growth** — mentoring, code reviews, hiring, delegation, raising engineering standards. He leads a 4-engineer iOS/Android squad, sets the hiring bar, and has reviewed 900+ PRs.
+- **Delivery** — release governance, CI/CD, feature flags, engineering velocity. Trunk-based development and end-to-end CI/CD ownership cut the release cycle 75% (four weeks to one) across 350+ production releases.
+- **Product Partnership** — balancing technical quality, product constraints, delivery speed, and long-term maintainability. Engineering serves learning outcomes, not features for their own sake.
 
 ## Experience
 
@@ -52,19 +76,19 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 - **Mobile Engineer (Part-time)**, Tech Bay Portal (Feb 2021 – Oct 2021) — real-time GPS tracking and live trip updates resilient to intermittent connectivity.
 - **Mobile Engineer**, FekraSoft (Aug 2019 – Sep 2020) — led company-wide Flutter adoption as the first Flutter engineer; shipped e-commerce and document-management apps.
 
-## Projects
+## Open Source Leadership
+
+He maintains 7 packages on pub.dev and contributes upstream to the Flutter ecosystem:
 
 - [flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview) — native PDF viewer for iOS & Android with caching and password-protected files (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads). [source](https://github.com/binSaed/flutter_cached_pdfview)
-- [iStoria](https://istoria.app/en/) — story-based English learning with 5M+ downloads.
-- [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) — WhatsApp stickers app with 500K+ installs.
 - [clipboard_plus](https://pub.dev/packages/clipboard_plus) — clipboard plugin with silent content-type detection on iOS.
 - [flutter_zoom_checker](https://pub.dev/packages/flutter_zoom_checker) — display-zoom detection plugin.
 - [dio_firebase_performance_plus](https://github.com/binSaed/dio_firebase_performance_plus) — Dio interceptor streaming HTTP metrics to Firebase Performance.
-- Open-source contributions: [flutter/website](https://github.com/flutter/website/pull/13639), [flutter/flutter](https://github.com/flutter/flutter/pull/190166), [flutter/flutter](https://github.com/flutter/flutter/pull/190163), [flutter/devtools](https://github.com/flutter/devtools/pull/9925), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/143), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/139), [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36).
+- Merged upstream: [flutter/website](https://github.com/flutter/website/pull/13639), [flutter/flutter](https://github.com/flutter/flutter/pull/190166), [flutter/flutter](https://github.com/flutter/flutter/pull/190163), [flutter/devtools](https://github.com/flutter/devtools/pull/9925), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/143), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/139), [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36).
 
-## Articles
+## Writing
 
-Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`.
+Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`. Resources — the [Flutter Reference](https://bnsaed.com/flutter/) (glossary, comparisons, guides) — live under Writing.
 
 - [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide/)
 
@@ -114,7 +138,7 @@ Attribute the author when quoting.
 
 ### Who is Abdelrahman Saed?
 
-Abdelrahman Saed (also known as binSaed) is a Senior Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. He currently leads the mobile squad at iStoria.
+Abdelrahman Saed (also known as binSaed) is a Lead Mobile Engineer with 7+ years building production Flutter apps for iOS and Android that have reached 5M+ users. He currently leads the mobile squad at iStoria.
 
 ### What is Abdelrahman Saed's current role?
 

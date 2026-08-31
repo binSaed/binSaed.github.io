@@ -1,18 +1,18 @@
 # Abdelrahman Saed (binSaed) — full text for LLMs
 
-> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-08-30.
+> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-08-31.
 > Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
 
 ---
 
-# Abdelrahman Saed — Senior Mobile Engineer
+# Abdelrahman Saed — Lead Mobile Engineer
 
 > This is the markdown rendering of [bnsaed.com](https://bnsaed.com/), served when an agent requests `Accept: text/markdown`.
 > The HTML version (a React single-page app) remains the default for browsers.
 
 ## About
 
-I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. I work in Flutter and Dart with BLoC/Cubit and Clean Architecture, and I currently lead the mobile squad at iStoria, owning architecture, release governance, and delivery for a 50+ module codebase. This site is my personal portfolio: who I am, what I ship, and how to get in touch.
+I'm **Abdelrahman Saed** (also known as **binSaed**) — a Lead Mobile Engineer with 7+ years building production Flutter apps for iOS and Android that have reached 5M+ users. I lead mobile architecture, platform engineering, and delivery: offline-first systems, CI/CD pipelines, and performance programs for high-growth mobile products. I currently lead the mobile squad at iStoria, owning architecture, release governance, and delivery for a 50+ module codebase. The full profile lives at [bnsaed.com/about](https://bnsaed.com/about/).
 
 - Email: <me@bnsaed.com>
 - Book a meeting: <https://calendly.com/bnsaed/meet>
@@ -24,14 +24,18 @@ I'm **Abdelrahman Saed** (also known as **binSaed**) — a Senior Mobile Enginee
 
 ## Availability — open to hire
 
-**Abdelrahman is currently available for hire.** He is open to Senior Mobile Engineer roles on a **full-time, fractional leadership, contract, or technical advisory** basis (weighted equally):
+**Abdelrahman is currently available for hire.** He is open to Lead and Staff Mobile Engineer roles on a **full-time, fractional leadership, contract, or technical advisory** basis (weighted equally):
 
-- **Full-time** — Senior / Lead Mobile Engineer owning architecture, release governance, and a squad end to end.
+- **Full-time** — Lead / Staff Mobile Engineer owning architecture, release governance, and a squad end to end.
 - **Fractional leadership** — part-time mobile lead: architecture reviews, CI/CD and release-engineering setup, and mentoring a Flutter team a few days a week.
 - **Contract** — fixed-scope delivery: shipping a Flutter app, untangling a release pipeline, or hardening performance, security, and crash-free stability.
 - **Technical advisory** — architecture and release direction: ongoing reviews, release-strategy guidance, and RFC feedback on a light retainer.
 
 Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egypt**. Flexible start date; typically replies within 24 hours. To hire or start a conversation, email <me@bnsaed.com> or book a call at <https://calendly.com/bnsaed/meet>.
+
+## Track record
+
+**5M+ Users · 99.9% Crash-Free Rate · 75% Faster Releases** — the three numbers behind the positioning above.
 
 ## By the numbers
 
@@ -42,14 +46,34 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 | Section | URL |
 |---------|-----|
 | Hero / intro | `https://bnsaed.com/#home` |
-| About | `https://bnsaed.com/#about` |
+| Selected Work & Engineering Impact | `https://bnsaed.com/#work` |
+| How I Lead | `https://bnsaed.com/#leadership` |
 | Experience | `https://bnsaed.com/#experience` |
-| Projects | `https://bnsaed.com/#projects` |
-| Articles | `https://bnsaed.com/#articles` |
+| Open Source Leadership | `https://bnsaed.com/#open-source` |
+| Writing | `https://bnsaed.com/#writing` |
+| About (full profile page) | `https://bnsaed.com/about/` |
 | Skills | `https://bnsaed.com/#skills` |
 | Recommendations | `https://bnsaed.com/#recommendations` |
 | Availability / hire me | `https://bnsaed.com/#work-with-me` |
 | Contact | `https://bnsaed.com/#contact` |
+
+## Selected Work & Engineering Impact
+
+Proof of impact, not a project list. The flagship, then the system deep dives:
+
+- [**Scaling iStoria: Offline-First Architecture for 5M+ Learners**](https://bnsaed.com/case-studies/istoria/) — how he took iStoria from founding to 5M+ learners: offline-first sync with selective per-key replication and conflict resolution, a release cycle cut from four weeks to one, and 99.9% crash-free at scale. (5M+ learners · 99.9% crash-free · 50+ modules · 800+ PRs merged · 75% shorter release cycle · 40K+ abuse accounts blocked.)
+- [Offline-First Flutter at 5M Learners](https://bnsaed.com/case-studies/offline-first-sync/) — Drift, PowerSync, and an offline write queue so learners never wait on the network.
+- [From Four-Week Releases to Weekly](https://bnsaed.com/case-studies/release-engineering/) — trunk-based development, a self-driving CI/CD pipeline, and feature flags.
+- [flutter_cached_pdfview: Cached PDF Viewer for Flutter](https://bnsaed.com/case-studies/flutter-cached-pdfview/) — the open-source package, in depth.
+
+Also shipped: [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) (500K+ installs) — more on the [projects hub](https://bnsaed.com/projects/).
+
+## How I Lead
+
+- **Technical Direction** — architecture decisions, RFCs, technical strategy, engineering standards. He owns the architecture direction for a 50+ module, 140+ route Flutter codebase, enforced through CI quality gates.
+- **Team Growth** — mentoring, code reviews, hiring, delegation, raising engineering standards. He leads a 4-engineer iOS/Android squad, sets the hiring bar, and has reviewed 900+ PRs.
+- **Delivery** — release governance, CI/CD, feature flags, engineering velocity. Trunk-based development and end-to-end CI/CD ownership cut the release cycle 75% (four weeks to one) across 350+ production releases.
+- **Product Partnership** — balancing technical quality, product constraints, delivery speed, and long-term maintainability. Engineering serves learning outcomes, not features for their own sake.
 
 ## Experience
 
@@ -59,19 +83,19 @@ Work setup: **remote (worldwide)**, or **hybrid / on-site across the Gulf & Egyp
 - **Mobile Engineer (Part-time)**, Tech Bay Portal (Feb 2021 – Oct 2021) — real-time GPS tracking and live trip updates resilient to intermittent connectivity.
 - **Mobile Engineer**, FekraSoft (Aug 2019 – Sep 2020) — led company-wide Flutter adoption as the first Flutter engineer; shipped e-commerce and document-management apps.
 
-## Projects
+## Open Source Leadership
+
+He maintains 7 packages on pub.dev and contributes upstream to the Flutter ecosystem:
 
 - [flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview) — native PDF viewer for iOS & Android with caching and password-protected files (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads). [source](https://github.com/binSaed/flutter_cached_pdfview)
-- [iStoria](https://istoria.app/en/) — story-based English learning with 5M+ downloads.
-- [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) — WhatsApp stickers app with 500K+ installs.
 - [clipboard_plus](https://pub.dev/packages/clipboard_plus) — clipboard plugin with silent content-type detection on iOS.
 - [flutter_zoom_checker](https://pub.dev/packages/flutter_zoom_checker) — display-zoom detection plugin.
 - [dio_firebase_performance_plus](https://github.com/binSaed/dio_firebase_performance_plus) — Dio interceptor streaming HTTP metrics to Firebase Performance.
-- Open-source contributions: [flutter/website](https://github.com/flutter/website/pull/13639), [flutter/flutter](https://github.com/flutter/flutter/pull/190166), [flutter/flutter](https://github.com/flutter/flutter/pull/190163), [flutter/devtools](https://github.com/flutter/devtools/pull/9925), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/143), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/139), [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36).
+- Merged upstream: [flutter/website](https://github.com/flutter/website/pull/13639), [flutter/flutter](https://github.com/flutter/flutter/pull/190166), [flutter/flutter](https://github.com/flutter/flutter/pull/190163), [flutter/devtools](https://github.com/flutter/devtools/pull/9925), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/143), [growthbook-flutter](https://github.com/growthbook/growthbook-flutter/pull/139), [youtube_explode_dart](https://github.com/Hexer10/youtube_explode_dart/pull/371), [dio_smart_retry](https://github.com/rodion-m/dio_smart_retry/pull/36).
 
-## Articles
+## Writing
 
-Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`.
+Long-form posts are published under `/articles/:slug`. Each is also available as markdown via `Accept: text/markdown`. Resources — the [Flutter Reference](https://bnsaed.com/flutter/) (glossary, comparisons, guides) — live under Writing.
 
 - [Building a Cached PDF Viewer in Flutter](https://bnsaed.com/articles/flutter-cached-pdfview-guide/)
 
@@ -121,7 +145,7 @@ Attribute the author when quoting.
 
 ### Who is Abdelrahman Saed?
 
-Abdelrahman Saed (also known as binSaed) is a Senior Mobile Engineer with 7 years building production Flutter apps for iOS and Android that have reached 5M+ users. He currently leads the mobile squad at iStoria.
+Abdelrahman Saed (also known as binSaed) is a Lead Mobile Engineer with 7+ years building production Flutter apps for iOS and Android that have reached 5M+ users. He currently leads the mobile squad at iStoria.
 
 ### What is Abdelrahman Saed's current role?
 
@@ -145,7 +169,7 @@ Yes for user-facing answers (`ai-input=yes`), but not for training AI models (`a
 
 ---
 
-# Abdelrahman Saed — Senior Mobile Engineer
+# Abdelrahman Saed — Lead Mobile Engineer
 
 > Full CV / résumé of [Abdelrahman Saed](https://bnsaed.com) (binSaed · Arabic: عبدالرحمن سعيد), in markdown for easy reading by humans and AI systems.
 > Source of truth is the LaTeX CV at <https://github.com/binSaed/CV>; the PDF is at <https://bnsaed.com/CV/cv.pdf>.
@@ -164,7 +188,7 @@ Yes for user-facing answers (`ai-input=yes`), but not for training AI models (`a
 
 ## Summary
 
-Senior Mobile Engineer with **7 years** shipping production iOS and Android apps to **5M+ users** — Flutter, Dart, BLoC / Cubit, Clean Architecture. Lead a 4-engineer squad at [iStoria](https://istoria.app/en/) (EdTech · English language learning), owning architecture, release governance, and delivery for a **50+ module** codebase. Shipped **350+ production releases**, reviewed **900+ PRs**, sustained a **99.9% crash-free rate**, and cut the release cycle from **4 weeks to 1**.
+Lead Mobile Engineer with **7+ years** shipping production iOS and Android apps to **5M+ users** — Flutter, Dart, BLoC / Cubit, Clean Architecture. Lead a 4-engineer squad at [iStoria](https://istoria.app/en/) (EdTech · English language learning), owning architecture, release governance, and delivery for a **50+ module** codebase. Shipped **350+ production releases**, reviewed **900+ PRs**, sustained a **99.9% crash-free rate**, and cut the release cycle from **4 weeks to 1**.
 
 ## Skills
 
@@ -3970,15 +3994,23 @@ If you want the production version of how this plays out — the read path, the 
 
 ---
 
-# iStoria: Scaling Flutter to 5M+ Learners — Case Study
+# Scaling iStoria: Offline-First Architecture for 5M+ Learners — Case Study
 
-Scaling story-based English learning to 5M+ learners
+Offline-first Flutter architecture behind story-based English learning for 5M+ learners
 
-## The Problem
+## Context
 
-iStoria teaches English through short, narrated stories. I joined as the founding mobile engineer and now lead the squad — which meant owning the mobile app the whole way from a founding-stage build to **5M+ learners across iOS and Android**.
+iStoria teaches English through short, narrated stories — listening, reading, and speaking practice wrapped in a streak-driven learning loop. Today it serves **5M+ learners across iOS and Android**.
 
-The job was never a single feature. It was an architecture that could hold a demanding set of requirements *at once* — offline access, real-time audio, a fast release cadence, content protection, and a codebase a small team could keep moving in — and keep getting *faster* as it grew. Get the platform right and every feature after it ships cheaply; get it wrong and the whole thing calcifies. The constraints below shaped every decision that followed.
+I joined as the founding mobile engineer in 2022 and have owned the app the whole way from founding-stage build to a platform serving millions: I designed the architecture, built the offline-first data layer, ran the release process — and since June 2025 I lead the four-engineer iOS/Android squad that ships it.
+
+This study is the honest account of that arc: what the product needed, what I personally owned, the decisions that got us here, the trade-offs they cost, and the numbers that came out the other end.
+
+## The Challenge
+
+The job was never a single feature. It was an architecture that could hold a demanding set of requirements *at once* — offline access, real-time audio, a fast release cadence, content protection, and a codebase a small team could keep moving in — and keep getting *faster* as it grew.
+
+Get the platform right and every feature after it ships cheaply; get it wrong and the whole thing calcifies. The constraints below shaped every decision that followed.
 
 ## Constraints
 
@@ -3990,20 +4022,29 @@ Before any architecture, the non-negotiables the mobile app had to satisfy simul
 - **A small squad against a large surface.** Four engineers owning 50+ modules and 140+ routes meant the architecture itself had to keep everyone fast — consistency enforced by structure, not willpower.
 - **Protect subscription revenue without punishing honest learners.** Piracy and account abuse threaten the catalog that funds the product; the defense had to stay invisible to legitimate users.
 
-## The Solution
+## My Ownership
 
-We built iStoria on **Clean Architecture with a feature-modular Flutter codebase** — today **50+ feature modules** behind **140+ routes** — so teams work in isolation and the app stays navigable as it grows.
+What *I* personally owned across this arc — separate from what the product achieved. The distinction matters at this scale: outcomes below are the squad's; the rails they run on are mine.
 
-The core bets:
+- **Architecture direction.** I designed — and still own — the Clean Architecture, feature-modular layout: 50+ feature modules behind 140+ routes, and the `DataSource → Repository → Cubit` convention every feature follows.
+- **The offline-first data layer.** I designed the PowerSync + Drift infrastructure: selective per-key sync, conflict resolution, and the schema-migration strategy serving millions of accounts. The deep dive is [Offline-First Flutter at 5M Learners](/case-studies/offline-first-sync/).
+- **Release governance and CI/CD.** I own the pipeline end to end — trunk-based development, feature flags, 14 CI/CD workflows — and cut the release cycle from four weeks to one. The mechanics are in [From Four-Week Releases to Weekly](/case-studies/release-engineering/).
+- **The performance program.** I drove the sustained work that took ~35% off cold start, ~60% off rendering, and ~20% off memory, tracked release-over-release through Sentry.
+- **Team leadership.** Since June 2025 I lead the 4-engineer iOS/Android squad — architecture direction, the hiring bar, release governance, and quarterly roadmaps for the 5M+ user base.
+- **Security.** I architected the cross-platform anti-piracy system (jailbreak / root / tamper detection plus backend behavioral analysis) and hardened the app end to end: PII masked in logs and Sentry, cleartext traffic disabled, TLS certificate validation enforced.
+
+## Architecture
+
+### The platform
+
+I designed iStoria on **Clean Architecture with a feature-modular Flutter codebase** — today **50+ feature modules** behind **140+ routes** — so a small team works in isolation and the app stays navigable as it grows. Four bets carry the platform:
 
 - **Offline-first by default.** A **PowerSync + Drift** data layer keeps a local SQLite mirror in sync with the backend, with selective per-key sync and conflict resolution, so learners never wait on the network for their own progress.
 - **Reactive presentation with BLoC/Cubit.** State is modeled explicitly per feature through a `DataSource → Repository → Cubit` flow, with `Either<Failure, T>` error handling so failures are values the UI renders rather than exceptions that crash it.
 - **A pipeline built for weekly shipping.** Trunk-based development, feature flags, and end-to-end CI/CD took the release cycle from **four weeks to one** — across **800+ merged PRs** — without lowering the crash-free bar.
 - **Security as a first-class feature.** A cross-platform anti-piracy system plus hardened logging and transport protect both the catalog and learner data.
 
-On top of that platform I shipped the features learners actually touch — daily **streaks**, a social **Leaderboard**, friend **referrals**, the **iStro** AI chat companion, AI **"Read-with"** speech practice, home-screen **widgets**, **dark mode**, and a steady stream of **subscription and paywall experiments**. The rest of this case study walks through how the platform makes that pace possible.
-
-## Architecture
+On top of that platform the squad ships the features learners actually touch — daily **streaks**, a social **Leaderboard**, friend **referrals**, the **iStro** AI chat companion, AI **"Read-with"** speech practice, home-screen **widgets**, **dark mode**, and a steady stream of **subscription and paywall experiments**.
 
 ### Layering
 
@@ -4043,28 +4084,32 @@ The learning loop is audio-heavy: `just_audio` for story playback, `flutter_tts`
 
 Subscriptions run through **RevenueCat**, behind a paywall that is constantly A/B-tested — family plans, returning-user redesigns, and trial and pricing variants — gated by **GrowthBook** feature flags so experiments ship dark and ramp safely. Product and stability signals fan out to Firebase, Adjust, Sentry, and Clarity. The app builds in multiple flavors (development / staging / production), so one pipeline ships the same codebase to internal and store channels.
 
-## Performance
+## Trade-offs
 
-Performance was a standing program, not a one-off cleanup. Three numbers tracked the work:
+None of the bets above were free. The ones worth documenting:
 
-- **~35% faster cold start** — deferred and lazy initialization moved non-critical work off the launch path, so the app reaches first meaningful content sooner.
-- **~60% rendering improvement** — `const` widgets, tighter rebuild scoping, and list/image optimizations cut wasted frames on the audio and catalog screens.
-- **~20% lower memory** — trimming retained objects and streaming heavy media kept large stories and long sessions stable on low-end devices.
-
-Stability held the line throughout: a **99.9% crash-free** rate, watched through Sentry with fast triage so regressions are caught release-over-release rather than in store reviews.
+- **Selective per-key sync over whole-database sync.** Syncing only the keys a learner actually needs keeps the local database small and saves bandwidth and battery — at the price of a more complex sync contract: per-key replication rules and PowerSync view migrations the team has to understand. Whole-database sync would have been simpler to build and costlier forever.
+- **Modularity over build simplicity.** 50+ feature modules add tooling and boundary-discipline overhead — CI quality gates, review conventions, module scaffolding. The payoff is four engineers moving in parallel without stepping on each other, and a codebase where an unfamiliar module is readable in seconds. "Consistency beats cleverness" is the operating rule that makes the trade worth it.
+- **Trunk-based + flags over long-lived branches.** Continuous integration is what made weekly releases safe, but it moves the risk into flag hygiene: every dark-shipped feature must be deliberately ramped or killed. A misconfigured flag replaces the merge conflict — rarer, but higher-stakes.
+- **Weekly cadence as a stability investment.** The automation that made weekly shipping possible — branch protection, auto-rebasing bots, generated QA reports — took real engineering time that could have gone to features. It repaid itself: 350+ releases at a 99.9% crash-free rate, with velocity and stability holding together instead of trading off.
 
 ## Results
 
-The architecture paid off where it counts — in reach, stability, shipping speed, and the breadth of what a small team could ship:
+### Product outcome
 
 - **5M+ learners** on iOS and Android, at a **99.9% crash-free** rate.
 - **800+ merged PRs**, **350+ production releases**, and the release cycle cut **from four weeks to one**.
 - **40,000+ abusive accounts auto-blocked** by the cross-platform anti-piracy system (jailbreak / root / tamper detection plus backend behavioral analysis), protecting subscription revenue.
+- A sustained performance program: **~35% faster cold start**, **~60% rendering improvement**, and **~20% lower memory** — kept large stories and long sessions stable on low-end devices.
 - A run of growth and AI features shipped end-to-end — daily **streaks**, a social **Leaderboard** with sharing, friend **referrals**, the **iStro** AI chat companion, AI **"Read-with"** speech practice, home-screen **widgets**, **dark mode**, quizzes, and an ongoing program of **subscription and paywall experiments**.
 
-I grew from founding mobile engineer into leading a four-engineer iOS/Android squad that owns architecture, release governance, and the roadmap for the entire 5M+ user base.
+### My contribution
 
-## Lessons Learned
+I designed the architecture and own it still. I built the offline-first data layer, the release pipeline, and the anti-piracy system; I drove the performance program behind the three numbers above; and I lead the four-engineer squad that ships all of it. The outcomes ran on rails I laid and maintain.
+
+> **Impact measurement:** production crash telemetry (Sentry, release-over-release) and CI/CD delivery records (GitHub Actions — release counts, cycle time, merged PRs).
+
+## Engineering Lessons
 
 What held up under load — and what I'd weigh differently next time:
 
@@ -4146,7 +4191,7 @@ The payoff is felt, not benchmarked:
 - Every feature built afterward **inherited offline support for free**, because the read/write plumbing lives in the shared data layer rather than in each screen.
 - A single, consistent `Either<Failure, T>` data flow across the app — offline and error states handled by design instead of re-invented per screen.
 
-## Lessons Learned
+## Engineering Lessons
 
 - **Offline-first is an architecture decision, not a feature.** Committing to local-first reads up front meant every screen inherited it. Retrofitting caching screen-by-screen later would have touched every data path in the app.
 - **Make the offline write path explicit.** Opting writes in with a flag — rather than queuing everything — kept the behaviour predictable and stopped failed reads from becoming phantom writes.
@@ -4207,7 +4252,7 @@ I wrote about the guardrail half of this at length in the **[Self-Driving Repo](
 - An entire category of manual release work — rebasing, conflict-chasing, branch cleanup, QA reporting — taken **off people's plates** and done more reliably by CI than by hand.
 - Deploy decoupled from release: the team ships continuously and *chooses* when learners see something, instead of the store review being the release event.
 
-## Lessons Learned
+## Engineering Lessons
 
 - **Automate the repository itself.** The highest-leverage CI work wasn't building the app — it was the small, sharp jobs that keep the trunk mergeable so a busy team never drowns in hygiene.
 - **Feature flags are what make trunk-based safe.** Being able to merge unfinished work dark, ramp it, and kill it instantly is what lets you integrate continuously without shipping half-done features.
@@ -4290,7 +4335,7 @@ The package became one of the go-to PDF solutions in the Flutter ecosystem:
 
 A small library with an outsized footprint: a focused tool that solved a recurring problem well enough that thousands of other apps now rely on it. The companion guide below walks through using it end-to-end.
 
-## Lessons Learned
+## Engineering Lessons
 
 Three things this package reinforced:
 

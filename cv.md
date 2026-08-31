@@ -1,4 +1,4 @@
-# Abdelrahman Saed — Senior Mobile Engineer
+# Abdelrahman Saed — Lead Mobile Engineer
 
 > Full CV / résumé of [Abdelrahman Saed](https://bnsaed.com) (binSaed · Arabic: عبدالرحمن سعيد), in markdown for easy reading by humans and AI systems.
 > Source of truth is the LaTeX CV at <https://github.com/binSaed/CV>; the PDF is at <https://bnsaed.com/CV/cv.pdf>.
@@ -17,7 +17,7 @@
 
 ## Summary
 
-Senior Mobile Engineer with **7 years** shipping production iOS and Android apps to **5M+ users** — Flutter, Dart, BLoC / Cubit, Clean Architecture. Lead a 4-engineer squad at [iStoria](https://istoria.app/en/) (EdTech · English language learning), owning architecture, release governance, and delivery for a **50+ module** codebase. Shipped **350+ production releases**, reviewed **900+ PRs**, sustained a **99.9% crash-free rate**, and cut the release cycle from **4 weeks to 1**.
+Lead Mobile Engineer with **7+ years** shipping production iOS and Android apps to **5M+ users** — Flutter, Dart, BLoC / Cubit, Clean Architecture. Lead a 4-engineer squad at [iStoria](https://istoria.app/en/) (EdTech · English language learning), owning architecture, release governance, and delivery for a **50+ module** codebase. Shipped **350+ production releases**, reviewed **900+ PRs**, sustained a **99.9% crash-free rate**, and cut the release cycle from **4 weeks to 1**.
 
 ## Skills
 

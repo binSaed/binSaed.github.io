@@ -1,16 +1,17 @@
-# Hire a Senior Flutter Engineer & Fractional Mobile Lead — Abdelrahman Saed
+# Hire a Lead Mobile Engineer & Flutter Architect — Abdelrahman Saed
 
 > This is the markdown rendering of [bnsaed.com/hire](https://bnsaed.com/hire/), served when an agent requests `Accept: text/markdown`.
 > The HTML version remains the default for browsers.
 
-**Available for hire.** Full-time mobile lead or Flutter tech lead, fractional mobile lead a few days a week, a fixed-scope Flutter contract, or ongoing technical advisory — pick the engagement that fits. 5M+ users reached, 99.9% crash-free sessions, 350+ production releases, 900+ PRs reviewed.
+**Available for hire.** Let's build mobile systems that hold at scale — engineering leadership and technical expertise for high-stakes mobile products. Full-time mobile lead or Flutter tech lead, fractional leadership a few days a week, a fixed-scope engagement, or ongoing technical advisory. 5M+ users reached, 99.9% crash-free sessions, 350+ production releases, 900+ PRs reviewed.
 
-## Engagement types
+## Service tiers
 
-- **Full-time — Lead / Staff Mobile Engineer.** For teams scaling a mobile app past their first million users. Own mobile architecture, release governance, and a squad end to end — the way he does today at iStoria for a 5M+ user app. Outcome: an architecture and release process that ships weekly at 99.9% crash-free.
-- **Fractional Leadership — part-time mobile lead.** For founders and teams without a senior mobile lead. A few days a week: architecture reviews, CI/CD and release-engineering setup, and mentoring a growing Flutter team. Outcome: architecture direction, a CI/CD pipeline, and a hiring bar — without a full-time hire.
-- **Contract — fixed-scope delivery.** For a defined build, launch, or rescue with a real deadline. Ship a Flutter app, untangle a release pipeline, or harden performance, security, and crash-free stability. Outcome: a shipped result on a written scope.
-- **Technical Advisory — architecture & release direction.** For teams that need senior direction, not another pair of hands. Ongoing architecture reviews, release-strategy guidance, and RFC feedback on a light retainer.
+- **Fractional / Full-Time Leadership.** Drive technical strategy, mentor developers, enforce release governance, and architect scalable solutions for high-stakes products. Architecture · team leadership · technical strategy · mentoring · delivery · engineering standards.
+- **Architecture & Performance Audits.** Deep codebase audits, performance profiling, and actionable refactoring roadmaps for memory leaks and state management. Architecture review · performance profiling · memory · rendering · state management · technical debt · refactoring roadmap.
+- **End-to-End Product Delivery.** Build robust, scalable MVPs and enterprise apps with clean architecture and automated CI/CD pipelines baked in from day one. Flutter · clean architecture · CI/CD · testing · production readiness · scalability.
+
+Engagement modes: full-time · fractional leadership · contract · technical advisory — pick the shape that fits; the tiers describe what you get.
 
 ## Practical details
 
@@ -30,7 +31,7 @@
 
 ## Questions before hiring
 
-**Is Abdelrahman available for hire?** Yes — open to Senior Mobile Engineer roles on a full-time, fractional leadership, contract, or technical advisory basis, remote worldwide or hybrid / on-site across the Gulf and Egypt. He can start on two weeks' notice and typically replies within 24 hours.
+**Is Abdelrahman available for hire?** Yes — open to Lead and Staff Mobile Engineer roles on a full-time, fractional leadership, contract, or technical advisory basis, remote worldwide or hybrid / on-site across the Gulf and Egypt. He can start on two weeks' notice and typically replies within 24 hours.
 
 **Why is he open to new roles?** He's spent over four years building one product — iStoria, from founding mobile engineer to leading the mobile squad behind 5M+ learners. He's proud of that run, and after four years on the same product and business he's looking for a fresh set of engineering challenges to sink into. Nothing more complicated than that.
 
@@ -38,9 +39,11 @@
 
 **Which time zones does he work with?** Based in Cairo (UTC+2/+3) with comfortable overlap across European and Gulf hours, and used to async collaboration with distributed teams — remote worldwide is the default.
 
+**How can I contact Abdelrahman Saed?** Email is the preferred channel: [me@bnsaed.com](mailto:me@bnsaed.com). To schedule a call directly, [book a meeting via Calendly](https://calendly.com/bnsaed/meet). He is also reachable on [GitHub](https://github.com/binSaed), [LinkedIn](https://www.linkedin.com/in/binsaed/), [YouTube](https://www.youtube.com/@binSaed), and [Stack Overflow](https://stackoverflow.com/users/11001850/abdelrahman-saed).
+
 ## Start the conversation
 
 - Email (preferred): <me@bnsaed.com>
-- Book a 20-minute call: <https://calendly.com/bnsaed/meet>
+- Schedule a technical fit call: <https://calendly.com/bnsaed/meet>
 - LinkedIn: <https://www.linkedin.com/in/binsaed/>
 - YouTube: <https://www.youtube.com/@binSaed>

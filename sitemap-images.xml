@@ -8,7 +8,7 @@
     </image:image>
     <image:image>
       <image:loc>https://bnsaed.com/project-images/istoria.webp</image:loc>
-      <image:caption>iStoria: Scaling Flutter to 5M+ Learners</image:caption>
+      <image:caption>Scaling iStoria: Offline-First Architecture for 5M+ Learners</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://bnsaed.com/project-images/flutter-cached-pdfview.webp</image:loc>
@@ -168,11 +168,11 @@
     <loc>https://bnsaed.com/case-studies/istoria/</loc>
     <image:image>
       <image:loc>https://bnsaed.com/project-images/istoria.webp</image:loc>
-      <image:caption>iStoria: Scaling Flutter to 5M+ Learners</image:caption>
+      <image:caption>Scaling iStoria: Offline-First Architecture for 5M+ Learners</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://bnsaed.com/case-study-og/istoria.png</image:loc>
-      <image:caption>iStoria: Scaling Flutter to 5M+ Learners</image:caption>
+      <image:caption>Scaling iStoria: Offline-First Architecture for 5M+ Learners</image:caption>
     </image:image>
   </url>
   <url>
@@ -198,6 +198,13 @@
     <image:image>
       <image:loc>https://bnsaed.com/case-study-og/flutter-cached-pdfview.png</image:loc>
       <image:caption>flutter_cached_pdfview: Cached PDF Viewer for Flutter</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/about/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/hub-og/about.png</image:loc>
+      <image:caption>Abdelrahman Saed — about</image:caption>
     </image:image>
   </url>
   <url>

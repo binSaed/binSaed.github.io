@@ -5,7 +5,7 @@
     <link>https://bnsaed.com/</link>
     <description>Writing and case studies by Abdelrahman Saed — Flutter, mobile architecture, release engineering, and CI/CD automation.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 30 Aug 2026 10:13:42 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 12:41:57 GMT</lastBuildDate>
     <atom:link href="https://bnsaed.com/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>Offline-First vs Local-First: What&apos;s the Difference?</title>
@@ -77,11 +77,11 @@
       <category>Architecture</category>
     </item>
     <item>
-      <title>Case study: iStoria: Scaling Flutter to 5M+ Learners — Scaling story-based English learning to 5M+ learners</title>
+      <title>Case study: Scaling iStoria: Offline-First Architecture for 5M+ Learners — Offline-first Flutter architecture behind story-based English learning for 5M+ learners</title>
       <link>https://bnsaed.com/case-studies/istoria/</link>
       <guid isPermaLink="true">https://bnsaed.com/case-studies/istoria/</guid>
       <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
-      <description>How I took iStoria from founding to 5M+ learners — an offline-first Flutter architecture, a release cycle cut from four weeks to one, and 99.9% crash-free at scale.</description>
+      <description>How I scaled iStoria to 5M+ learners — offline-first sync with conflict resolution, weekly releases, and 99.9% crash-free held at scale.</description>
       <category>Flutter</category>
       <category>EdTech</category>
       <category>Offline-first</category>

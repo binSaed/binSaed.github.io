@@ -73,7 +73,7 @@ I wrote about the guardrail half of this at length in the **[Self-Driving Repo](
 - An entire category of manual release work — rebasing, conflict-chasing, branch cleanup, QA reporting — taken **off people's plates** and done more reliably by CI than by hand.
 - Deploy decoupled from release: the team ships continuously and *chooses* when learners see something, instead of the store review being the release event.
 
-## Lessons Learned
+## Engineering Lessons
 
 - **Automate the repository itself.** The highest-leverage CI work wasn't building the app — it was the small, sharp jobs that keep the trunk mergeable so a busy team never drowns in hygiene.
 - **Feature flags are what make trunk-based safe.** Being able to merge unfinished work dark, ramp it, and kill it instantly is what lets you integrate continuously without shipping half-done features.

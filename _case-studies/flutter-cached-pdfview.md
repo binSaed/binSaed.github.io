@@ -96,7 +96,7 @@ The package became one of the go-to PDF solutions in the Flutter ecosystem:
 
 A small library with an outsized footprint: a focused tool that solved a recurring problem well enough that thousands of other apps now rely on it. The companion guide below walks through using it end-to-end.
 
-## Lessons Learned
+## Engineering Lessons
 
 Three things this package reinforced:
 

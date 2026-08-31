@@ -91,7 +91,7 @@ The payoff is felt, not benchmarked:
 - Every feature built afterward **inherited offline support for free**, because the read/write plumbing lives in the shared data layer rather than in each screen.
 - A single, consistent `Either<Failure, T>` data flow across the app — offline and error states handled by design instead of re-invented per screen.
 
-## Lessons Learned
+## Engineering Lessons
 
 - **Offline-first is an architecture decision, not a feature.** Committing to local-first reads up front meant every screen inherited it. Retrofitting caching screen-by-screen later would have touched every data path in the app.
 - **Make the offline write path explicit.** Opting writes in with a flag — rather than queuing everything — kept the behaviour predictable and stopped failed reads from becoming phantom writes.
