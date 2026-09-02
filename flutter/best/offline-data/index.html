@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-Da_4XoZ5.js"></script>
+    <script type="module" crossorigin src="/assets/index-DtA8scUi.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-c2r36fpU.css">
       <style id="prerender-fallback">
@@ -251,6 +251,50 @@
         </ul>
         <p><strong>Best for:</strong> Offline-first apps with a Postgres backend that need automatic sync and conflict resolution.</p>
         <p><em>Production note:</em> PowerSync is the sync engine at iStoria. It streams changes between the local Drift database and Postgres, with selective per-key sync for 5M+ accounts. The UI never awaits a fetch to render — PowerSync reconciles in the background.</p>
+        <h2>Related comparisons</h2>
+        <ul>
+          <li><a href="/flutter/compare/drift-vs-hive/">Drift vs Hive</a></li>
+          <li><a href="/flutter/compare/drift-vs-sqflite/">Drift vs sqflite</a></li>
+          <li><a href="/flutter/compare/powersync-vs-supabase/">PowerSync vs Supabase</a></li>
+          <li><a href="/flutter/compare/offline-first-vs-local-first/">Offline-First vs Local-First</a></li>
+        </ul>
+        <h2>Related guides</h2>
+        <ul>
+          <li><a href="/flutter/guides/offline-first-guide/">How to Build Offline-First Flutter Apps</a></li>
+          <li><a href="/flutter/guides/repository-pattern-guide/">Flutter Repository Pattern: A Practical Guide</a></li>
+        </ul>
+        <h2>Related definitions</h2>
+        <ul>
+          <li><a href="/flutter/glossary/drift/">Drift</a></li>
+          <li><a href="/flutter/glossary/powersync/">PowerSync</a></li>
+          <li><a href="/flutter/glossary/offline-first/">Offline-First</a></li>
+          <li><a href="/flutter/glossary/local-first/">Local-First</a></li>
+        </ul>
+        <h2>Related reading</h2>
+        <ul>
+          <li><a href="/articles/offline-first-vs-local-first/">Offline-First vs Local-First: What's the Difference?</a></li>
+        </ul>
+        <h2>Related case studies</h2>
+        <ul>
+          <li><a href="/case-studies/offline-first-sync/">Offline-First Flutter at 5M Learners</a></li>
+        </ul>
+        <h2>More package directories</h2>
+        <ul>
+          <li><a href="/flutter/best/state-management/">Best Flutter State Management Packages</a></li>
+          <li><a href="/flutter/best/pdf/">Best Flutter PDF Packages</a></li>
+          <li><a href="/flutter/best/networking/">Best Flutter Networking Packages</a></li>
+          <li><a href="/flutter/best/ci-cd/">Best Flutter CI/CD &amp; Automation Tools</a></li>
+          <li><a href="/flutter/best/testing/">Best Flutter Testing Packages</a></li>
+          <li><a href="/flutter/best/animation/">Best Flutter Animation Packages</a></li>
+          <li><a href="/flutter/best/navigation/">Best Flutter Navigation Packages</a></li>
+          <li><a href="/flutter/best/dependency-injection/">Best Flutter Dependency Injection Packages</a></li>
+          <li><a href="/flutter/best/monetization/">Best Flutter Monetization &amp; IAP Packages</a></li>
+          <li><a href="/flutter/best/analytics/">Best Flutter Analytics Packages</a></li>
+          <li><a href="/flutter/best/forms-validation/">Best Flutter Forms &amp; Validation Packages</a></li>
+          <li><a href="/flutter/best/notifications/">Best Flutter Push Notification Packages</a></li>
+          <li><a href="/flutter/best/i18n/">Best Flutter Internationalization Packages</a></li>
+          <li><a href="/flutter/best/dev-tools/">Best Flutter Developer Tools &amp; Code Generation</a></li>
+        </ul>
         <h2>FAQ</h2>
         <h3>Should I use Drift or Hive for local storage?</h3>
         <p>Drift for structured, relational data (users, posts, orders). Hive for key-value storage (settings, caches, queues). At iStoria, we use both — Drift for structured data, Hive for the offline write queue.</p>
