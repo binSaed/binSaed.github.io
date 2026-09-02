@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-5PS2KZ5R');</script>
+    <meta charset="UTF-8" />
+    <!-- Google Tag Manager — deferred to idle. The container (117KB) and the
+         GA4 tag it pulls in were executing ahead of first paint on mobile;
+         nothing they do is needed for rendering, so they now wait for an idle
+         slot (4s at most) — the same policy as PostHog in main.tsx. dataLayer
+         and gtm.start are set up front so early pushes queue as usual. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      (function () {
+        var loaded = false;
+        function load() {
+          if (loaded) return;
+          loaded = true;
+          var j = document.createElement('script');
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-5PS2KZ5R';
+          document.head.appendChild(j);
+        }
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(load, { timeout: 4000 });
+        } else {
+          window.setTimeout(load, 2000);
+        }
+      })();
+    </script>
     <!-- End Google Tag Manager -->
 
-    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flutter Testing Strategy: Unit, Widget &amp; Integration Tests | Abdelrahman Saed</title>
     <meta name="description" content="A practical Flutter testing strategy — the test pyramid, what to test at each layer, golden tests, integration tests, and CI patterns from a production codebase." />
@@ -92,9 +111,9 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-CpDEczQw.js"></script>
+    <script type="module" crossorigin src="/assets/index-C1-IGPZx.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DdBqnKQt.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-CLRZbRqC.css">
       <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -114,7 +133,8 @@
 #root .prerender-content .pr-muted{color:#6b6155}
 #root .prerender-content .pr-tags{font-size:.85rem;color:#8a8074;font-family:ui-monospace,'SFMono-Regular',Menlo,monospace}
 #root .prerender-content .pr-thumb{max-width:100%;height:auto;border-radius:.25rem;margin:.5rem 0;border:1px solid #d8ccb4}
-#root .prerender-content .pr-summary{font-size:1.15rem;color:#3a342c}
+/* .pr-summary is the LCP anchor (see main.tsx mount gate): it must paint a larger text area than anything the React hero renders above the fold, or a later, larger candidate moves LCP to the post-hydration paint. At 1.15rem it tied the hero paragraph within 2% on a 412px viewport and lost whenever fallback-font metrics wrapped one more line; 1.25rem at the inherited 1.7 line-height keeps a ~40% margin. */
+#root .prerender-content .pr-summary{font-size:1.25rem;color:#3a342c}
 #root .prerender-content table{width:100%;border-collapse:collapse;margin:0 0 1.25rem;font-size:.95rem}
 #root .prerender-content th,#root .prerender-content td{border:1px solid #d8ccb4;padding:.5rem .75rem;text-align:left}
 #root .prerender-content thead th{background:#ebe1cb;font-weight:600}
