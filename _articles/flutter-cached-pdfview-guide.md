@@ -176,3 +176,10 @@ For remote PDFs in Flutter, caching isn't a nice-to-have — it's the difference
 - **Package:** [pub.dev/packages/flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview)
 - **Source:** [github.com/binSaed/flutter_cached_pdfview](https://github.com/binSaed/flutter_cached_pdfview)
 - **The design story:** [flutter_cached_pdfview case study](/case-studies/flutter-cached-pdfview/)
+
+## Related reading
+
+The reference side of this site goes deeper on the ecosystem around the package:
+
+- [Best Flutter PDF packages](/flutter/best/pdf/) — where flutter_cached_pdfview sits among the PDF rendering and caching options.
+- [Best Flutter offline-data packages](/flutter/best/offline-data/) — the local-database and sync layer that offline document caching fits into.

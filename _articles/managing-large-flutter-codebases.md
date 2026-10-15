@@ -179,3 +179,9 @@ None of this is about being fancy. Every practice here trades a little up-front 
 Large Flutter codebases don't fail because Flutter can't scale. They fail because structure decays faster than features get added. Pick a shape, enforce it with machines instead of willpower, and keep the blast radius of any single change small. Do that consistently, and 220,000 lines can still feel like a codebase you understand.
 
 *Want the longer version of how these decisions played out in production? Read the [iStoria case study](/case-studies/istoria).*
+
+## Related reading
+
+- [Feature-modular architecture guide](/flutter/guides/feature-modular/) — how to draw the module boundaries this article keeps leaning on.
+- [Modular architecture, defined](/flutter/glossary/modular-architecture/) — the term behind the pattern, on one page.
+- [Clean architecture vs MVVM compared](/flutter/compare/clean-architecture-vs-mvvm/) — the layering decision large codebases eventually have to make.

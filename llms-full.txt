@@ -1,6 +1,6 @@
 # Abdelrahman Saed (binSaed) — full text for LLMs
 
-> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-10-14.
+> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-10-15.
 > Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
 
 ---
@@ -457,6 +457,13 @@ For remote PDFs in Flutter, caching isn't a nice-to-have — it's the difference
 - **Source:** [github.com/binSaed/flutter_cached_pdfview](https://github.com/binSaed/flutter_cached_pdfview)
 - **The design story:** [flutter_cached_pdfview case study](/case-studies/flutter-cached-pdfview/)
 
+## Related reading
+
+The reference side of this site goes deeper on the ecosystem around the package:
+
+- [Best Flutter PDF packages](/flutter/best/pdf/) — where flutter_cached_pdfview sits among the PDF rendering and caching options.
+- [Best Flutter offline-data packages](/flutter/best/offline-data/) — the local-database and sync layer that offline document caching fits into.
+
 ---
 
 ---
@@ -793,6 +800,11 @@ jobs:
           fi
 ````
 
+## Related reading
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether these guardrails stay cheaper on Actions or move to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the automation toolchain around a guarded master branch.
+
 ---
 
 ---
@@ -947,6 +959,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. Once PRs fil
 
 - [How the merge-conflict radar works](/articles/auto-rebase-and-detect-merge-conflicts/) — a two-workflow system that refreshes every open PR on each merge to `master` and routes conflict alerts to the right author.
 - [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the provably-safe, single-regex case where auto-committing a conflict fix is genuinely fine.
+
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
 
 ## Takeaway
 
@@ -1813,6 +1830,11 @@ jobs:
             console.log('✅ PR labels check completed');
 ````
 
+## Related reading
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — the CI decision around the workflows doing the syncing.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — where repo automation ends and release automation begins.
+
 ---
 
 ---
@@ -1958,6 +1980,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. The radar te
 
 - [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the one provably-safe case where a GitHub Action can auto-commit a conflict fix to a contributor's branch.
 - [Automated stale branch cleanup](/articles/automated-stale-branch-cleanup/) — deleting dead branches in bulk without deleting the wrong one: classify, cap, defer, audit.
+
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
 
 ## Takeaway
 
@@ -2338,6 +2365,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. The bot only
 - [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — the two-workflow system that notices every PR broken by a merge and tells the right author.
 - [Automating PR hygiene with GitHub Actions](/articles/automate-pull-request-hygiene/) — auto-context on every PR plus a quality gate that runs the analyzer and cleans up after itself.
 
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
+
 ## Takeaway
 
 The way to ship a dangerous automation safely isn't to make it clever — it's to make it *cowardly and loud*. Shrink its authority to a single case where the correct answer is mechanical and provable (`every() conflict matches one regex`), operate only in throwaway space, define your tie-breaker explicitly, announce every action, and fail closed on anything unexpected. The capability sounds reckless. The blast radius makes it boring. Boring is the goal.
@@ -2659,6 +2691,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. Cleanup is t
 
 - [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — refresh every open PR on each merge to `master` and route conflict alerts to the right author.
 - [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the single provably-safe case where auto-committing a conflict fix is fine.
+
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
 
 ## Takeaway
 
@@ -3695,6 +3732,12 @@ Large Flutter codebases don't fail because Flutter can't scale. They fail becaus
 
 *Want the longer version of how these decisions played out in production? Read the [iStoria case study](/case-studies/istoria).*
 
+## Related reading
+
+- [Feature-modular architecture guide](/flutter/guides/feature-modular/) — how to draw the module boundaries this article keeps leaning on.
+- [Modular architecture, defined](/flutter/glossary/modular-architecture/) — the term behind the pattern, on one page.
+- [Clean architecture vs MVVM compared](/flutter/compare/clean-architecture-vs-mvvm/) — the layering decision large codebases eventually have to make.
+
 ---
 
 ---
@@ -3900,6 +3943,12 @@ That's the real value of build flavors. They cost a day to set up and they buy y
 
 *For the bigger picture on how iStoria stays shippable at scale, see the [iStoria case study](/case-studies/istoria) and the companion article on [managing large Flutter codebases](/articles/managing-large-flutter-codebases).*
 
+## Related reading
+
+- [Build flavors, defined](/flutter/glossary/build-flavors/) — the term this guide institutionalizes, on one page.
+- [Build and release pipeline guide](/flutter/guides/build-release-pipeline/) — where flavors plug into signing, fastlane, and store delivery.
+- [Fastlane vs Codemagic compared](/flutter/compare/fastlane-vs-codemagic/) — choosing the automation layer that wraps the flavor matrix.
+
 ---
 
 ---
@@ -3991,6 +4040,12 @@ At [iStoria](/case-studies/offline-first-sync) the app is squarely **offline-fir
 Offline-first is a **UX guarantee**: the app works without a network. Local-first is a **data-ownership stance**: the device holds the real copy, and the cloud serves it. They overlap, but they're not the same decision — and the most useful move is to stop choosing one for the whole app and start choosing per data type.
 
 If you want the production version of how this plays out — the read path, the offline write queue, and where the authority line actually falls — I wrote it up in the [offline-first case study](/case-studies/offline-first-sync), and I gave a [talk on building unstoppable offline-first apps](/speaking).
+
+## Related reading
+
+- [Offline-first vs local-first, the comparison card](/flutter/compare/offline-first-vs-local-first/) — the same argument as a scannable side-by-side.
+- [Offline-first architecture guide](/flutter/guides/offline-first-guide/) — the sync design that makes the local-authority line hold.
+- [Best Flutter offline-data packages](/flutter/best/offline-data/) — the drift, Hive, and PowerSync options behind each stance.
 
 ---
 
@@ -5640,12 +5695,13 @@ class CounterIncrementPressed extends CounterEvent {}
 // counter_state.dart
 sealed class CounterState { final int value; const CounterState(this.value); }
 class CounterInitial extends CounterState { const CounterInitial() : super(0); }
+class CounterUpdated extends CounterState { const CounterUpdated(super.value); }
 
 // counter_bloc.dart
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
   CounterBloc() : super(const CounterInitial()) {
     on<CounterIncrementPressed>((event, emit) =>
-        emit(CounterState(state.value + 1)));
+        emit(CounterUpdated(state.value + 1)));
   }
 }
 

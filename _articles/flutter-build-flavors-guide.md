@@ -200,3 +200,9 @@ Once flavors are wired properly, a whole category of incident simply stops happe
 That's the real value of build flavors. They cost a day to set up and they buy you a permanent guarantee that "which environment is this?" is answered by the build system, not by whoever last edited a constant. On a codebase shipping weekly to millions of users, that guarantee is worth far more than the day.
 
 *For the bigger picture on how iStoria stays shippable at scale, see the [iStoria case study](/case-studies/istoria) and the companion article on [managing large Flutter codebases](/articles/managing-large-flutter-codebases).*
+
+## Related reading
+
+- [Build flavors, defined](/flutter/glossary/build-flavors/) — the term this guide institutionalizes, on one page.
+- [Build and release pipeline guide](/flutter/guides/build-release-pipeline/) — where flavors plug into signing, fastlane, and store delivery.
+- [Fastlane vs Codemagic compared](/flutter/compare/fastlane-vs-codemagic/) — choosing the automation layer that wraps the flavor matrix.

@@ -514,3 +514,8 @@ jobs:
 
             console.log('✅ PR labels check completed');
 ````
+
+## Related reading
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — the CI decision around the workflows doing the syncing.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — where repo automation ends and release automation begins.

@@ -176,6 +176,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. The bot only
 - [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — the two-workflow system that notices every PR broken by a merge and tells the right author.
 - [Automating PR hygiene with GitHub Actions](/articles/automate-pull-request-hygiene/) — auto-context on every PR plus a quality gate that runs the analyzer and cleans up after itself.
 
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
+
 ## Takeaway
 
 The way to ship a dangerous automation safely isn't to make it clever — it's to make it *cowardly and loud*. Shrink its authority to a single case where the correct answer is mechanical and provable (`every() conflict matches one regex`), operate only in throwaway space, define your tie-breaker explicitly, announce every action, and fail closed on anything unexpected. The capability sounds reckless. The blast radius makes it boring. Boring is the goal.

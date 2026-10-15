@@ -133,6 +133,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. Cleanup is t
 - [The merge-conflict radar](/articles/auto-rebase-and-detect-merge-conflicts/) — refresh every open PR on each merge to `master` and route conflict alerts to the right author.
 - [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the single provably-safe case where auto-committing a conflict fix is fine.
 
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
+
 ## Takeaway
 
 Any automation that deletes should be a classifier with a delete step bolted on the end — never a delete step with a filter. Order your categories so safety wins every tie, cap the blast radius per run, defer the overflow, and audit every action with a trail back to *why*. Make the destructive thing boring and reversible-in-spirit, and bulk cleanup stops being a thing you're afraid to run.

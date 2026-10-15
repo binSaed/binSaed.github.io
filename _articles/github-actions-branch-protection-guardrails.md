@@ -331,3 +331,8 @@ jobs:
             echo "No protected files were modified"
           fi
 ````
+
+## Related reading
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether these guardrails stay cheaper on Actions or move to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the automation toolchain around a guarded master branch.

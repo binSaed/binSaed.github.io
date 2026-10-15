@@ -87,3 +87,9 @@ At [iStoria](/case-studies/offline-first-sync) the app is squarely **offline-fir
 Offline-first is a **UX guarantee**: the app works without a network. Local-first is a **data-ownership stance**: the device holds the real copy, and the cloud serves it. They overlap, but they're not the same decision — and the most useful move is to stop choosing one for the whole app and start choosing per data type.
 
 If you want the production version of how this plays out — the read path, the offline write queue, and where the authority line actually falls — I wrote it up in the [offline-first case study](/case-studies/offline-first-sync), and I gave a [talk on building unstoppable offline-first apps](/speaking).
+
+## Related reading
+
+- [Offline-first vs local-first, the comparison card](/flutter/compare/offline-first-vs-local-first/) — the same argument as a scannable side-by-side.
+- [Offline-first architecture guide](/flutter/guides/offline-first-guide/) — the sync design that makes the local-authority line hold.
+- [Best Flutter offline-data packages](/flutter/best/offline-data/) — the drift, Hive, and PowerSync options behind each stance.

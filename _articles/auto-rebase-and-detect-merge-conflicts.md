@@ -142,6 +142,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. The radar te
 - [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the one provably-safe case where a GitHub Action can auto-commit a conflict fix to a contributor's branch.
 - [Automated stale branch cleanup](/articles/automated-stale-branch-cleanup/) — deleting dead branches in bulk without deleting the wrong one: classify, cap, defer, audit.
 
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
+
 ## Takeaway
 
 A merge to `master` has a blast radius, and the cheapest time to deal with that radius is *immediately*. Refresh every PR on every merge, treat mergeability as eventually consistent (poll it, don't trust the first read), and route the result to a human in the tool they already watch. Detect fast; notify where people actually look.

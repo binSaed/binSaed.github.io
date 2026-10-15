@@ -151,6 +151,11 @@ This article is part of [The Self-Driving Repo](/articles/) series. Once PRs fil
 - [How the merge-conflict radar works](/articles/auto-rebase-and-detect-merge-conflicts/) — a two-workflow system that refreshes every open PR on each merge to `master` and routes conflict alerts to the right author.
 - [Letting a bot resolve merge conflicts safely](/articles/bot-that-resolves-merge-conflicts/) — the provably-safe, single-regex case where auto-committing a conflict fix is genuinely fine.
 
+From the Flutter Reference:
+
+- [GitHub Actions vs Codemagic compared](/flutter/compare/github-actions-vs-codemagic/) — whether this workflow stays on Actions or moves to a mobile-native CI.
+- [Best Flutter CI/CD tools](/flutter/best/ci-cd/) — the wider automation toolchain these workflows live in.
+
 ## Takeaway
 
 Separate the **chores** of review from the **judgment** of review, and automate only the chores — idempotently, with self-cleanup, so the bot's output always reflects current reality. The win isn't "look, a bot." It's that every human minute on a PR now goes to the one thing humans are uniquely good at: deciding whether the change is right.

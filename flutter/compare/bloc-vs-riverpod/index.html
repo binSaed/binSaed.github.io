@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-DpS1oeMM.js"></script>
+    <script type="module" crossorigin src="/assets/index-CZz5QMHi.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -226,12 +226,13 @@ class CounterIncrementPressed extends CounterEvent {}
 // counter_state.dart
 sealed class CounterState { final int value; const CounterState(this.value); }
 class CounterInitial extends CounterState { const CounterInitial() : super(0); }
+class CounterUpdated extends CounterState { const CounterUpdated(super.value); }
 
 // counter_bloc.dart
 class CounterBloc extends Bloc&lt;CounterEvent, CounterState&gt; {
   CounterBloc() : super(const CounterInitial()) {
     on&lt;CounterIncrementPressed&gt;((event, emit) =&gt;
-        emit(CounterState(state.value + 1)));
+        emit(CounterUpdated(state.value + 1)));
   }
 }
 
