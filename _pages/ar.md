@@ -34,6 +34,7 @@
 - iStoria — تطبيق تعلّم الإنجليزية القائم على القصص، أكثر من 5 ملايين مستخدم.
 - flutter_cached_pdfview — عارض PDF أصلي مفتوح المصدر مع تخزين مؤقت (134+ نجمة، 501+ إعجاب، 55 ألف+ تنزيل).
 - Stickerawy — تطبيق ملصقات واتساب، أكثر من 500 ألف تثبيت.
+- DecTog — خدمة روابط عميقة مؤجلة وإسناد تثبيتات لتطبيقات Flutter و React Native، في مرحلة الوصول المبكر (https://dectog.com/).
 
 ## المهارات
 - المعمارية: Clean Architecture · MVVM · SOLID · Modular Design · Dependency Injection · Design Systems
@@ -59,7 +60,7 @@
 Flutter و Dart مع BLoC/Cubit والمعمارية النظيفة (Clean Architecture)؛ البيانات دون اتصال أولاً (PowerSync و Drift)؛ هندسة الإصدارات و CI/CD (GitHub Actions و Codemagic و Fastlane وأعلام الميزات)؛ تحقيق الدخل (RevenueCat و Stripe و AdMob)؛ والتحليلات (Adjust و PostHog و GrowthBook)، إضافةً إلى التكامل الأصلي مع iOS و Android.
 
 ### ما أبرز مشاريع عبدالرحمن سعيد في فلاتر؟
-حزمة flutter_cached_pdfview مفتوحة المصدر لعرض ملفات PDF أصليًا مع التخزين المؤقت (أكثر من 134 نجمة على GitHub و501 إعجاب على pub.dev و55 ألف تنزيل)؛ وتطبيق iStoria لتعلّم الإنجليزية الذي يستخدمه أكثر من 5 ملايين متعلّم؛ وتطبيق Stickerawy لملصقات واتساب بأكثر من 500 ألف تثبيت. ينشر حزمه على pub.dev باسم bnsaed.com.
+حزمة flutter_cached_pdfview مفتوحة المصدر لعرض ملفات PDF أصليًا مع التخزين المؤقت (أكثر من 134 نجمة على GitHub و501 إعجاب على pub.dev و55 ألف تنزيل)؛ وتطبيق iStoria لتعلّم الإنجليزية الذي يستخدمه أكثر من 5 ملايين متعلّم؛ وتطبيق Stickerawy لملصقات واتساب بأكثر من 500 ألف تثبيت. كما يعمل على بناء DecTog، خدمة للروابط العميقة المؤجلة وإسناد التثبيتات لتطبيقات Flutter و React Native، وهي في مرحلة الوصول المبكر. ينشر حزمه على pub.dev باسم bnsaed.com.
 
 ### كيف أتواصل مع عبدالرحمن سعيد؟
 البريد الإلكتروني هو القناة المفضّلة: me@bnsaed.com. لحجز مكالمة مباشرة احجز موعدًا على calendly.com/bnsaed/meet. متاح أيضًا على GitHub (github.com/binSaed) و LinkedIn (linkedin.com/in/binsaed) و YouTube (youtube.com/@binSaed) و Stack Overflow.

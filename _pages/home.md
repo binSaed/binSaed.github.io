@@ -59,7 +59,7 @@ Proof of impact, not a project list. The flagship, then the system deep dives:
 - [From Four-Week Releases to Weekly](https://bnsaed.com/case-studies/release-engineering/) — trunk-based development, a self-driving CI/CD pipeline, and feature flags.
 - [flutter_cached_pdfview: Cached PDF Viewer for Flutter](https://bnsaed.com/case-studies/flutter-cached-pdfview/) — the open-source package, in depth.
 
-Also shipped: [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) (500K+ installs) — more on the [projects hub](https://bnsaed.com/projects/).
+Also shipped: [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) (500K+ installs), [DecTog](https://dectog.com/) — more on the [projects hub](https://bnsaed.com/projects/).
 
 ## How I Lead
 
@@ -150,7 +150,7 @@ Flutter and Dart with BLoC/Cubit and Clean Architecture; offline-first data (Pow
 
 ### What are Abdelrahman Saed's notable projects?
 
-[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He publishes packages on pub.dev under bnsaed.com.
+[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He is also building [DecTog](https://dectog.com/), a deferred deep-link and install-attribution service for Flutter and React Native apps, currently in early access. He publishes packages on pub.dev under bnsaed.com.
 
 ### How can I contact Abdelrahman Saed?
 
