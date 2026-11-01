@@ -94,6 +94,7 @@ In-depth product write-ups under `/case-studies/:slug`:
 
 - `/case-studies/istoria/` — iStoria (EdTech app, 5M+ users)
 - `/case-studies/flutter-cached-pdfview/` — flutter_cached_pdfview (open-source package)
+- `/case-studies/dectog/` — DecTog (deep linking and install attribution, built solo)
 
 ## Contact
 

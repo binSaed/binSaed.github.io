@@ -15,6 +15,10 @@
       <image:caption>flutter_cached_pdfview: Cached PDF Viewer for Flutter</image:caption>
     </image:image>
     <image:image>
+      <image:loc>https://bnsaed.com/project-images/dectog.webp</image:loc>
+      <image:caption>DecTog: Deferred Deep Linking on Cloudflare Workers</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>https://bnsaed.com/og.png</image:loc>
       <image:caption>Abdelrahman Saed</image:caption>
     </image:image>
@@ -198,6 +202,17 @@
     <image:image>
       <image:loc>https://bnsaed.com/case-study-og/flutter-cached-pdfview.png</image:loc>
       <image:caption>flutter_cached_pdfview: Cached PDF Viewer for Flutter</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bnsaed.com/case-studies/dectog/</loc>
+    <image:image>
+      <image:loc>https://bnsaed.com/project-images/dectog.webp</image:loc>
+      <image:caption>DecTog: Deferred Deep Linking on Cloudflare Workers</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://bnsaed.com/case-study-og/dectog.png</image:loc>
+      <image:caption>DecTog: Deferred Deep Linking on Cloudflare Workers</image:caption>
     </image:image>
   </url>
   <url>

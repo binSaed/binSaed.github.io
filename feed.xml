@@ -5,8 +5,20 @@
     <link>https://bnsaed.com/</link>
     <description>Writing and case studies by Abdelrahman Saed — Flutter, mobile architecture, release engineering, and CI/CD automation.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 27 Oct 2026 20:09:45 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2026 17:42:27 GMT</lastBuildDate>
     <atom:link href="https://bnsaed.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Case study: DecTog: Deferred Deep Linking on Cloudflare Workers — Deep links and install attribution for Flutter and React Native apps, built solo on Cloudflare.</title>
+      <link>https://bnsaed.com/case-studies/dectog/</link>
+      <guid isPermaLink="true">https://bnsaed.com/case-studies/dectog/</guid>
+      <pubDate>Sun, 01 Nov 2026 00:00:00 GMT</pubDate>
+      <description>How I built DecTog alone: deferred deep linking and install attribution on one Cloudflare Worker and D1, with Flutter and React Native SDKs on one contract.</description>
+      <category>Deep Linking</category>
+      <category>Cloudflare Workers</category>
+      <category>TypeScript</category>
+      <category>Flutter</category>
+      <category>React Native</category>
+    </item>
     <item>
       <title>Offline-First vs Local-First: What&apos;s the Difference?</title>
       <link>https://bnsaed.com/articles/offline-first-vs-local-first/</link>
