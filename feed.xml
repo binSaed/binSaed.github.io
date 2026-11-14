@@ -5,14 +5,14 @@
     <link>https://bnsaed.com/</link>
     <description>Writing and case studies by Abdelrahman Saed — Flutter, mobile architecture, release engineering, and CI/CD automation.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 09 Nov 2026 15:42:20 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Nov 2026 18:11:06 GMT</lastBuildDate>
     <atom:link href="https://bnsaed.com/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title>Case study: DecTog: Deferred Deep Linking on Cloudflare Workers — Deep links and install attribution for Flutter and React Native apps, built solo on Cloudflare.</title>
-      <link>https://bnsaed.com/case-studies/dectog/</link>
-      <guid isPermaLink="true">https://bnsaed.com/case-studies/dectog/</guid>
+      <title>Case study: AdTo: Deferred Deep Linking on Cloudflare Workers — Deep links and install attribution for Flutter and React Native apps, built solo on Cloudflare.</title>
+      <link>https://bnsaed.com/case-studies/adto/</link>
+      <guid isPermaLink="true">https://bnsaed.com/case-studies/adto/</guid>
       <pubDate>Sun, 01 Nov 2026 00:00:00 GMT</pubDate>
-      <description>How I built DecTog alone: deferred deep linking and install attribution on one Cloudflare Worker and D1, with Flutter and React Native SDKs on one contract.</description>
+      <description>How I built AdTo alone: deferred deep linking and install attribution on one Cloudflare Worker and D1, with Flutter and React Native SDKs on one contract.</description>
       <category>Deep Linking</category>
       <category>Cloudflare Workers</category>
       <category>TypeScript</category>

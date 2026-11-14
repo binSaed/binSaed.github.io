@@ -1,6 +1,6 @@
 # Abdelrahman Saed (binSaed) — full text for LLMs
 
-> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-11-09.
+> Concatenated markdown of bnsaed.com (homepage + CV + all articles). Last built: 2026-11-14.
 > Usage: ai-input=yes, ai-train=no — attribute the author when quoting.
 
 ---
@@ -65,7 +65,7 @@ Proof of impact, not a project list. The flagship, then the system deep dives:
 - [Offline-First Flutter at 5M Learners](https://bnsaed.com/case-studies/offline-first-sync/) — Drift, PowerSync, and an offline write queue so learners never wait on the network.
 - [From Four-Week Releases to Weekly](https://bnsaed.com/case-studies/release-engineering/) — trunk-based development, a self-driving CI/CD pipeline, and feature flags.
 - [flutter_cached_pdfview: Cached PDF Viewer for Flutter](https://bnsaed.com/case-studies/flutter-cached-pdfview/) — the open-source package, in depth.
-- [DecTog: Deferred Deep Linking on Cloudflare Workers](https://bnsaed.com/case-studies/dectog/) — deep links and install attribution on one Worker and D1, built solo.
+- [AdTo: Deferred Deep Linking on Cloudflare Workers](https://bnsaed.com/case-studies/adto/) — deep links and install attribution on one Worker and D1, built solo.
 
 Also shipped: [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) (500K+ installs) — more on the [projects hub](https://bnsaed.com/projects/).
 
@@ -158,7 +158,7 @@ Flutter and Dart with BLoC/Cubit and Clean Architecture; offline-first data (Pow
 
 ### What are Abdelrahman Saed's notable projects?
 
-[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He is also building [DecTog](https://dectog.com/), a deferred deep-link and install-attribution service for Flutter and React Native apps, currently in early access. He publishes packages on pub.dev under bnsaed.com.
+[flutter_cached_pdfview](https://pub.dev/packages/flutter_cached_pdfview), a popular open-source Flutter package for native PDF viewing with caching (134+ GitHub stars, 501+ pub.dev likes, 57k+ downloads); [iStoria](https://istoria.app/en/), a story-based English-learning app with 5M+ downloads; and Stickerawy, a WhatsApp stickers app with 500K+ installs. He is also building [AdTo](https://adto.app/), a deferred deep-link and install-attribution service for Flutter and React Native apps, currently in early access. He publishes packages on pub.dev under bnsaed.com.
 
 ### How can I contact Abdelrahman Saed?
 
@@ -4401,21 +4401,21 @@ Three things this package reinforced:
 
 ---
 
-# DecTog: Deferred Deep Linking on Cloudflare Workers — Case Study
+# AdTo: Deferred Deep Linking on Cloudflare Workers — Case Study
 
 Deep links and install attribution for Flutter and React Native apps, built solo on Cloudflare.
 
 ## Context
 
-DecTog is deep linking, deferred deep linking and install attribution for Flutter and React Native apps. A tap on a DecTog link opens the installed app on the right screen. If the app isn't installed, the tap goes through the right app store, and the new user still lands on that screen at first launch. The install is credited to the link that brought it, and the app's later events and revenue are credited to that link too.
+AdTo is deep linking, deferred deep linking and install attribution for Flutter and React Native apps. A tap on a AdTo link opens the installed app on the right screen. If the app isn't installed, the tap goes through the right app store, and the new user still lands on that screen at first launch. The install is credited to the link that brought it, and the app's later events and revenue are credited to that link too.
 
 I built it alone in 2026, alongside my day job leading mobile at iStoria. The reason was close to home: iStoria was paying thousands of dollars for its referral tracking, and Firebase Dynamic Links, the free option many Flutter apps relied on, had been shut down.
 
-iStoria's referral program now runs on DecTog. Each learner shares one personal link. The server credits the invited friend's install to that learner, and a signed webhook grants the inviter's free premium days. The customer's side of that story is on [dectog.com](https://dectog.com/customers/istoria). This study is the builder's side: the architecture, the attribution logic, and the decisions I made and rejected along the way.
+iStoria's referral program now runs on AdTo. Each learner shares one personal link. The server credits the invited friend's install to that learner, and a signed webhook grants the inviter's free premium days. The customer's side of that story is on [adto.app](https://adto.app/customers/istoria). This study is the builder's side: the architecture, the attribution logic, and the decisions I made and rejected along the way.
 
 ## The Challenge
 
-Deferred deep linking looks like a redirect, but the hard part is matching three separate moments. The tap happens in a browser. The install happens in an app store DecTog never sees. The first launch can come minutes or hours later, in an app that knows nothing about the tap. Connecting those three moments is the whole product.
+Deferred deep linking looks like a redirect, but the hard part is matching three separate moments. The tap happens in a browser. The install happens in an app store AdTo never sees. The first launch can come minutes or hours later, in an app that knows nothing about the tap. Connecting those three moments is the whole product.
 
 Every way of connecting them has a cost. The exact signals exist on only some platforms. The fallback is a guess. And the guesses that work best are the ones Apple's rules and EU privacy law forbid.
 
@@ -4433,19 +4433,19 @@ The rules every design had to follow:
 
 ## My Ownership
 
-DecTog has one engineer, so I own all of it. Every commit in the server repository and both SDK repositories is mine.
+AdTo has one engineer, so I own all of it. Every commit in the server repository and both SDK repositories is mine.
 
 - **The server.** A TypeScript Cloudflare Worker (Hono) on a D1 database. It holds the REST API, the redirect engine, install attribution, Apple Search Ads resolution, fraud rules, webhooks, rate limiting and the scheduled jobs.
-- **The SDKs.** `flutter_dectog` (Dart) and `react-native-dectog` (TypeScript, Expo-compatible), plus the shared Kotlin and Swift code underneath both.
+- **The SDKs.** `flutter_adto` (Dart) and `react-native-adto` (TypeScript, Expo-compatible), plus the shared Kotlin and Swift code underneath both.
 - **The dashboard and website.** A Next.js app, exported as static files and served by the same Worker.
-- **The documentation.** [docs.dectog.com](https://docs.dectog.com/), including a public log of design decisions and a page that lists what DecTog does not do.
+- **The documentation.** [docs.adto.app](https://docs.adto.app/), including a public log of design decisions and a page that lists what AdTo does not do.
 - **The first production integration.** iStoria's referral program, from the SDK call in the app to the webhook that grants the reward.
 
 ## Architecture
 
 ### One Worker, one database
 
-The whole service is one Cloudflare Worker and one D1 (SQLite) database. The Worker handles link taps on `<username>.dectog.com`, the SDK API under `/api/v1`, the dashboard API, the AASA and `assetlinks.json` files, and an MCP server at `/mcp`. It also serves the dashboard, which is a static Next.js export. Two scheduled jobs do the rest: a daily cleanup, and an hourly job that retries webhooks and Apple Search Ads tokens and builds the daily totals.
+The whole service is one Cloudflare Worker and one D1 (SQLite) database. The Worker handles link taps on `<username>.adto.app`, the SDK API under `/api/v1`, the dashboard API, the AASA and `assetlinks.json` files, and an MCP server at `/mcp`. It also serves the dashboard, which is a static Next.js export. Two scheduled jobs do the rest: a daily cleanup, and an hourly job that retries webhooks and Apple Search Ads tokens and builds the daily totals.
 
 ### Routing a tap
 
@@ -4465,12 +4465,12 @@ The SDK side of iStoria's referral program is two calls:
 
 ```dart
 // The inviter: one stable link per user, created with the app's SDK key.
-final link = await dectog.createReferralLink(customerId: currentUser.id);
+final link = await adto.createReferralLink(customerId: currentUser.id);
 share(link.url);
 
 // The invited friend, at sign-up. The server records the referral from the
 // link the install was credited to, so a modified app can't claim a reward.
-await dectog.identify(customerId: newUser.id);
+await adto.identify(customerId: newUser.id);
 ```
 
 The reward is never granted from the app. It comes from the signed `referral.converted` webhook, which the server sends only for a credited install.
@@ -4489,7 +4489,7 @@ Each SDK keeps its logic in its own language on top of one shared native layer. 
 
 ### Product outcome
 
-- **iStoria's referral program runs on DecTog in production.** It covers personal referral links, referrals recorded on the server, and signed webhooks that grant free premium days. Self-referrals from the inviter's own device or network are flagged.
+- **iStoria's referral program runs on AdTo in production.** It covers personal referral links, referrals recorded on the server, and signed webhooks that grant free premium days. Self-referrals from the inviter's own device or network are flagged.
 - **About $5 a month on Cloudflare at a million taps a month**, worked out from measured per-operation row costs, plus any storage beyond 5 GB. Per-install pricing is what makes the big attribution vendors expensive at the same traffic.
 - **2–5 ms of median CPU time** for taps, pings, events and dashboard calls in production, and about 10 ms for an install.
 
