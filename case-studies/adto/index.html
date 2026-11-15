@@ -109,7 +109,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
+    <script type="module" crossorigin src="/assets/index-D9OHddG8.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
   
@@ -123,9 +123,9 @@
     <meta property="article:tag" content="Flutter" />
     <meta property="article:tag" content="React Native" />
     <link rel="preload" as="image" href="/project-images/adto.svg" fetchpriority="high" />
-        <link rel="modulepreload" href="/assets/CaseStudyPage-B_1tJD4s.js" />
-    <link rel="modulepreload" href="/assets/MarkdownContent-DsAzEtBa.js" />
-    <link rel="modulepreload" href="/assets/caseStudies-BzwZ8kjp.js" />
+        <link rel="modulepreload" href="/assets/CaseStudyPage-DynA1BrU.js" />
+    <link rel="modulepreload" href="/assets/MarkdownContent-CWyZE3Bk.js" />
+    <link rel="modulepreload" href="/assets/caseStudies-DifGLjmr.js" />
 <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -190,13 +190,13 @@
 <img src="/project-images/adto.svg" alt="AdTo: Deferred Deep Linking and Attribution, Built Solo — Deep links and install attribution for Flutter and React Native apps, built by one engineer." class="pr-thumb" loading="lazy" width="1600" height="640" />
         <h2>Context</h2>
 <p>AdTo is deep linking, deferred deep linking and install attribution for Flutter and React Native apps. A tap on an AdTo link opens the installed app on the screen the link points to. If the app isn't installed, the tap goes through the right app store, and AdTo tries to carry that screen through the install to the first launch. When the evidence is strong enough, the install is credited to the link that brought it, and so are the app's later events and revenue. When it isn't, the new user can still land on the right screen while no link gets the credit.</p>
-<p>I built it alone in 2026, alongside my day job leading mobile at iStoria. The reason was close to home: iStoria was paying thousands of dollars for its referral tracking, and Firebase Dynamic Links, the free option many Flutter apps relied on, had been shut down.</p>
+<p>I built it alone in 2026, alongside my day job leading mobile at iStoria. The reason was close to home: iStoria was paying thousands of dollars a year for its referral tracking, and Firebase Dynamic Links, the free option many Flutter apps relied on, had been shut down.</p>
 <p>iStoria's referral program now runs on AdTo. Each learner shares one personal link. When an invited friend signs up from an install credited to that link, a signed webhook tells iStoria to grant the inviter free premium days. The customer's side of that story is on <a href="https://adto.app/customers/istoria">adto.app</a>. This study is the builder's side: the architecture, the attribution logic, and the alternatives I rejected along the way.</p>
 
         <h2>Results</h2>
 <ul>
 <li><strong>iStoria's referral program runs on AdTo in production.</strong> It covers personal referral links, referrals recorded on the server, and signed webhooks that grant free premium days. Self-referrals from the inviter's own device or network are flagged.</li>
-<li><strong>iStoria's referral tracking cost fell from thousands of dollars to a few dollars.</strong> The old bill is the reason AdTo exists.</li>
+<li><strong>iStoria's referral tracking cost fell from thousands of dollars a year to a few dollars a year.</strong> The old bill is the reason AdTo exists.</li>
 <li><strong>Every install says why it was credited.</strong> The dashboard lists each install with how it was matched, its confidence and the fraud checks it passed or tripped, so a disputed referral can be checked.</li>
 </ul>
 

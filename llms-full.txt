@@ -4409,14 +4409,14 @@ Deep links and install attribution for Flutter and React Native apps, built by o
 
 AdTo is deep linking, deferred deep linking and install attribution for Flutter and React Native apps. A tap on an AdTo link opens the installed app on the screen the link points to. If the app isn't installed, the tap goes through the right app store, and AdTo tries to carry that screen through the install to the first launch. When the evidence is strong enough, the install is credited to the link that brought it, and so are the app's later events and revenue. When it isn't, the new user can still land on the right screen while no link gets the credit.
 
-I built it alone in 2026, alongside my day job leading mobile at iStoria. The reason was close to home: iStoria was paying thousands of dollars for its referral tracking, and Firebase Dynamic Links, the free option many Flutter apps relied on, had been shut down.
+I built it alone in 2026, alongside my day job leading mobile at iStoria. The reason was close to home: iStoria was paying thousands of dollars a year for its referral tracking, and Firebase Dynamic Links, the free option many Flutter apps relied on, had been shut down.
 
 iStoria's referral program now runs on AdTo. Each learner shares one personal link. When an invited friend signs up from an install credited to that link, a signed webhook tells iStoria to grant the inviter free premium days. The customer's side of that story is on [adto.app](https://adto.app/customers/istoria). This study is the builder's side: the architecture, the attribution logic, and the alternatives I rejected along the way.
 
 ## Results
 
 - **iStoria's referral program runs on AdTo in production.** It covers personal referral links, referrals recorded on the server, and signed webhooks that grant free premium days. Self-referrals from the inviter's own device or network are flagged.
-- **iStoria's referral tracking cost fell from thousands of dollars to a few dollars.** The old bill is the reason AdTo exists.
+- **iStoria's referral tracking cost fell from thousands of dollars a year to a few dollars a year.** The old bill is the reason AdTo exists.
 - **Every install says why it was credited.** The dashboard lists each install with how it was matched, its confidence and the fraud checks it passed or tripped, so a disputed referral can be checked.
 
 ## The Challenge
