@@ -109,7 +109,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
   
@@ -121,9 +121,9 @@
     <meta property="article:tag" content="Git" />
     <meta property="article:tag" content="DevOps" />
     <meta property="article:tag" content="Automation" />
-        <link rel="modulepreload" href="/assets/ArticlePage-DP_3Gl8n.js" />
-    <link rel="modulepreload" href="/assets/MarkdownContent-B8_wAHiT.js" />
-    <link rel="modulepreload" href="/assets/caseStudies-DiT9cI6R.js" />
+        <link rel="modulepreload" href="/assets/ArticlePage-BFjFB18s.js" />
+    <link rel="modulepreload" href="/assets/MarkdownContent-DsAzEtBa.js" />
+    <link rel="modulepreload" href="/assets/caseStudies-BzwZ8kjp.js" />
 <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -133,7 +133,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -194,7 +194,11 @@
 <p>Automated stale-branch cleanup treats branch deletion as a <strong>classification problem first and a deletion problem second</strong>. A scheduled GitHub Actions workflow (<code>cleanup-stale-branches.yml</code>) runs Sunday at 04:00 UTC, fetches every branch plus the full open and merged PR history, then sorts each branch through a strict safety precedence: <strong>sacred</strong> (<code>master</code>, <code>develop</code>, the default branch) beats <strong>protected</strong> beats <strong>open-PR</strong> beats <strong>merged</strong> beats <strong>stale</strong> beats <strong>active</strong>. Only <em>merged</em> and <em>stale</em> branches are deleted, and safety always wins ties. Three guards make bulk deletion routine: a per-run cap (<code>max_deletions</code>, default 50) that defers overflow to next week, branch-name URL-encoding before each <code>gh api -X DELETE</code> call, and a full audit trail — merged branches get a comment linking back to their PR, plus a Discord digest and a job-summary table of what was deleted, deferred, and kept. Staleness is epoch math: a tip commit older than <code>age_days</code> (default 730, ~2 years).</p>
 <h2>The problem</h2>
 <p>Unmanaged branches cause slow, compounding pain:</p>
-<p>1. <strong>Clutter that slows people down.</strong> Hundreds of stale refs make branch lists and tooling sluggish and confusing. 2. <strong>No signal about what's safe to remove.</strong> Is this branch merged? Abandoned? An active long-runner that's just quiet this week? You can't tell at a glance, so nobody cleans up at all. 3. <strong>Cleanup is scary, so it never happens.</strong> The risk of nuking something important means the junk drawer just grows forever.</p>
+<ol>
+<li><strong>Clutter that slows people down.</strong> Hundreds of stale refs make branch lists and tooling sluggish and confusing.</li>
+<li><strong>No signal about what's safe to remove.</strong> Is this branch merged? Abandoned? An active long-runner that's just quiet this week? You can't tell at a glance, so nobody cleans up at all.</li>
+<li><strong>Cleanup is scary, so it never happens.</strong> The risk of nuking something important means the junk drawer just grows forever.</li>
+</ol>
 <h2>The idea</h2>
 <p>A scheduled workflow — Sunday at 4am, when nobody's pushing — that fetches <em>every</em> branch and the full PR history, then sorts each branch into a category before a single deletion happens:</p>
 <ul>

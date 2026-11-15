@@ -109,7 +109,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
   
@@ -121,9 +121,9 @@
     <meta property="article:tag" content="Git" />
     <meta property="article:tag" content="CI/CD" />
     <meta property="article:tag" content="DevOps" />
-        <link rel="modulepreload" href="/assets/ArticlePage-DP_3Gl8n.js" />
-    <link rel="modulepreload" href="/assets/MarkdownContent-B8_wAHiT.js" />
-    <link rel="modulepreload" href="/assets/caseStudies-DiT9cI6R.js" />
+        <link rel="modulepreload" href="/assets/ArticlePage-BFjFB18s.js" />
+    <link rel="modulepreload" href="/assets/MarkdownContent-DsAzEtBa.js" />
+    <link rel="modulepreload" href="/assets/caseStudies-BzwZ8kjp.js" />
 <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -133,7 +133,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -194,7 +194,11 @@
 <p>Auto-detecting merge conflicts across open PRs is a two-workflow GitHub Actions system: a <strong>sweep</strong> and a <strong>broadcast</strong>. The sweep triggers on every push to <code>master</code>, paginates through all open PRs with <code>github.rest.pulls.list</code>, and calls <code>github.rest.pulls.updateBranch</code> on each (the API equivalent of GitHub's "Update branch" button), skipping forks and treating a <code>422</code> as "nothing to do" rather than a failure. Because GitHub computes mergeability asynchronously, you must treat <code>mergeable</code> as <strong>eventually consistent</strong>: poll <code>pulls.get</code> with backoff (up to 5 retries, 2s apart) until it stops returning <code>null</code>, then reconcile a <code>conflict</code> label based on <code>mergeable === false</code> or <code>mergeable_state === 'dirty'</code>. The broadcast workflow reads <code>conflict</code>-labeled PRs, builds an author→PRs map, translates each GitHub login to a chat handle, and posts one grouped Discord digest—push-based, grouped, and routed—so each conflict reaches the right author within seconds, not days after it has already broken their branch.</p>
 <h2>The problem</h2>
 <p>Three things were going wrong, all downstream of the same root cause (master moves, PRs don't):</p>
-<p>1. <strong>Stale branches.</strong> PRs fall behind <code>master</code> and their CI results stop meaning anything — they passed against an old base. 2. <strong>Late conflict discovery.</strong> Authors learn about conflicts when they try to merge, which is the most disruptive possible time. 3. <strong>Notification fatigue.</strong> GitHub <em>can</em> tell you a PR is conflicted, but it's buried in a UI nobody watches. The signal never reaches the person who needs it.</p>
+<ol>
+<li><strong>Stale branches.</strong> PRs fall behind <code>master</code> and their CI results stop meaning anything — they passed against an old base.</li>
+<li><strong>Late conflict discovery.</strong> Authors learn about conflicts when they try to merge, which is the most disruptive possible time.</li>
+<li><strong>Notification fatigue.</strong> GitHub <em>can</em> tell you a PR is conflicted, but it's buried in a UI nobody watches. The signal never reaches the person who needs it.</li>
+</ol>
 <h2>The idea</h2>
 <p>Two workflows working as a pair:</p>
 <ul>

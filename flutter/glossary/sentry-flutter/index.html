@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -186,7 +186,13 @@
   appRunner: () =&gt; runApp(MyApp()),
 );</code></pre>
 <p>Key capabilities:</p>
-<p>1. <strong>Crash capture</strong> — Dart exceptions, Flutter framework errors, native iOS crashes (mach exceptions), and native Android crashes (NDK signals). 2. <strong>Stack traces</strong> — full Dart stack traces with source maps, even in obfuscated/release builds. 3. <strong>Performance tracing</strong> — traces slow operations (network calls, screen renders, database queries) with distributed tracing. 4. <strong>Session replay</strong> — reproduces the exact user interaction that led to a crash. 5. <strong>Release tracking</strong> — every crash is tagged with the release version, so you know which release introduced it.</p>
+<ol>
+<li><strong>Crash capture</strong> — Dart exceptions, Flutter framework errors, native iOS crashes (mach exceptions), and native Android crashes (NDK signals).</li>
+<li><strong>Stack traces</strong> — full Dart stack traces with source maps, even in obfuscated/release builds.</li>
+<li><strong>Performance tracing</strong> — traces slow operations (network calls, screen renders, database queries) with distributed tracing.</li>
+<li><strong>Session replay</strong> — reproduces the exact user interaction that led to a crash.</li>
+<li><strong>Release tracking</strong> — every crash is tagged with the release version, so you know which release introduced it.</li>
+</ol>
 <p>At iStoria (5M+ users, 99.9% crash-free), Sentry is the first thing checked every morning. New crashes from the latest release are triaged within hours — before they become store reviews. PII is masked in Sentry events, and cleartext traffic is disabled so crash reports never contain sensitive data.</p>
 
         <h2>When to use it</h2>

@@ -109,7 +109,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
   
@@ -121,9 +121,9 @@
     <meta property="article:tag" content="Engineering Leadership" />
     <meta property="article:tag" content="Team Management" />
     <meta property="article:tag" content="Automation" />
-        <link rel="modulepreload" href="/assets/ArticlePage-DP_3Gl8n.js" />
-    <link rel="modulepreload" href="/assets/MarkdownContent-B8_wAHiT.js" />
-    <link rel="modulepreload" href="/assets/caseStudies-DiT9cI6R.js" />
+        <link rel="modulepreload" href="/assets/ArticlePage-BFjFB18s.js" />
+    <link rel="modulepreload" href="/assets/MarkdownContent-DsAzEtBa.js" />
+    <link rel="modulepreload" href="/assets/caseStudies-BzwZ8kjp.js" />
 <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -133,7 +133,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -194,7 +194,10 @@
 <p>An AI weekly engineering review is a scheduled job that every Sunday aggregates each engineer's git activity (commits, files, insertions/deletions, change types, deduped by commit hash across name aliases) and issue-tracker tickets pulled via REST API, computes a <strong>week-over-week comparison</strong> into a structured JSON blob, then has an LLM translate those numbers into a short, warm, localized paragraph routed <em>privately</em> to that person. Here's how to do it responsibly: the prompt enforces strict guardrails — <strong>no raw identifiers</strong> (ticket IDs, commit hashes, PR numbers), a few singular sentences instead of a bulleted scorecard, strengths plus one supportive growth point, and the team's own language. Each summary goes individually, never to a public channel that becomes a leaderboard; a non-ranking contributions table updates the <code>README</code>. The principle: metrics describe, they never rank; private by default; transparent, not surveillance; and the tool stays subordinate to a human lead who already pays attention.</p>
 <h2>What problem do AI weekly engineering summaries solve?</h2>
 <p>On a busy team, two real needs go chronically unmet:</p>
-<p>1. <strong>Contribution is invisible.</strong> Quiet, high-impact work goes unseen; loud, low-impact work gets noticed. A lead working from vibes will misjudge both. 2. <strong>Feedback is sporadic.</strong> Most engineers get meaningful individual feedback a couple of times a year, in review season, about a period nobody remembers clearly.</p>
+<ol>
+<li><strong>Contribution is invisible.</strong> Quiet, high-impact work goes unseen; loud, low-impact work gets noticed. A lead working from vibes will misjudge both.</li>
+<li><strong>Feedback is sporadic.</strong> Most engineers get meaningful individual feedback a couple of times a year, in review season, about a period nobody remembers clearly.</li>
+</ol>
 <p>The honest goal was a gentle, regular signal — a "here's what your week looked like, nice work on X, maybe watch Y" — at a cadence no human lead can sustain across a whole team by hand.</p>
 <p>And right next to that honest goal sits the trap: the same machinery, pointed slightly differently, becomes a ranking engine that reduces people to commit counts. Holding both of those in view at once is the entire job.</p>
 <h2>The idea</h2>

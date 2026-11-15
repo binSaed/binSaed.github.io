@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -182,15 +182,26 @@
 <p>The fundamental shift in offline-first architecture is this: <strong>the local database is the source of truth, not the server.</strong> Every read comes from the local database (instant, no network round-trip). Every write goes to the local database first (also instant), then a sync engine propagates it to the server asynchronously.</p>
 <p>This is the opposite of the typical online-first pattern where the app calls the API, waits for the response, and caches the result. In that pattern, the cache is a performance optimization layered on top of network calls. In offline-first, the network is a sync concern layered on top of local operations.</p>
 <h2>The Three Components</h2>
-<p>1. <strong>Local database</strong> — the source of truth. At iStoria, this is Drift (formerly Moor), a reactive SQLite wrapper for Flutter. Every read is a stream from the local database. Every write is a local insert/update/delete.</p>
-<p>2. <strong>Sync engine</strong> — propagates local changes to the server and pulls server changes down to the local database. We use PowerSync, which provides a managed sync layer that handles the wire protocol, conflict resolution, and reconnection. You can build your own with a change log + polling/SSE, but that is a significant engineering effort.</p>
-<p>3. <strong>Connectivity awareness</strong> — the UI needs to reflect sync status (synced, syncing, pending changes, conflict). The app needs to handle the transitions gracefully — queue writes when offline, resume sync when online, and show the user what is happening.</p>
+<ol>
+<li><strong>Local database</strong> — the source of truth. At iStoria, this is Drift (formerly Moor), a reactive SQLite wrapper for Flutter. Every read is a stream from the local database. Every write is a local insert/update/delete.</li>
+</ol>
+<ol start="2">
+<li><strong>Sync engine</strong> — propagates local changes to the server and pulls server changes down to the local database. We use PowerSync, which provides a managed sync layer that handles the wire protocol, conflict resolution, and reconnection. You can build your own with a change log + polling/SSE, but that is a significant engineering effort.</li>
+</ol>
+<ol start="3">
+<li><strong>Connectivity awareness</strong> — the UI needs to reflect sync status (synced, syncing, pending changes, conflict). The app needs to handle the transitions gracefully — queue writes when offline, resume sync when online, and show the user what is happening.</li>
+</ol>
 <h2>Reading: Streams, Not Futures</h2>
 <p>In an offline-first app, reads are reactive streams, not one-shot futures. When you write to the local database, the stream emits a new value and the UI updates automatically. When the sync engine pulls changes from the server, the stream emits again. The UI does not need to know whether the change was local or remote — it just reacts to the stream.</p>
 <p>This is why Drift's <code>watch()</code> method and PowerSync's reactive queries are so powerful. The UI subscribes to a query result, and the database notifies it whenever the result set changes. No manual refresh, no pull-to-refresh, no invalidation logic.</p>
 <h2>Writing: Optimistic Local First</h2>
 <p>Writes follow an optimistic pattern:</p>
-<p>1. Write to the local database immediately (the UI reflects the change via the stream). 2. The sync engine detects the local change and queues it for upload. 3. If online, the change is pushed to the server. If offline, it sits in the queue. 4. When connectivity returns, the queue is flushed.</p>
+<ol>
+<li>Write to the local database immediately (the UI reflects the change via the stream).</li>
+<li>The sync engine detects the local change and queues it for upload.</li>
+<li>If online, the change is pushed to the server. If offline, it sits in the queue.</li>
+<li>When connectivity returns, the queue is flushed.</li>
+</ol>
 <p>If the server rejects the change (validation error, conflict), the sync engine triggers a conflict resolution callback. Your app decides what to do: last-write-wins, merge, or prompt the user. At iStoria, we use last-write-wins for most data and field-level merging for collaborative content.</p>
 <h2>Conflict Resolution</h2>
 <p>Conflicts happen when the same record is modified on two devices before syncing. The three common strategies:</p>

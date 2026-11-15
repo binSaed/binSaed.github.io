@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -180,7 +180,13 @@
 <h2>Profile, Do Not Guess</h2>
 <p>The first rule of performance optimization: <strong>never optimize without measuring.</strong> Human intuition about performance is wrong more often than it is right. The Flutter DevTools Performance tab shows you exactly where frames are dropping and what code is responsible.</p>
 <p>The profiling workflow:</p>
-<p>1. Run the app in <strong>profile mode</strong> (<code>flutter run --profile</code>). Debug mode is not representative — it disables optimizations and adds overhead. 2. Open DevTools → Performance tab → record a session while interacting with the app. 3. Look at the frame timeline. Red frames are jank (took &gt;16ms). Yellow frames are close to the limit. 4. Click a red frame to see the flame chart — the stack trace of what happened during that frame. 5. Identify the function that took the most time. Optimize it. Re-measure.</p>
+<ol>
+<li>Run the app in <strong>profile mode</strong> (<code>flutter run --profile</code>). Debug mode is not representative — it disables optimizations and adds overhead.</li>
+<li>Open DevTools → Performance tab → record a session while interacting with the app.</li>
+<li>Look at the frame timeline. Red frames are jank (took &gt;16ms). Yellow frames are close to the limit.</li>
+<li>Click a red frame to see the flame chart — the stack trace of what happened during that frame.</li>
+<li>Identify the function that took the most time. Optimize it. Re-measure.</li>
+</ol>
 <p>Optimizing without profiling leads to cargo-cult optimizations: premature caching, unnecessary complexity, and optimizations in places that were never the bottleneck.</p>
 <h2>Build Optimization</h2>
 <p>The build phase (constructing the widget tree) is the most common source of jank. The strategies:</p>
@@ -217,15 +223,23 @@ BlocSelector&lt;LessonBloc, LessonState, List&lt;Lesson&gt;&gt;(
 )</code></pre>
 <h2>Image Optimization</h2>
 <p>Images are the heaviest objects in a Flutter app. Unoptimized images cause memory spikes and jank on low-end devices.</p>
-<p>1. <strong>Use <code>cacheWidth</code> / <code>cacheHeight</code></strong> — decodes the image at the display size, not the source size. A 4000×3000 photo displayed at 200×150 should be decoded at 200×150, saving massive memory.</p>
+<ol>
+<li><strong>Use <code>cacheWidth</code> / <code>cacheHeight</code></strong> — decodes the image at the display size, not the source size. A 4000×3000 photo displayed at 200×150 should be decoded at 200×150, saving massive memory.</li>
+</ol>
 <pre><code class="language-dart">Image.network(
   lesson.thumbnailUrl,
   cacheWidth: 200,  // decodes at 200px width, not the full source
   cacheHeight: 150,
 )</code></pre>
-<p>2. <strong>Use WebP instead of PNG/JPEG</strong> — WebP is ~30% smaller at the same quality. At iStoria, our build pipeline converts all article and lesson images to WebP automatically.</p>
-<p>3. <strong>Use <code>precacheImage</code></strong> for critical images — preloads the image before it is displayed, avoiding a pop-in on first render.</p>
-<p>4. <strong>Use <code>FadeInImage</code> with a placeholder</strong> — shows a lightweight placeholder while the real image loads, avoiding layout shift.</p>
+<ol start="2">
+<li><strong>Use WebP instead of PNG/JPEG</strong> — WebP is ~30% smaller at the same quality. At iStoria, our build pipeline converts all article and lesson images to WebP automatically.</li>
+</ol>
+<ol start="3">
+<li><strong>Use <code>precacheImage</code></strong> for critical images — preloads the image before it is displayed, avoiding a pop-in on first render.</li>
+</ol>
+<ol start="4">
+<li><strong>Use <code>FadeInImage</code> with a placeholder</strong> — shows a lightweight placeholder while the real image loads, avoiding layout shift.</li>
+</ol>
 <h2>Isolate Offloading</h2>
 <p>Heavy computation (JSON parsing, image processing, cryptographic operations) blocks the UI thread and causes jank. Move it to an isolate via <code>compute()</code> or <code>Isolate.run()</code>:</p>
 <pre><code class="language-dart">final parsed = await compute(parseLessonJson, rawJsonString);</code></pre>

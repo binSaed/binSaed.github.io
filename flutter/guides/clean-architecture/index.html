@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -181,7 +181,11 @@
 <h2>What Clean Architecture Actually Solves</h2>
 <p>Before adopting Clean Architecture, our codebase had a common sickness: business logic lived inside widget trees and API callbacks. Changing the database schema broke the UI. Testing meant booting the whole app. Onboarding a new engineer took weeks because there was no single place to look for "the rules of the business."</p>
 <p>Clean Architecture forces three separations:</p>
-<p>1. <strong>Domain</strong> — the business rules. Entities, value objects, repository <em>contracts</em> (abstract interfaces), and use cases. Pure Dart. No Flutter, no I/O. 2. <strong>Data</strong> — the implementation of those contracts. Repositories that coordinate remote and local data sources, DTOs, mappers, and the actual HTTP/database clients. 3. <strong>Presentation</strong> — the UI and state management. Widgets, BLoC/Cubit, routing. It depends on use cases, never on repositories directly.</p>
+<ol>
+<li><strong>Domain</strong> — the business rules. Entities, value objects, repository <em>contracts</em> (abstract interfaces), and use cases. Pure Dart. No Flutter, no I/O.</li>
+<li><strong>Data</strong> — the implementation of those contracts. Repositories that coordinate remote and local data sources, DTOs, mappers, and the actual HTTP/database clients.</li>
+<li><strong>Presentation</strong> — the UI and state management. Widgets, BLoC/Cubit, routing. It depends on use cases, never on repositories directly.</li>
+</ol>
 <p>The dependency rule is non-negotiable: <strong>inner layers never import from outer layers.</strong> The domain layer has zero knowledge of <code>flutter</code>, <code>dio</code>, <code>drift</code>, or <code>bloc</code>. This is what makes the domain testable in isolation and portable across state management choices.</p>
 <h2>Layers in Detail</h2>
 <h3>Domain Layer</h3>

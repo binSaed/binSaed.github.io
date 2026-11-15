@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -187,7 +187,13 @@ final searchResults = searchTextSubject
         repository.search(query).asStream())
     .startWith([]);                                 // initial empty state</code></pre>
 <p>Key operators:</p>
-<p>1. <strong>debounceTime</strong> — wait for a burst of events to settle, then emit the last one. Perfect for search-as-you-type. 2. <strong>throttleTime</strong> — emit at most one event per time window. Perfect for button-tap debouncing. 3. <strong>switchMap</strong> — transform each event into a new stream, canceling the previous one. Critical for search cancellation. 4. <strong>combineLatest</strong> — combine multiple streams, emitting whenever any one changes. Perfect for combining user data from different sources. 5. <strong>BehaviorSubject</strong> — a StreamController that replays the last value to new listeners. The BLoC library uses this internally for state streams.</p>
+<ol>
+<li><strong>debounceTime</strong> — wait for a burst of events to settle, then emit the last one. Perfect for search-as-you-type.</li>
+<li><strong>throttleTime</strong> — emit at most one event per time window. Perfect for button-tap debouncing.</li>
+<li><strong>switchMap</strong> — transform each event into a new stream, canceling the previous one. Critical for search cancellation.</li>
+<li><strong>combineLatest</strong> — combine multiple streams, emitting whenever any one changes. Perfect for combining user data from different sources.</li>
+<li><strong>BehaviorSubject</strong> — a StreamController that replays the last value to new listeners. The BLoC library uses this internally for state streams.</li>
+</ol>
 <p>At iStoria, RxDart powers the search flow, the leaderboard refresh logic, and the sync status indicator. The reactive data layer (Drift streams + PowerSync sync) is composed with RxDart operators before reaching the BLoC.</p>
 
         <h2>When to use it</h2>

@@ -109,7 +109,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
   
@@ -121,9 +121,9 @@
     <meta property="article:tag" content="Dart" />
     <meta property="article:tag" content="Build & Release" />
     <meta property="article:tag" content="DevOps" />
-        <link rel="modulepreload" href="/assets/ArticlePage-DP_3Gl8n.js" />
-    <link rel="modulepreload" href="/assets/MarkdownContent-B8_wAHiT.js" />
-    <link rel="modulepreload" href="/assets/caseStudies-DiT9cI6R.js" />
+        <link rel="modulepreload" href="/assets/ArticlePage-BFjFB18s.js" />
+    <link rel="modulepreload" href="/assets/MarkdownContent-DsAzEtBa.js" />
+    <link rel="modulepreload" href="/assets/caseStudies-BzwZ8kjp.js" />
 <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -133,7 +133,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -196,7 +196,11 @@ const apiBaseUrl = "https://api.example.com/"; // TODO: switch back to staging</
 <h2>What a flavor actually is</h2>
 <p>A "flavor" (Android calls it a <em>product flavor</em>; iOS reaches the same result with <em>schemes</em> and <em>build configurations</em>) is a named build variant of one codebase. Same source, different identity and configuration baked in at build time.</p>
 <p>The trap is that a flavor is not one thing you configure in one place — it's a decision that has to line up across <strong>three layers</strong>:</p>
-<p>1. <strong>Dart</strong> — which entry point runs, and which configuration it loads. 2. <strong>Android</strong> — the application ID, app name, and any native build fields. 3. <strong>iOS</strong> — the scheme and <code>.xcconfig</code> that select signing, bundle ID, and display name.</p>
+<ol>
+<li><strong>Dart</strong> — which entry point runs, and which configuration it loads.</li>
+<li><strong>Android</strong> — the application ID, app name, and any native build fields.</li>
+<li><strong>iOS</strong> — the scheme and <code>.xcconfig</code> that select signing, bundle ID, and display name.</li>
+</ol>
 <p>Get the Dart layer right but forget Android, and your "staging" build installs on top of production and reports to the production analytics project. The work is in keeping all three in sync — so the goal is to make each layer boringly declarative.</p>
 <h2>The Dart layer: an enum and thin entry points</h2>
 <p>Start with a single source of truth for "which flavor am I?" — an enum plus a tiny accessor class. No logic, just the flavor and the things that are derived from it:</p>

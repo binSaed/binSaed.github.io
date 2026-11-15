@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -184,7 +184,12 @@
 }</code></pre>
 <p>The flag values are fetched from a remote service (GrowthBook, Firebase Remote Config, LaunchDarkly) and cached locally so the app works offline. Changing a flag on the server changes the app's behaviour for all users — or for a targeted segment — without an app store release.</p>
 <p>At iStoria, we use <strong>GrowthBook</strong> for feature flags and A/B testing. Feature flags enable:</p>
-<p>1. <strong>Dark launches</strong> — ship code to production behind a flag that defaults to off. Ramp when ready. 2. <strong>Percentage rollouts</strong> — enable for 5% of users, watch crash rates, then ramp to 100%. 3. <strong>Instant kill switch</strong> — a misbehaving feature is one flag flip from off, no hotfix release needed. 4. <strong>A/B testing</strong> — run two variants and measure which drives better conversion.</p>
+<ol>
+<li><strong>Dark launches</strong> — ship code to production behind a flag that defaults to off. Ramp when ready.</li>
+<li><strong>Percentage rollouts</strong> — enable for 5% of users, watch crash rates, then ramp to 100%.</li>
+<li><strong>Instant kill switch</strong> — a misbehaving feature is one flag flip from off, no hotfix release needed.</li>
+<li><strong>A/B testing</strong> — run two variants and measure which drives better conversion.</li>
+</ol>
 <p>Combined with trunk-based development, feature flags let you merge continuously to master and <em>choose</em> when learners see something — instead of the app store review being the release event.</p>
 
         <h2>When to use it</h2>

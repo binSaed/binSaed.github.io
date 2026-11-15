@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -233,7 +233,11 @@ on&lt;SubmitPressed&gt;(_onSubmit, transformer: droppable());</code></pre>
 <p>These transformers prevent an entire class of race-condition bugs. At iStoria, every search input uses <code>restartable()</code> and every submit action uses <code>droppable()</code>.</p>
 <h2>BLoC-to-BLoC Communication</h2>
 <p>BLoCs should not import each other directly. For cross-feature communication:</p>
-<p>1. <strong>Listener Bloc</strong> — one BLoC subscribes to another's stream and reacts. Used when feature A needs to respond to state changes in feature B. 2. <strong>Repository as mediator</strong> — both BLoCs depend on a shared repository. When one writes, the other reads reactively. This is our preferred pattern at iStoria — it keeps BLoCs decoupled. 3. <strong>Event-based</strong> — one BLoC dispatches an event to another through a shared event bus. Use sparingly; it makes the flow hard to trace.</p>
+<ol>
+<li><strong>Listener Bloc</strong> — one BLoC subscribes to another's stream and reacts. Used when feature A needs to respond to state changes in feature B.</li>
+<li><strong>Repository as mediator</strong> — both BLoCs depend on a shared repository. When one writes, the other reads reactively. This is our preferred pattern at iStoria — it keeps BLoCs decoupled.</li>
+<li><strong>Event-based</strong> — one BLoC dispatches an event to another through a shared event bus. Use sparingly; it makes the flow hard to trace.</li>
+</ol>
 <h2>Testing BLoCs</h2>
 <p>BLoC testing is one of the pattern's biggest wins. The <code>bloc_test</code> package lets you assert on state sequences:</p>
 <pre><code class="language-dart">blocTest&lt;LessonCubit, LessonState&gt;(

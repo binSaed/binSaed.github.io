@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -221,7 +221,11 @@ class ValidationFailure extends Failure {
 <p>The key principle: <strong>Failures are domain concepts, not infrastructure exceptions.</strong> <code>DioError</code>, <code>DriftException</code>, <code>SocketException</code> — these are data-layer concerns. The repository catches them and maps them to domain Failures. The BLoC never sees a <code>DioError</code>.</p>
 <h2>Where Exceptions Still Belong</h2>
 <p>Not everything should be an Either. Some operations are genuinely exception-based:</p>
-<p>1. <strong>Programming errors</strong> — null dereference, index out of bounds, assertion failures. These should crash and be reported, not be wrapped in Either. 2. <strong>Third-party SDKs</strong> — some packages throw exceptions. Wrap their calls in your repository and map exceptions to Failures. 3. <strong>Truly unexpected states</strong> — if a repository method receives a response that violates an invariant, throw. This is a bug, not a recoverable error.</p>
+<ol>
+<li><strong>Programming errors</strong> — null dereference, index out of bounds, assertion failures. These should crash and be reported, not be wrapped in Either.</li>
+<li><strong>Third-party SDKs</strong> — some packages throw exceptions. Wrap their calls in your repository and map exceptions to Failures.</li>
+<li><strong>Truly unexpected states</strong> — if a repository method receives a response that violates an invariant, throw. This is a bug, not a recoverable error.</li>
+</ol>
 <h2>The Repository: Mapping Exceptions to Failures</h2>
 <p>The repository is the translation point. It catches infrastructure exceptions and converts them to domain Failures:</p>
 <pre><code class="language-dart">@override
@@ -245,7 +249,10 @@ Future&lt;Either&lt;Failure, List&lt;Lesson&gt;&gt;&gt; getLessons(String course
 <p>The last <code>catch</code> block is important. It catches truly unexpected exceptions, reports them, and returns a failure. This prevents the app from crashing on unexpected exceptions while still surfacing them in Sentry.</p>
 <h2>Async Error Zones and Crash Reporting</h2>
 <p>Flutter has error zones for isolating async failures. The two zones you need to know:</p>
-<p>1. <strong><code>runZonedGuarded</code></strong> — wraps your entire app and catches uncaught async errors. This is where you configure Sentry to report crashes. 2. <strong><code>FlutterError.onError</code></strong> — catches Flutter framework errors (rendering, layout, widget build failures).</p>
+<ol>
+<li><strong><code>runZonedGuarded</code></strong> — wraps your entire app and catches uncaught async errors. This is where you configure Sentry to report crashes.</li>
+<li><strong><code>FlutterError.onError</code></strong> — catches Flutter framework errors (rendering, layout, widget build failures).</li>
+</ol>
 <p>In <code>main()</code>:</p>
 <pre><code class="language-dart">void main() {
   runZonedGuarded(() {

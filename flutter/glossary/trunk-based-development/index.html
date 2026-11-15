@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -181,7 +181,12 @@
             \ /    \ /    \ /
 feature:    ●●      ●●      ●●</code></pre>
 <p>Key practices:</p>
-<p>1. <strong>Short-lived branches</strong> — a branch lives for hours or a day, not weeks. If a feature takes longer, it ships dark behind a feature flag. 2. <strong>Small commits</strong> — merge one logical change at a time, not a month of work. 3. <strong>Branch protection</strong> — <code>master</code> rejects direct pushes; every merge goes through CI gates. 4. <strong>Feature flags</strong> — incomplete work merges dark behind a flag and ramps when ready.</p>
+<ol>
+<li><strong>Short-lived branches</strong> — a branch lives for hours or a day, not weeks. If a feature takes longer, it ships dark behind a feature flag.</li>
+<li><strong>Small commits</strong> — merge one logical change at a time, not a month of work.</li>
+<li><strong>Branch protection</strong> — <code>master</code> rejects direct pushes; every merge goes through CI gates.</li>
+<li><strong>Feature flags</strong> — incomplete work merges dark behind a flag and ramps when ready.</li>
+</ol>
 <p>At iStoria, trunk-based development is what let us cut the release cycle from four weeks to one. Engineers merge multiple times per day into a protected <code>master</code>, and a suite of 14 GitHub Actions workflows keeps the trunk green:</p>
 <ul>
 <li><code>master</code> rejects direct pushes (even from the lead).</li>

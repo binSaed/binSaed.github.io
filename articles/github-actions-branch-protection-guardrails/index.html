@@ -109,7 +109,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
   
@@ -121,9 +121,9 @@
     <meta property="article:tag" content="DevOps" />
     <meta property="article:tag" content="CI/CD" />
     <meta property="article:tag" content="Flutter" />
-        <link rel="modulepreload" href="/assets/ArticlePage-DP_3Gl8n.js" />
-    <link rel="modulepreload" href="/assets/MarkdownContent-B8_wAHiT.js" />
-    <link rel="modulepreload" href="/assets/caseStudies-DiT9cI6R.js" />
+        <link rel="modulepreload" href="/assets/ArticlePage-BFjFB18s.js" />
+    <link rel="modulepreload" href="/assets/MarkdownContent-DsAzEtBa.js" />
+    <link rel="modulepreload" href="/assets/caseStudies-BzwZ8kjp.js" />
 <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -133,7 +133,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -194,8 +194,12 @@
 <p>Two small GitHub Actions can enforce branch hygiene that documentation alone never will: a <code>protect-master</code> workflow that auto-reverts any unauthorized direct push to <code>master</code>, and a <code>protect-files</code> workflow that restores protected paths — lockfiles, generated native folders, CI config — when a pull request changes them. Both follow one principle, reversible enforcement: instead of blocking a change behind an admin-only red X, they undo the mistake in the open with a readable commit, and both honor an explicit <code>--skip-protection</code> escape hatch for the times you genuinely mean it. The branch guard recognizes legitimate merges with a regex over commit subjects and prefers <code>git revert</code> over <code>git reset</code> so public history is never rewritten. Together, under 200 lines of YAML, they make <code>master</code> trustworthy for releases and rollbacks, eliminate a whole class of 'why is CI red?' mysteries, and remove the need to nag teammates about process.</p>
 <h2>Why do accidental pushes to <code>master</code> happen — and how do you prevent them?</h2>
 <p>Two recurring failures, both cheap individually and expensive in aggregate:</p>
-<p>1. <strong>Direct pushes to <code>master</code>.</strong> Not malicious — just human. The cost isn't the one commit; it's the eroded guarantee. Once "<code>master</code> is always reviewed" stops being true, you can't trust it for releases, bisects, or rollbacks.</p>
-<p>2. <strong>The "innocent" file change that detonates a build.</strong> Lockfiles (<code>pubspec.lock</code>, <code>Podfile.lock</code>), generated iOS symlinks, IDE settings, CI config. Someone commits their local <code>pubspec.lock</code> from a different Flutter version, and now CI fails for everyone until somebody figures out <em>why</em>. These files shouldn't change in a feature PR, but nothing stops them from doing so.</p>
+<ol>
+<li><strong>Direct pushes to <code>master</code>.</strong> Not malicious — just human. The cost isn't the one commit; it's the eroded guarantee. Once "<code>master</code> is always reviewed" stops being true, you can't trust it for releases, bisects, or rollbacks.</li>
+</ol>
+<ol start="2">
+<li><strong>The "innocent" file change that detonates a build.</strong> Lockfiles (<code>pubspec.lock</code>, <code>Podfile.lock</code>), generated iOS symlinks, IDE settings, CI config. Someone commits their local <code>pubspec.lock</code> from a different Flutter version, and now CI fails for everyone until somebody figures out <em>why</em>. These files shouldn't change in a feature PR, but nothing stops them from doing so.</li>
+</ol>
 <p>GitHub's built-in branch protection helps with (1), but it's coarse, it's UI-configured (not in the repo), and it doesn't address (2) at all. I wanted <strong>guardrails as code</strong> — versioned, reviewable, with an explicit escape hatch.</p>
 <h2>The idea</h2>
 <p>Two push/PR-triggered workflows that don't <em>ask</em>, they <em>correct</em>:</p>

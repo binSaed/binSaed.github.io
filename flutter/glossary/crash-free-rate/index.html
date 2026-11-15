@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -180,7 +180,12 @@
 <pre><code>Crash-free rate = (total sessions - crash sessions) / total sessions × 100</code></pre>
 <p>A "session" starts when the app launches and ends when the user closes it or it crashes. A single user can have many sessions per day.</p>
 <p>At iStoria (5M+ users, 350+ releases), we hold <strong>99.9% crash-free</strong> across every release. How:</p>
-<p>1. <strong>Sentry</strong> captures every crash in real time — new regressions are triaged within hours, not store reviews. 2. <strong>Failures as values</strong> — every repository returns <code>Either&lt;Failure, T&gt;</code>, so error paths are explicit forks the UI renders, not unhandled exceptions that crash the app. 3. <strong>Feature flags</strong> — risky changes ship dark behind a flag. If the crash rate ticks up on a flagged feature, the flag is killed instantly without a hotfix. 4. <strong>Release governance</strong> — no merge to master without CI gates (static analysis, tests, build success). The branch protection rule rejects even the lead engineer's direct pushes.</p>
+<ol>
+<li><strong>Sentry</strong> captures every crash in real time — new regressions are triaged within hours, not store reviews.</li>
+<li><strong>Failures as values</strong> — every repository returns <code>Either&lt;Failure, T&gt;</code>, so error paths are explicit forks the UI renders, not unhandled exceptions that crash the app.</li>
+<li><strong>Feature flags</strong> — risky changes ship dark behind a flag. If the crash rate ticks up on a flagged feature, the flag is killed instantly without a hotfix.</li>
+<li><strong>Release governance</strong> — no merge to master without CI gates (static analysis, tests, build success). The branch protection rule rejects even the lead engineer's direct pushes.</li>
+</ol>
 
         <h2>When to use it</h2>
 <p>Every production app should track crash-free rate. There is no "when not to" — it is a baseline quality metric.</p>

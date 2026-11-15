@@ -58,7 +58,7 @@ Proof of impact, not a project list. The flagship, then the system deep dives:
 - [Offline-First Flutter at 5M Learners](https://bnsaed.com/case-studies/offline-first-sync/) — Drift, PowerSync, and an offline write queue so learners never wait on the network.
 - [From Four-Week Releases to Weekly](https://bnsaed.com/case-studies/release-engineering/) — trunk-based development, a self-driving CI/CD pipeline, and feature flags.
 - [flutter_cached_pdfview: Cached PDF Viewer for Flutter](https://bnsaed.com/case-studies/flutter-cached-pdfview/) — the open-source package, in depth.
-- [AdTo: Deferred Deep Linking on Cloudflare Workers](https://bnsaed.com/case-studies/adto/) — deep links and install attribution on one Worker and D1, built solo.
+- [AdTo: Deferred Deep Linking and Attribution, Built Solo](https://bnsaed.com/case-studies/adto/) — deep links and install attribution for Flutter and React Native apps, with credit kept separate from routing.
 
 Also shipped: [Stickerawy](https://play.google.com/store/apps/details?id=com.stickerawy.stickers) (500K+ installs) — more on the [projects hub](https://bnsaed.com/projects/).
 

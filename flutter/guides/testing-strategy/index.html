@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -180,9 +180,15 @@
 
 <h2>The Test Pyramid</h2>
 <p>The test pyramid has three levels, from most to fewest:</p>
-<p>1. <strong>Unit tests (70%)</strong> — test individual classes in isolation. Domain entities, use cases, repositories (with mocked data sources), mappers, and BLoC/Cubit state transitions. These are pure Dart tests that run in milliseconds.</p>
-<p>2. <strong>Widget tests (20%)</strong> — test individual widgets or small widget trees with mocked dependencies. You pump a widget, interact with it (tap, scroll, enter text), and assert on what it renders. These run in seconds.</p>
-<p>3. <strong>Integration tests (10%)</strong> — test full user flows end-to-end on a simulated device. The app runs with real (or near-real) dependencies and the test drives it like a user. These are slow (minutes) and should be reserved for critical journeys (login, checkout, lesson completion).</p>
+<ol>
+<li><strong>Unit tests (70%)</strong> — test individual classes in isolation. Domain entities, use cases, repositories (with mocked data sources), mappers, and BLoC/Cubit state transitions. These are pure Dart tests that run in milliseconds.</li>
+</ol>
+<ol start="2">
+<li><strong>Widget tests (20%)</strong> — test individual widgets or small widget trees with mocked dependencies. You pump a widget, interact with it (tap, scroll, enter text), and assert on what it renders. These run in seconds.</li>
+</ol>
+<ol start="3">
+<li><strong>Integration tests (10%)</strong> — test full user flows end-to-end on a simulated device. The app runs with real (or near-real) dependencies and the test drives it like a user. These are slow (minutes) and should be reserved for critical journeys (login, checkout, lesson completion).</li>
+</ol>
 <p>The pyramid ratio is not arbitrary. Unit tests are fast, deterministic, and pinpoint exactly what broke. Integration tests are slow, can be flaky, and when they fail you do not know which layer broke. Invest in the base of the pyramid.</p>
 <h2>Layer 1: Unit Testing the Domain</h2>
 <p>The domain layer is the easiest to test because it has no dependencies. Entities, value objects, use cases — all pure Dart, no mocking needed.</p>
@@ -247,7 +253,11 @@
 <p>Keep integration tests few and focused. Each one adds minutes to CI. Ten integration tests covering the critical paths are more valuable than fifty covering every edge case (those belong in unit/widget tests).</p>
 <h2>CI Strategy</h2>
 <p>In CI, split the test runs:</p>
-<p>1. <strong>Unit + Widget tests</strong> — run on every pull request. Should complete in under 3 minutes. 2. <strong>Integration tests</strong> — run on merge to main or nightly. These are slower and do not need to block every PR. 3. <strong>Golden tests</strong> — run on every PR but do not block (report differences for review). Block only on main.</p>
+<ol>
+<li><strong>Unit + Widget tests</strong> — run on every pull request. Should complete in under 3 minutes.</li>
+<li><strong>Integration tests</strong> — run on merge to main or nightly. These are slower and do not need to block every PR.</li>
+<li><strong>Golden tests</strong> — run on every PR but do not block (report differences for review). Block only on main.</li>
+</ol>
 <p>Use <code>--coverage</code> and track coverage trends, but do not obsess over a coverage number. 80% coverage with meaningful tests is better than 100% coverage with trivial assertion-free tests. The goal is confidence, not a metric.</p>
 
         <h2>Recommended folder structure</h2>

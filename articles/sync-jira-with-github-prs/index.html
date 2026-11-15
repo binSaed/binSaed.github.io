@@ -109,7 +109,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
   
@@ -121,9 +121,9 @@
     <meta property="article:tag" content="Jira" />
     <meta property="article:tag" content="CI/CD" />
     <meta property="article:tag" content="Developer Experience" />
-        <link rel="modulepreload" href="/assets/ArticlePage-DP_3Gl8n.js" />
-    <link rel="modulepreload" href="/assets/MarkdownContent-B8_wAHiT.js" />
-    <link rel="modulepreload" href="/assets/caseStudies-DiT9cI6R.js" />
+        <link rel="modulepreload" href="/assets/ArticlePage-BFjFB18s.js" />
+    <link rel="modulepreload" href="/assets/MarkdownContent-DsAzEtBa.js" />
+    <link rel="modulepreload" href="/assets/caseStudies-BzwZ8kjp.js" />
 <style id="prerender-fallback">
 #root .prerender-content{min-height:100vh;background:#f4eddd;color:#211c17;font-family:Georgia,'Times New Roman',serif;line-height:1.7}
 #root .prerender-content .pr-wrap{max-width:48rem;margin:0 auto;padding:3.5rem 1.5rem 5rem}
@@ -133,7 +133,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -193,7 +193,11 @@
 <p>Syncing Jira and GitHub doesn't need a paid app or marketplace integration. Abdelrahman Saed built a single <strong>GitHub Actions</strong> workflow (using <code>actions/github-script@v7</code>) that mirrors Jira metadata onto every pull request. Here's how it works: a branch-name regex <code>/([A-Z]+-\d+)/</code> extracts the ticket ID, then one authenticated <strong>Jira REST API</strong> call (<code>/rest/api/3/issue/{id}?fields=status,resolutiondate,labels,fixVersions</code>, using Basic auth with an email and API token) fetches the issue. The workflow mirrors fix versions as <code>fix:</code> labels and Jira labels as <code>jira:</code> labels, reconciling on every run — adding and removing so stale labels never linger. It also adds a <code>tiny PR</code> (≤2 files) or <code>small PR</code> (&lt;10 files) size label from the changed-file count. The sleeper feature is a <code>Slow PR</code> flag: when a ticket is Done but its resolution date is over three days old and the PR is still open, it surfaces finished work that isn't shipping. A twice-daily weekday cron catches async Jira status changes.</p>
 <h2>The problem</h2>
 <p>The mismatch between issue tracker and code host shows up as three distinct annoyances:</p>
-<p>1. <strong>No release visibility on the PR.</strong> Which version is this fix shipping in? That lives in Jira's "Fix Version" field, invisible from GitHub. Reviewers and release managers had to cross-reference. 2. <strong>No size signal.</strong> Is this a two-line fix or a 40-file refactor? You can't triage review effort from the PR list. 3. <strong>The "Done but not merged" black hole.</strong> A ticket gets marked Done in Jira, but the PR sits unmerged for days — blocked on QA, on a dependency, on someone's attention. Nobody notices until the release manager goes looking.</p>
+<ol>
+<li><strong>No release visibility on the PR.</strong> Which version is this fix shipping in? That lives in Jira's "Fix Version" field, invisible from GitHub. Reviewers and release managers had to cross-reference.</li>
+<li><strong>No size signal.</strong> Is this a two-line fix or a 40-file refactor? You can't triage review effort from the PR list.</li>
+<li><strong>The "Done but not merged" black hole.</strong> A ticket gets marked Done in Jira, but the PR sits unmerged for days — blocked on QA, on a dependency, on someone's attention. Nobody notices until the release manager goes looking.</li>
+</ol>
 <h2>The idea</h2>
 <p>One workflow, triggered both on PR events <em>and</em> on a schedule, that for each open PR:</p>
 <ul>

@@ -110,7 +110,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script type="module" crossorigin src="/assets/index-y6WpBl0l.js"></script>
+    <script type="module" crossorigin src="/assets/index-WDMgTWl6.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/react-vendor-B2qPguBR.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BN7S2TgY.css">
       <style id="prerender-fallback">
@@ -122,7 +122,7 @@
 #root .prerender-content h2{font-size:1.7rem;margin:2.5rem 0 1rem;border-bottom:1px solid #d8ccb4;padding-bottom:.4rem}
 #root .prerender-content h3{font-size:1.2rem;margin:1.75rem 0 .5rem}
 #root .prerender-content p{margin:0 0 1rem}
-#root .prerender-content ul{margin:0 0 1rem;padding-left:1.4rem}
+#root .prerender-content ul,#root .prerender-content ol{margin:0 0 1rem;padding-left:1.4rem}
 #root .prerender-content li{margin:.25rem 0}
 #root .prerender-content code{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;background:#ebe1cb;border-radius:.25rem;padding:.1rem .35rem;font-size:.9em}
 #root .prerender-content pre{background:#ebe1cb;border-radius:.25rem;padding:1rem;overflow:auto;margin:0 0 1.25rem}
@@ -180,7 +180,11 @@
 
 <h2>Flavors: Three Environments</h2>
 <p>Every production Flutter app needs at least three flavors:</p>
-<p>1. <strong>Development</strong> — local development against a dev backend. No real users. Hot reload. Used by engineers daily. 2. <strong>Staging</strong> — pre-production environment for QA, beta testing, and release candidates. Mirrors production as closely as possible (same backend, same feature flags, same analytics — just isolated data). 3. <strong>Production</strong> — the real app served to real users. Different bundle ID, different API keys, different signing credentials.</p>
+<ol>
+<li><strong>Development</strong> — local development against a dev backend. No real users. Hot reload. Used by engineers daily.</li>
+<li><strong>Staging</strong> — pre-production environment for QA, beta testing, and release candidates. Mirrors production as closely as possible (same backend, same feature flags, same analytics — just isolated data).</li>
+<li><strong>Production</strong> — the real app served to real users. Different bundle ID, different API keys, different signing credentials.</li>
+</ol>
 <p>Each flavor has its own application ID/bundle ID, icon set, and environment configuration. The flavor system is the backbone of the pipeline — it lets you test the exact binary that will ship to users, just pointed at a different backend.</p>
 <h3>Flavor Configuration</h3>
 <p>On Android, flavors are defined in <code>build.gradle</code> with <code>productFlavors</code>. On iOS, they are defined via Xcode schemes and build configurations. In Flutter, you select the flavor at build time:</p>
@@ -232,7 +236,13 @@ flutter build ipa --flavor staging --export-options-plist ios/staging/ExportOpti
 <p>Inside the app, <code>String.fromEnvironment('API_URL')</code> reads the value. This keeps configuration out of the source code and makes each flavor's config explicit in the CI pipeline.</p>
 <h2>Guardrails</h2>
 <p>The pipeline must have guardrails that prevent bad releases:</p>
-<p>1. <strong>Branch protection</strong> — no direct pushes to main. Every change goes through a PR with passing CI. 2. <strong>Required reviews</strong> — at least one approval from a teammate. For release tags, require two. 3. <strong>Crash-free threshold</strong> — after a staged rollout to 1%, check the crash-free rate. If it drops below 99.5%, halt the rollout automatically. 4. <strong>Feature flags</strong> — new features ship behind flags, disabled by default. They are enabled server-side after the release is stable, allowing instant rollback without a new build. 5. <strong>Database migration safety</strong> — any schema migration must be backward-compatible (additive). Breaking migrations require a multi-release strategy (add new column → populate → remove old column across releases).</p>
+<ol>
+<li><strong>Branch protection</strong> — no direct pushes to main. Every change goes through a PR with passing CI.</li>
+<li><strong>Required reviews</strong> — at least one approval from a teammate. For release tags, require two.</li>
+<li><strong>Crash-free threshold</strong> — after a staged rollout to 1%, check the crash-free rate. If it drops below 99.5%, halt the rollout automatically.</li>
+<li><strong>Feature flags</strong> — new features ship behind flags, disabled by default. They are enabled server-side after the release is stable, allowing instant rollback without a new build.</li>
+<li><strong>Database migration safety</strong> — any schema migration must be backward-compatible (additive). Breaking migrations require a multi-release strategy (add new column → populate → remove old column across releases).</li>
+</ol>
 <h2>The Weekly Cadence</h2>
 <p>At iStoria, we ship every week:</p>
 <ul>
